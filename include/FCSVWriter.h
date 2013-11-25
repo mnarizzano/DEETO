@@ -37,7 +37,7 @@ void FCSVWriter::update() const
 				
 				of.close();
 		}
-		catch(ofstream::exception::failure e){
+		catch(ostream::failure e){
 			// add logging information
 			cerr<<" "<<endl;
 		}
