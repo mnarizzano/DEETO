@@ -1,0 +1,23 @@
+1) Fare un readme e un todo come si deve
+2) Commentare il codice con Doxygen
+3) Bug da risolvere:
+   a) Il primo punto dopo l'entry non e' facile da trovare. A volte e' sbagliato. 
+      mettere a posto (con una pezza o con la proiezione)
+   b) L'ultimo punto: Il target point a volte e' prima dell'ultimo blobbone?
+      In questo caso l'algoritmo si ferma al target, ma sarebbe da considerare l'ultimo blobbone?
+      In questi come ci si comporta?
+   c) Se momento nullo (tipicamente all'ultimo contatto) scrive un contatto che non esiste
+4) Funzionalita' da aggiungere  
+   A) Costruire i diversi writer: 
+      b) VTK (chiedere LUMI a Gabriele) - on the way
+      c) XXX per farlo leggere a freeview?
+      d) altri formati?
+   B) Command Line seria (usare libreria che avevo usato per QuBE)
+   C)  ....
+5) Controllare distruttori di tutte le classi
+6) Dividere .h dai .cpp
+7) Flag per l'algoritmo per sputare fuori coordinate centrate oppure nello spazio CT/MRI
+8) Includere lettura superfici (ie pial/white) per il calcolo GMPI
+9) Modulo python per includere algo in 3DSlicer?
+10) Includere file di licenza (GPL??)
+11) Logger ad esempio boost-log2.0 
