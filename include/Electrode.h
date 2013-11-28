@@ -27,7 +27,7 @@ class Electrode {
 	  ulong n = obj.getContactNumber();
 
 	  for(it = obj.begin(); it != obj.end(); it++){
-		  os<<obj.getName()<<n--<<","<<(*it)[0]<<","<<(*it)[1]<<","<<(*it)[2]<<"1,1"<<endl;
+		  os<<obj.getName()<<n--<<","<<(*it)[0]<<","<<(*it)[1]<<","<<(*it)[2]<<",1,1"<<endl;
 	  }
 	  return os;
   }
@@ -57,7 +57,11 @@ class Electrode {
   ulong getContactNumber() const{ return contacts_.size();}
   Contact getTarget() const{ return targetPoint_; }
   Contact getEntry() const{ return entryPoint_; }
+
+  void getTargetAsDouble(double* t) const{ for(short i=0;i<3;i++) t[i]=targetPoint_[i];}
   
+  void getEntryAsDouble(double* e) const{  for(short i=0;i<3;i++) e[i]=entryPoint_[i];}
+
   void setTarget(Contact c) { targetPoint_ = c;}
   void setEntry(Contact c) { entryPoint_ = c;}
   

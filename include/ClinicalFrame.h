@@ -20,6 +20,8 @@ class ClinicalFrame {
 
   ConstElectrodeIterator begin() const{return headframe_.begin();}
   ConstElectrodeIterator end() const{return headframe_.end();}
+
+  bool isempty( void) const{ return headframe_.empty();}
  private:
   
   string              name_; // may be better char*? It is usually
