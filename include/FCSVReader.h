@@ -38,6 +38,9 @@ void FCSVReader::update(void){
   unsigned int k;
   
   file.open(filein_, ios::in);
+
+  assert(file.good());
+
   if (file.is_open()) {
     // Comments at the beginning of the file are eliminated
     while(!file.eof() && (file.peek() == '#')) {
@@ -47,15 +50,15 @@ void FCSVReader::update(void){
       k = 0;
       // read two lines at the time.
       while (k < 2) {
-	// First read the name of the electrode.
-	getline(file,name,',');      
-	// The first 3 are number of interest representing a Point
-	if (k == 0) target = readPoint(&file);
-	else entry = readPoint(&file);
-	// skip what it is left.
-	getline(file,str,'\n');
-	// skip the name
-	k++;
+		// First read the name of the electrode.
+		getline(file,name,',');      
+		// The first 3 are number of interest representing a Point
+		if (k == 0) target = readPoint(&file);
+		else entry = readPoint(&file);
+		// skip what it is left.
+		getline(file,str,'\n');
+		// skip the name
+		k++;
       }
 
       double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
