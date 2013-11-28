@@ -10,42 +10,46 @@ class VTKWriter: public AbstractWriter{
 
 	public:
 		/* Constructors */
-	    VTKWriter(string* filename){setFilename(filename);}
-		VTKWriter(string* filename, VTKModelConstructor* vm){
-			setFilename(filename);
-			3dmodel_ = vm;
-		}
+	    VTKWriter(string filename){setFilename(filename);setExtension("vtk");}
 
 		/* Destructor */
 		virtual ~VTKWriter( void ){ };
 
-		inline void setVTKModelConstructor( VTKModelConstructor* vm){3dmodel_ = vm;}
 
 		/* implementation of virtual AbstractFileWriter::update */
-		void update() const;
+		void update() ;
 
-	private: 
-		VTKModelConstructor* 3dmodel_;
+
 };
 #endif //VTK_WRITER
 
 
-void VTKWriter::update() const
+void VTKWriter::update() 
 {
-//
-//		vtkSmartPointer<vtkPolyDataWriter> writer =
-//			vtkSmartPointer<vtkPolyDataWriter>::New();
-//		writer->SetFileName(getFilename()->c_str());
-//
-//		vtkSmartPointer<vtkAppendPolyData> appendPolyData = 
-//			vtkSmartPointer<vtkAppendPolyData>::New();
-//
-//
-//		writer->SetInputConnection(appendPolyData_->GetOutputPort());
-//		try{
-//			writer->Write();
-//		}catch(...){ // will it throw exceptions?
-//			cerr<<" Error in writing PolyData"<<endl;
-//		}
+	checkFilename_();
+
+	VTKModelConstructor vtkModels(getClinicalFrame());
+
+	vtkSmartPointer<vtkPolyDataWriter> writer =
+		vtkSmartPointer<vtkPolyDataWriter>::New();
+
+	writer->SetFileName(getFilename().c_str());
+
+	vtkSmartPointer<vtkAppendPolyData> appendPolyData = 
+		vtkSmartPointer<vtkAppendPolyData>::New();
+	
+	VTKModelConstructor::ModelIterator model_it;
+
+	assert(vtkModels.update());
+
+	for( model_it = vtkModels.begin();
+			model_it != vtkModels.end();
+			model_it++){
+
+		appendPolyData->AddInput( (*model_it).GetPointer() );
+	}
+
+	writer->SetInputConnection(appendPolyData->GetOutputPort());
+	writer->Write();
 }
-#endif //VTK_WRITER_H
+
