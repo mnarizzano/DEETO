@@ -6,25 +6,31 @@
 #include "VTKModelConstructor.h"
 #include <ostream>
 
+/**
+  VTKWriter class
+*/
+
 class VTKWriter: public AbstractWriter{
 
 	public:
-		/* Constructors */
+		/** VTKWriter(string filename)
+		  @param filename
+		 */
 	    VTKWriter(string filename){setFilename(filename);setExtension("vtk");}
 
-		/* Destructor */
+		/** ~VTKWriter */
 		virtual ~VTKWriter( void ){ };
 
 
-		/* implementation of virtual AbstractFileWriter::update */
-		void update() ;
+		/** implementation of virtual AbstractFileWriter::update */
+		int update() ;
 
 
 };
 #endif //VTK_WRITER
 
 
-void VTKWriter::update() 
+int VTKWriter::update() 
 {
 	checkFilename_();
 
@@ -42,6 +48,8 @@ void VTKWriter::update()
 
 	assert(vtkModels.update());
 
+	if( vtkModels.empty()) return 0;
+
 	for( model_it = vtkModels.begin();
 			model_it != vtkModels.end();
 			model_it++){
@@ -51,5 +59,7 @@ void VTKWriter::update()
 
 	writer->SetInputConnection(appendPolyData->GetOutputPort());
 	writer->Write();
+
+	return 1;
 }
 

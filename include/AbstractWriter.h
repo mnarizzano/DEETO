@@ -4,10 +4,14 @@
 #include "Definitions.h"
 #include "ClinicalFrame.h"
 
+/*!
+  AbstractWriter class
+*/
 class AbstractWriter {
 
 	public:
 
+		/** const string getFilename() const */
 		inline const string getFilename() const {return filename_;} 
 		inline void getFilename(string filename) const {filename = filename_;}
 		inline void setFilename(string filename){filename_ = filename;}
@@ -18,17 +22,21 @@ class AbstractWriter {
 		inline void setClinicalFrame(ClinicalFrame* cf){clinicalframe_= cf;}
 		inline ClinicalFrame::ConstElectrodeIterator begin( void ) const{return clinicalframe_->begin();}
 		inline ClinicalFrame::ConstElectrodeIterator end( void ) const{return clinicalframe_->end();}
-		virtual void update() = 0;
+		virtual int update() = 0;
 
 	protected:
+		/** checkFilename_() checks for proper file extension depending on which subclass has been 
+		  istantiated*/
 		void checkFilename_(void){
 			string tmp;
 			tmp = filename_.substr(0, filename_.length() - filename_.find_last_of(".")-1);
 			filename_  = tmp.append(extension_);
 		}
 
-
+		/** AbstractWriter() */
 		AbstractWriter(){ };
+
+		/** ~AbstractWriter */
 		virtual ~AbstractWriter(){ clinicalframe_ = NULL;}
 
 	private:

@@ -63,7 +63,7 @@ ccmake .
 
 After processing it will prompt a configuration option, press ‘c‘ to configure.
 
-In some cases VTK data root may not be detected by the installer, then manually set the VTK data source as the extracted folder of VTK_data as below.vtk_3
+In some cases VTK data root may not be detected by the installer, then manually set the VTK data source as the extracted folder of VTK data as below.vtk
 
 Edit its settings as required and press c, if generate option (g) is not present press c again.
 
@@ -97,7 +97,7 @@ Go to ITK folder from Terminal.
 
 Type
 	
-ccmake . /home/thilina/vtk_itk/InsightToolkit-4.3.1 (location where ITK file extracted)
+ccmake . itk/InsightToolkit-4.3.1 (location where ITK file extracted)
 
 Press c to configure the ITK setup. After configuration process press c again.
 
@@ -114,9 +114,8 @@ sudo make install
 For final step of installation. Then ITK installation is complete.
 
 
-///////////////////////////////////////////////////////////////////////////////
 Build and Run
-///////////////////////////////////////////////////////////////////////////////
+=============
 
 Build the project with cmake
 
@@ -124,5 +123,4 @@ cmake CMakeLists.txt
 
 make
 
-Run the generated exe in directory bin
-
+Run the generated executable file in directory bin

@@ -11,6 +11,9 @@
 #include <vtkSmartPointer.h>
 #include <vtkPolyDataWriter.h>
 
+
+/** VTKModelConstructor class*/
+
 class VTKModelConstructor{
 
 	public:
@@ -25,11 +28,10 @@ class VTKModelConstructor{
 
 		inline ModelIterator begin( void ) {return vtkmodels_.begin();}
 
-//		inline ConstModelIterator begin( void ) const {return vtkmodels_.begin();}
 
 		inline ModelIterator end( void ) {return vtkmodels_.end();}
 
-//		inline ConstModelIterator end( void ) const{return vtkmodels_.end();}
+		inline bool empty( void ){ return vtkmodels_.empty();}
 
 		int update();
 
@@ -67,16 +69,15 @@ int VTKModelConstructor::update(){
 			vtkSmartPointer<vtkParametricSpline> spline = 
 				vtkSmartPointer<vtkParametricSpline>::New();
 
+			vtkSmartPointer<vtkParametricFunctionSource> cableSource =
+				vtkSmartPointer< vtkParametricFunctionSource >::New();
+
 			vtkSmartPointer<vtkPoints>	points = 
 				vtkSmartPointer<vtkPoints>::New();
 
-//			double target[3],enetry[3];
-//
-//			const_elec_it->getTargetAsDouble(target);
-//			const_elec_it->getEntryAsDouble(entry);
-//			// add entry to pointset
-//			points->InsertNextPoint(entry);
-//
+			vtkSmartPointer< vtkTubeFilter > cables = 
+				vtkSmartPointer< vtkTubeFilter >::New();
+
 			
 			for(const_contact_it = const_elec_it->begin();
 					const_contact_it != const_elec_it->end();
@@ -90,11 +91,21 @@ int VTKModelConstructor::update(){
 				points->InsertNextPoint(x,y,z);
 			}
 
-			// add target to pointset
-//			points->InsertNextPoint(target);
 			
 			// fill the spline with points
 			spline->SetPoints(points.GetPointer());
+
+			cableSource->SetParametricFunction(spline.GetPointer());
+
+			cables->SetInputConnection(cableSource->GetOutputPort());
+			cables->SetRadius(0.2);
+			cables->SetNumberOfSides(10);
+			cables->SetCapping(true);
+			cables->Update();
+
+			vtkmodels_.push_back( cables->GetOutput() );
+
+
 
 			// TODO we can evaluate the spline at fixed t to get
 			// the points that approximate each contact (how to deal with t=0 and t=1) 
@@ -114,24 +125,21 @@ int VTKModelConstructor::update(){
 				double p1[3],  p2[3];
 
 				if( cont == const_elec_it->getContactNumber()-1){
-						//is last contact 
-						for( short i = 0; i<3; i++){
-							p1[i] = (*(const_contact_it-1))[i];
-							p2[i] = (*const_contact_it)[i];
-						}
-					}else{
-						// all the other contacts
-						for( short i = 0; i<3; i++){
-							p2[i] = (*const_contact_it)[i];
-							p1[i] = (*(const_contact_it+1))[i];
-						}
+					//is last contact 
+					for( short i = 0; i<3; i++){
+						p1[i] = (*(const_contact_it-1))[i];
+						p2[i] = (*const_contact_it)[i];
 					}
-					
-					
+				}else{
+					// all the other contacts
+					for( short i = 0; i<3; i++){
+						p2[i] = (*const_contact_it)[i];
+						p1[i] = (*(const_contact_it+1))[i];
+					}
+				}
 				
 
 				estimateContactExtent_(p1,p2, line.GetPointer());
-
 
 				cylinder->SetInputConnection(line->GetOutputPort());
 

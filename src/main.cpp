@@ -3,10 +3,11 @@
 #include <unistd.h>
 #include <FCSVReader.h>
 #include <FCSVWriter.h>
+#include <VTKWriter.h>
 #include <ContactConstructor.h>
 /**
-@mainpage Università degli Studi di Genova BIO-STAR LAB Tesi
-Magistrale Epilessia Focale @author Luca Paoletti
+@mainpage DEETO
+@author Massimo Narizzano Gabriele Arnulfo
 */
 using namespace std;
 
@@ -23,6 +24,7 @@ int main (int argc, char **argv) {
   // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/segm_elec_tool/v0.0/data/input-example-files/marchesi_seeg-corretti.fcsv";
   // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/segm_elec_tool/v0.0/data/input-example-files/marchesi_seeg-non-corretti.fcsv";
   char filefcsv[] = "/home/mox/Dropbox/GABRI/segm_elec_tool/data/s1/SEEG.fcsv";
+
   char fileout[]  = "/home/";
 
   // Clinical Frame containig all the information about the Frame and
@@ -58,10 +60,14 @@ int main (int argc, char **argv) {
   VoxelPointType voxelEntry;
   contactConstructor.update();  
   string fname_out = string("out.fcsv");
-  FCSVWriter writer(&fname_out);
-  writer.setClinicalFrame(headFrame);
+  FCSVWriter writer1(fname_out);
+  VTKWriter writer2(fname_out);
+  
+  writer1.setClinicalFrame(headFrame);
+  writer2.setClinicalFrame(headFrame);
   try{
-    writer.update();
+	  writer1.update();
+	  writer2.update();
   }catch(...){
     cerr<<"macello"<<endl;
   }
