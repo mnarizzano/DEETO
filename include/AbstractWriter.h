@@ -31,6 +31,7 @@ class AbstractWriter {
 			string tmp;
 			tmp = filename_.substr(0, filename_.length() - filename_.find_last_of(".")-1);
 			filename_  = tmp.append(extension_);
+			cout<<filename_<<endl;
 		}
 
 		/** AbstractWriter() */

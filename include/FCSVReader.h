@@ -9,7 +9,7 @@
 class FCSVReader {
 public:
   
-  void setFileInput(char* filein) { filein_ = filein;}
+  void setFileInput(string* filein) { filein_ = filein;}
   void setClinicalFrame(ClinicalFrame* cf){ headframe_ = cf; }
   void setCT(ImageType::Pointer ctImage);
   void update(void);  
@@ -18,7 +18,7 @@ public:
 private:
   const static int MAX_NUMBER_OF_ELECTRODES = 20;
 
-  char*                 filein_;   // File where are stored the target/entry points.
+  string*                 filein_;   // File where are stored the target/entry points.
   ImageType::Pointer    ctImage_;  // Input CT, it is necessary for
                                    // electrode reconstruction
   ClinicalFrame*        headframe_;
@@ -40,7 +40,7 @@ void FCSVReader::update(void){
   PhysicalPointType entry;
   unsigned int k;
   
-  file.open(filein_, ios::in);
+  file.open(filein_->c_str(), ios::in);
 
   assert(file.good());
 
