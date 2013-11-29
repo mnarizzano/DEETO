@@ -26,8 +26,6 @@ void FCSVWriter::update()
 	
 	checkFilename_();
 
-	cout<<getFilename()<<endl;
-
 	ofstream of;
 	of.open(getFilename().c_str());
 	assert(of.is_open());
