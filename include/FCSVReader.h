@@ -60,10 +60,12 @@ void FCSVReader::update(void){
 		// skip the name
 		k++;
       }
-
-      double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
-      // Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
-      headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
+	  if( name.length() >= 1) {
+		  // add the contact only if name exist otherwise it means a blank line was found at the end of fcsv
+	      double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
+    	  // Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
+      	headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
+	  }
     }
   }
 }
