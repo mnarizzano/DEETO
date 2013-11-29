@@ -1,3 +1,6 @@
+// ASSUME:
+// CT is in *RAS* space and *Ref*
+// while FCSV is in *LPS* and *Centered*
 #ifndef FCSV_READER_H
 #define FCSV_READER_H
 
@@ -57,9 +60,13 @@ void FCSVReader::update(void){
 	// skip the name
 	k++;
       }
-
+      // Create a new electrode with target and entry (swapped if target point is closer than entry to the Origin)
       double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
-      // Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
+      // Convert the fcsv points read into the CT space
+      headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
+      headframe_->fromLPS2RAS_(&entry);      // from the LPS space to a RAS space      
+      headframe_->fromCenterToRef_(&target); // traslation from center to ref space
+      headframe_->fromLPS2RAS_(&target);     // from the LPS space to a RAS space
       headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
     }
   }

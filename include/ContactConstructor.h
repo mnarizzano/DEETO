@@ -1,11 +1,6 @@
 //TODO : 
-//  - Cambiare nomi "translatatePhysicalPoint_" in "fromCenteredToUncentered" 
 //  - Scrivere la descrizione dell'algoritmo di update per doxygen
 //  - Fattorizzare meglio l'algoritmo di update.
-//  - Code Refactoring per usare solo un tipo di coordinate
-//    (centered/uncentered). al momento sono leggermente mischiati.
-//  - Prendere anche il contatto che potrebbe essere vicinissimo
-//    all'entry point.
 #ifndef CONTACT_CONSTRUCTOR_H
 #define CONTACT_CONSTRUCTOR_H
 
@@ -24,14 +19,12 @@ class ContactConstructor {
   ~ContactConstructor(){}
   
   void update( void );
-  
+
  private:
   ImageType::Pointer ctImage_;
   ClinicalFrame*     headFrame_;
 
 
-  void translatePhysicalPoint_(PhysicalPointType *physicalPoint);
-  void undoTranslatePhysicalPoint_(PhysicalPointType *physicalPoint);
   RegionType retriveRegionAroundContact_(VoxelPointType index, int regionDim);
   void getNextContact_(PhysicalPointType* contact,PhysicalPointType contact1,PhysicalPointType contact2, double distance);
   void printContact_(string name,int  number,PhysicalPointType point);
@@ -41,33 +34,43 @@ class ContactConstructor {
 
 };
 
-/*!
-  This function takes a set of Electrodes where only target and entrypoint are setted 
-  /*/
+/*!  This function takes a set of Electrodes where only target and
+  entry point are setted and then reconstruct the entire set of
+  contatcs between the entry and the target */
 void ContactConstructor::update( void ){
-  typedef itk::RegionOfInterestImageFilter<ImageType,ImageType> FilterType;
-  typename FilterType::Pointer filter = FilterType::New();
-  typename CalculatorType::Pointer calculator = CalculatorType::New();
+  FilterType::Pointer filter = FilterType::New();
+  CalculatorType::Pointer calculator = CalculatorType::New();
   ClinicalFrame::ElectrodeIterator electrodeItr = headFrame_->begin();
   double dist = 0.0;
   while(electrodeItr != headFrame_->end()) {
-    PhysicalPointType contact1 = electrodeItr->getTarget(); // set the second contact to the entry point
-    PhysicalPointType contact2 = electrodeItr->getEntry(); // set the first contact to the entry point
-    PhysicalPointType entryPoint = electrodeItr->getEntry(); // set the first contact to the entry point
-    if (getValue_(entryPoint) == 0) 
-      computeNewEntry_(&contact2, entryPoint, contact1); // If the point is into the void ....
+    double incrementalDistance = 1.0;
+    // given a point C, distance represent the difference beetwenn the distance
+    // entry-target and the distance entry-C. If it is greater then 0
+    // than C position has gone over the target, that means that the algorithm should stop
+    double distance = 0.0;
+    uint contactNum = 0;
+    
     PhysicalPointType nextContactA,nextContactB;
     VoxelPointType    voxelNextContact;
-    double distanceTargetEntry = contact1.EuclideanDistanceTo(entryPoint);
-    double distanceEntryNextContact = 0.0;
-
+    PhysicalPointType entryPoint = electrodeItr->getEntry(); // set the first contact to the entry point
+    PhysicalPointType targetPoint = electrodeItr->getTarget(); // set the first contact to the entry point
+    // printContact_(electrodeItr->getName(),0,entryPoint);
+    // printContact_(electrodeItr->getName(),0,targetPoint);
+    
+    PhysicalPointType contact1 = targetPoint;
+    PhysicalPointType contact2;
+    
+    if (getValue_(entryPoint) == 0) 
+      computeNewEntry_(&entryPoint, entryPoint, contact1); // If the point is into the void ....
+    
+    contact2 = entryPoint;
     filter->SetInput(ctImage_);
     computeFirstContact_(&nextContactA,contact1,contact2,3.5);
-    double incrementalDistance = 1.0;
-    uint contactNum = 0;
+    // Add entry points between the contacts
+    electrodeItr->addContact(entryPoint);
+    contactNum++;
     do {
       unsigned int k = 0;
-      translatePhysicalPoint_(&nextContactA);
       do {
 	nextContactB = nextContactA;
 	ctImage_->TransformPhysicalPointToIndex(nextContactA,voxelNextContact);
@@ -84,14 +87,11 @@ void ContactConstructor::update( void ){
 	  cerr<<"Error : " << electrodeItr->getName() << " " << contactNum <<__LINE__<<ex.what()<<endl;
 	}
 	k++;  
-	undoTranslatePhysicalPoint_(&nextContactA);
 	dist = contact2.EuclideanDistanceTo(nextContactA);
-	translatePhysicalPoint_(&nextContactA);	
       }while ((nextContactA != nextContactB) && (k < 10) && (dist <= 3.5) && (dist >= 2.5));
-      undoTranslatePhysicalPoint_(&nextContactA);
+
       if (getValue_(nextContactA) > 0) {
 	electrodeItr->addContact(nextContactA);
-	printContact_(electrodeItr->getName(),contactNum,nextContactA);
 	contact1 = contact2;
 	contact2 = nextContactA;
 	getNextContact_(&nextContactA,contact1,contact2,3.5);  
@@ -101,10 +101,8 @@ void ContactConstructor::update( void ){
 	getNextContact_(&nextContactA,contact1,contact2,3.5+incrementalDistance);
 	incrementalDistance += 1.0;
       }
-      distanceEntryNextContact = entryPoint.EuclideanDistanceTo(nextContactA);
-      undoTranslatePhysicalPoint_(&entryPoint);
-      translatePhysicalPoint_(&entryPoint);
-    } while (distanceEntryNextContact < (distanceTargetEntry+1.5)); // TODO: 1.5 e' un numero a caso per evitare che salti l'ultimo dei contatti.
+      distance = entryPoint.EuclideanDistanceTo(nextContactA) - targetPoint.EuclideanDistanceTo(entryPoint);
+    } while (distance < 1.5); // TODO: 1.5 e' un numero a caso per evitare che salti l'ultimo dei contatti.
     electrodeItr++;
   }
 }
@@ -119,51 +117,15 @@ void ContactConstructor::computeFirstContact_(PhysicalPointType* contact, Physic
 
 // return a new "contact" that occurs on the line contact1 - contact2. The distance between contact2 and contact should be distance.
 void ContactConstructor::getNextContact_(PhysicalPointType* contact, PhysicalPointType contact1, PhysicalPointType contact2, double distance) {
-  double distancec1_c2 = 0;
+  double distancec1_c2 = 0.0;
   for (uint i = 0; i < 3; i++) distancec1_c2 += pow((contact1[i]-contact2[i]),2);
   distancec1_c2 = sqrt(distancec1_c2);
   for (uint i = 0; i < 3; i++) (*contact)[i] = contact2[i]-(contact1[i] - contact2[i])*distance/distancec1_c2;
 }
 
-void ContactConstructor::translatePhysicalPoint_(PhysicalPointType* physicalPoint) {
-  VoxelPointType  voxelCenter;    // center in voxel coordinate 
-  PhysicalPointType physicalCenter; // center in mm coordinate 
-  ImageType::SizeType maxextent = ctImage_->GetLargestPossibleRegion().GetSize();  
-  
-  for(uint i=0;i < 3; voxelCenter[i] = maxextent[i++]/2);
-  ctImage_->TransformIndexToPhysicalPoint(voxelCenter,physicalCenter);
-  
-  // PhysicalPoint is translated with respect to the physical center
-  (*physicalPoint)[0] -= physicalCenter[0];
-  (*physicalPoint)[1] -= physicalCenter[1];
-  (*physicalPoint)[2] += physicalCenter[2];
-
-  // Transformed for the neurological space
-  (*physicalPoint)[0] *= -1;
-  (*physicalPoint)[1] *= -1;
-}
-
-void ContactConstructor::undoTranslatePhysicalPoint_(PhysicalPointType* physicalPoint) {
-  VoxelPointType  voxelCenter;    // center in voxel coordinate 
-  PhysicalPointType physicalCenter; // center in mm coordinate 
-  ImageType::SizeType maxextent = ctImage_->GetLargestPossibleRegion().GetSize();  
-  
-  for(uint i=0;i < 3; voxelCenter[i] = maxextent[i++]/2);
-  ctImage_->TransformIndexToPhysicalPoint(voxelCenter,physicalCenter);
-  // Transformed for the neurological space
-  (*physicalPoint)[0] *= -1;
-  (*physicalPoint)[1] *= -1;
-  
-  // PhysicalPoint is translated with respect to the physical center
-  (*physicalPoint)[0] += physicalCenter[0];
-  (*physicalPoint)[1] += physicalCenter[1];
-  (*physicalPoint)[2] -= physicalCenter[2];
-}
-
-
 RegionType ContactConstructor::retriveRegionAroundContact_(VoxelPointType index, int regionDim) {
-  typename ImageType::SizeType size;
-  typename ImageType::RegionType region;
+  SizeType size;
+  RegionType region;
   SpacingType spacing = ctImage_->GetSpacing();
    
   for(unsigned int i=0;i<3;i++) {
@@ -177,14 +139,14 @@ RegionType ContactConstructor::retriveRegionAroundContact_(VoxelPointType index,
 }
 
 void ContactConstructor::printContact_(string name,int number,PhysicalPointType point) {
+  //headFrame_->fromLPS2RAS_(&point);
+  //headFrame_->fromRefToCenter_(&point);
   cout << name << number<<","<< point[0] << "," << point[1] << "," << point[2] <<",1,1" <<endl;  
 }
 
 double ContactConstructor::getValue_(PhysicalPointType point) {
-  PhysicalPointType physicalPoint = point;
   VoxelPointType    voxelPoint;
-  translatePhysicalPoint_(&physicalPoint);
-  ctImage_->TransformPhysicalPointToIndex(physicalPoint,voxelPoint);
+  ctImage_->TransformPhysicalPointToIndex(point,voxelPoint);
   return ctImage_->GetPixel(voxelPoint);
 }
 
@@ -201,7 +163,7 @@ void ContactConstructor::computeNewEntry_(PhysicalPointType* contact, PhysicalPo
   PhysicalPointType  pippo;
 
   typename ImageType::RegionType region;
-  translatePhysicalPoint_(&physicalEntry);
+  //translatePhysicalPoint_(&physicalEntry);
   ctImage_->TransformPhysicalPointToIndex(physicalEntry,voxelEntry);
 
   do{
@@ -213,9 +175,9 @@ void ContactConstructor::computeNewEntry_(PhysicalPointType* contact, PhysicalPo
     while(!imageIterator.IsAtEnd()){
       p = imageIterator.GetIndex();
       if (ctImage_->GetPixel(p) > 1000) {
-	typedef itk::RegionOfInterestImageFilter<ImageType,ImageType> FilterType;
-	typename FilterType::Pointer filter = FilterType::New();
-	typename CalculatorType::Pointer calculator = CalculatorType::New();
+	
+	FilterType::Pointer filter = FilterType::New();
+	CalculatorType::Pointer calculator = CalculatorType::New();
 	filter->SetInput(ctImage_);
 	filter->SetRegionOfInterest(retriveRegionAroundContact_(p,3));
 	calculator->SetImage(filter->GetOutput());
@@ -230,7 +192,7 @@ void ContactConstructor::computeNewEntry_(PhysicalPointType* contact, PhysicalPo
 	  return;
 	}
 	ctImage_->TransformIndexToPhysicalPoint(p,*contact);
-	undoTranslatePhysicalPoint_(contact);
+	//undoTranslatePhysicalPoint_(contact);
 	return;
       }
       ++imageIterator;

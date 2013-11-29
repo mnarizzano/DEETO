@@ -13,9 +13,16 @@ using namespace std;
 int main (int argc, char **argv) {
 
   // Temporary definition. Should be read form command line.
-  char fileCT[]   = "/mnt/data/BIOLAB_DATA/gabri/img/tonelli/r_oarm_seeg_cleaned.nii.gz";
+    // char fileCT[]   = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/Release8-mox/data/input-example-files/tonelli-test.nii.gz";
+  // char fileCT[]   = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Tonelli/tonelli/test.nii.gz";
+  char fileCT[]   = "/home/mox/Dropbox/GABRI/segm_elec_tool/data/s1/r_oarm_seeg_cleaned.nii.gz";
   char fileMRI[]  = "/home/";
-  char filefcsv[] = "/mnt/data/BIOLAB_DATA/gabri/img/tonelli/SEEG.fcsv";
+  // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/Release8-mox/data/input-example-files/tonelli-SEEG2.fcsv";
+  // char filefcsv[] = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Tonelli/tonelli/SEEG-2.fcsv";
+  // char filefcsv[] = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Marchesi/marchesi_seeg.fcsv";
+  // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/segm_elec_tool/v0.0/data/input-example-files/marchesi_seeg-corretti.fcsv";
+  // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/segm_elec_tool/v0.0/data/input-example-files/marchesi_seeg-non-corretti.fcsv";
+  char filefcsv[] = "/home/mox/Dropbox/GABRI/segm_elec_tool/data/s1/SEEG.fcsv";
   char fileout[]  = "/home/";
 
   // Clinical Frame containig all the information about the Frame and
@@ -34,7 +41,7 @@ int main (int argc, char **argv) {
 
   // mox TODO il reader; Il reader legge un file csv e per ogni
   // elettrodo crea un oggetto Electrode. Inoltre per ogni elettrodo
-  // setta il targe e l'origine. Infine per ogni elettrodo calcola le
+  // setta il target e l'origine. Infine per ogni elettrodo calcola le
   // posizioni dei suoi contatti a seconda dell'algoritmo
   // implementato, in pratica gli algoritmi di Gabri/Luca.  Hint: per
   // la versione da mettere on-line implementerei solo il nuovo
@@ -49,36 +56,14 @@ int main (int argc, char **argv) {
   ContactConstructor contactConstructor(ctImage,headFrame);
   VoxelPointType voxelTarget;
   VoxelPointType voxelEntry;
-  ClinicalFrame::ElectrodeIterator ptr = headFrame->begin();
-  while(ptr != headFrame->end()) {
-    PhysicalPointType target = ptr->getTarget() ;
-    PhysicalPointType entry = ptr->getEntry();
-
-    //cout << ptr->getName() << ": T("<< target[0] << "," << target[1] << "," << target[2] <<")" << "E("<< entry[0] << "," << entry[1] << "," << entry[2] <<")" << endl;
-   
-    contactConstructor.translatePhysicalPoint_(&target);
-    contactConstructor.translatePhysicalPoint_(&entry);
-    ctImage->TransformPhysicalPointToIndex(target,voxelTarget);
-    ctImage->TransformPhysicalPointToIndex(entry,voxelEntry);    
-    //    cout << ptr->getName() << ": T("<< voxelTarget[0] << "," << voxelTarget[1] << "," << voxelTarget[2] <<")" << "E("<< voxelEntry[0] << "," << voxelEntry[1] << "," << voxelEntry[2] <<")" << endl;
-    ptr++;
-  }
-
   contactConstructor.update();  
-
-  // Electrode Reader
-  //headFrame.setHeadFrame(fcsvReader->getOutput());
-    
-  // TODO: Mox: fare stampa per 3dslicer, tramite trasformazioni in un
-  // vtk object?
-
   string fname_out = string("out.fcsv");
   FCSVWriter writer(&fname_out);
   writer.setClinicalFrame(headFrame);
   try{
-	  writer.update();
+    writer.update();
   }catch(...){
-	  cerr<<"macello"<<endl;
+    cerr<<"macello"<<endl;
   }
   
 }

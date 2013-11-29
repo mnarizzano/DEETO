@@ -34,6 +34,9 @@ typedef typename itk::Point<double,3>           PhysicalPointType;
 typedef typename ImageType::IndexType 	        VoxelPointType;
 typedef itk::ImageFileReader< ImageType >       ImageReaderType;
 typedef itk::ImageMomentsCalculator<ImageType>  CalculatorType;
-typedef typename ImageType::RegionType 		RegionType;
-typedef ImageType::SpacingType                  SpacingType;
+typedef typename ImageType::SizeType                     SizeType;
+typedef typename ImageType::RegionType 		              RegionType;
+typedef ImageType::SpacingType                                SpacingType;
+typedef itk::RegionOfInterestImageFilter<ImageType,ImageType> FilterType;
+
 #endif
