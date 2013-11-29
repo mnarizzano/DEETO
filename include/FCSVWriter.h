@@ -8,22 +8,24 @@
 class FCSVWriter: public AbstractWriter{
 
 	public:
-	    FCSVWriter(string* filename){setFilename(filename);}
+	    FCSVWriter(string filename){setFilename(filename); setExtension("fcsv");}
 
 		virtual ~FCSVWriter( void ){ };
 
-		void update() const;
+		void update() ;
+
 };
-#endif //FCSV_WRITER
 
-
-void FCSVWriter::update() const {
+void FCSVWriter::update() 
+{
   // open file for writing 
   // handle the exception for permission denied 
   // no space left on device 
   
+  checkFilename_();
+  
   ofstream of;
-  of.open(getFilename()->c_str());
+  of.open(getFilename().c_str());
   assert(of.is_open());
   
   ClinicalFrame::ConstElectrodeIterator const_elec_it;
@@ -42,3 +44,5 @@ void FCSVWriter::update() const {
   }
   
 }
+
+#endif //FCSV_WRITER

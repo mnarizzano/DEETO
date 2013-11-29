@@ -20,10 +20,13 @@ class ClinicalFrame {
 
   ConstElectrodeIterator begin() const{return headframe_.begin();}
   ConstElectrodeIterator end() const{return headframe_.end();}
-  
+
   void fromRefToCenter_(PhysicalPointType *physicalPoint);
   void fromCenterToRef_(PhysicalPointType *physicalPoint);
   void fromLPS2RAS_(PhysicalPointType *physicalPoint);
+
+
+  bool isempty( void) const{ return headframe_.empty();}
 
  private:
   

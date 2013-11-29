@@ -5,44 +5,52 @@
 #include <vtkAppendPolyData.h>
 #include <vtkTubeFilter.h>
 #include <vtkLineSource.h>
+#include <vtkPolyData.h>
 #include <vtkParametricSpline.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkSmartPointer.h>
 #include <vtkPolyDataWriter.h>
-#include <ostream>
 
 class VTKModelConstructor{
+
 	public:
-		VTKModelConstructor(ClinicalFrame* cf ){
-			clinicalframe_ = cf;
-		};
+		typedef vector< vtkSmartPointer<vtkPolyData> >::const_iterator ConstModelIterator;
+		typedef vector< vtkSmartPointer<vtkPolyData> >::iterator ModelIterator;
+
+		VTKModelConstructor(const ClinicalFrame* cf ){clinicalframe_ = cf;}
+
 		~VTKModelConstructor( void ){};
 
 		inline void setClinicalFrame(ClinicalFrame* cf){clinicalframe_= cf;}
-		inline const ClinicalFrame* getClinicalFrame( void ) const{ 
-			return clinicalframe_;}
-		inline ClinicalFrame::ConstElectrodeIterator begin( void ) const{
-			return clinicalframe_->begin();}
-		inline ClinicalFrame::ConstElectrodeIterator end( void ) const{
-			return clinicalframe_->end();}
+
+		inline ModelIterator begin( void ) {return vtkmodels_.begin();}
+
+//		inline ConstModelIterator begin( void ) const {return vtkmodels_.begin();}
+
+		inline ModelIterator end( void ) {return vtkmodels_.end();}
+
+//		inline ConstModelIterator end( void ) const{return vtkmodels_.end();}
 
 		int update();
 
 	protected:
 		/* for each contact it estimates its position along the spline */
-		void estimateContactExtent_( void );
+		void estimateContactExtent_( double* , double* , vtkLineSource* );
+		double distance_(double* p1, double *p2);
 	
 	private:
 		/* this holds the implant details*/
-		ClinicalFrame* clinicalframe_;	
-		vector<vtkPolyData> 3dmodels_;
+		const ClinicalFrame* clinicalframe_;	
+		vector< vtkSmartPointer<vtkPolyData> > vtkmodels_;
 };
 
 
 int VTKModelConstructor::update(){
+	//returns 0 on failure if clinicalframe is empty
+	//returns 1 on success if models have been constructed
 		
 		// check wheter the clinicalframe is empty
-		if(clinicalframe_->isempty()) return FALSE;
+		if(clinicalframe_->isempty()) return 0;
 
 		// in order to be as accurate as possible
 		// we should indeed fit all the points with a spline (which order?)
@@ -53,18 +61,22 @@ int VTKModelConstructor::update(){
 		Electrode::ConstContactIterator const_contact_it;
 
 		// for each electorde in clinical frame
-		for(const_elec_it = begin(); const_elec_it != end(); const_elec_it++){
+		for(const_elec_it = clinicalframe_->begin(); const_elec_it != clinicalframe_->end(); const_elec_it++){
 
-			// fit data with spline/line and get the electrode axis
+			// fit data with spline and get the electrode axis
 			vtkSmartPointer<vtkParametricSpline> spline = 
 				vtkSmartPointer<vtkParametricSpline>::New();
 
 			vtkSmartPointer<vtkPoints>	points = 
 				vtkSmartPointer<vtkPoints>::New();
 
-			vtkSmartPointer<vtkParametricFunctionSource> splineTasselated = 
-				vtkSmartPointer<vtkParametricFunctionSource>::New(); 
-			
+//			double target[3],enetry[3];
+//
+//			const_elec_it->getTargetAsDouble(target);
+//			const_elec_it->getEntryAsDouble(entry);
+//			// add entry to pointset
+//			points->InsertNextPoint(entry);
+//
 			
 			for(const_contact_it = const_elec_it->begin();
 					const_contact_it != const_elec_it->end();
@@ -77,41 +89,90 @@ int VTKModelConstructor::update(){
 				
 				points->InsertNextPoint(x,y,z);
 			}
+
+			// add target to pointset
+//			points->InsertNextPoint(target);
 			
 			// fill the spline with points
 			spline->SetPoints(points.GetPointer());
+
+			// TODO we can evaluate the spline at fixed t to get
+			// the points that approximate each contact (how to deal with t=0 and t=1) 
+			// once we get this spline->Evaluate(u1,p1); spline->Evaluate(u2,p2);
+			// then line->SetPoint1(p1); line->SetPoint2(p2) and build the cylinders 
+			// as we did in prev version
+
+			ushort cont = 0;
 
 			for(const_contact_it = const_elec_it->begin();
 					const_contact_it != const_elec_it->end();
 					const_contact_it++){
 
-				estimateContactExtent_((*const_contact_it), const_contact_it->Next());
+				vtkSmartPointer< vtkTubeFilter > cylinder = vtkSmartPointer< vtkTubeFilter >::New();
+				vtkSmartPointer< vtkLineSource > line = vtkSmartPointer< vtkLineSource >::New();
 
+				double p1[3],  p2[3];
+
+				if( cont == const_elec_it->getContactNumber()-1){
+						//is last contact 
+						for( short i = 0; i<3; i++){
+							p1[i] = (*(const_contact_it-1))[i];
+							p2[i] = (*const_contact_it)[i];
+						}
+					}else{
+						// all the other contacts
+						for( short i = 0; i<3; i++){
+							p2[i] = (*const_contact_it)[i];
+							p1[i] = (*(const_contact_it+1))[i];
+						}
+					}
+					
+					
+				
+
+				estimateContactExtent_(p1,p2, line.GetPointer());
+
+
+				cylinder->SetInputConnection(line->GetOutputPort());
+
+				cylinder->SetRadius(0.8);
+				cylinder->SetNumberOfSides(10);
+				cylinder->SetCapping(true);
+				cylinder->Update();
+
+				vtkmodels_.push_back( cylinder->GetOutput() );
+
+				++cont;
 			}		
 
-			// the tasselated spline will mimic cables
-			splineTasselated->SetParametricFunction(spline.GetPointer());
-//
-//			vtkTubeFilter cylinder = vtkTubeFilter::New();
-//			cylinder.SetInput(line->GetOutput());
-//
-//			cylinder.SetRadius(electrodes.at(i)->GetDiameter()/2.0);
-//			cylinder.SetNumberOfSides(10);
-//			cylinder.SetCapping(true);
-//			cylinder.Update();
-
-			// this function call doesn't return anything 
-			// vtk exceptions handling is almost absent (for design)
-			// I just assume that IT WORKS
-			splineTasselated->Update();
-
-			// it might work if smartPointer prevent delete function call
-			// indeed it still is poor designed IMHO
-			3dmodels_.push_back(splineTasselated.GetOutput())
 
 		}
-		return TRUE;
+		return 1;
 
+
+		}
+#endif //VTK_MODEL_CONSTRUCTOR_H
+
+void VTKModelConstructor::estimateContactExtent_(double* p1, double* p2, vtkLineSource* line){
+	// here we should solve parametric equation of the line to get the correct line extent 
+
+	double p_beg[3], p_end[3];
+				
+	// estimate line extent
+	for(ushort ii = 0 ; ii < 3 ; ii++){
+		p_beg[ii] = p1[ii] + 5.0/7.0*(p2[ii] - p1[ii]);
+		p_end[ii] = p1[ii] + 9.0/7.0*(p2[ii] - p1[ii]);
+	}
+	
+	// fill line with estimated initial and final points
+	line->SetPoint1(p_beg);
+	line->SetPoint2(p_end);
+
+}	
+
+
+double VTKModelConstructor::distance_(double* p1, double *p2){
+
+	return sqrt(pow(p1[0] - p2[0],2) + pow(p1[1] - p2[1],2) + pow(p1[2] - p2[2],2));
 }
 
-#endif //VTK_MODEL_CONSTRUCTOR_H

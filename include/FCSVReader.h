@@ -41,6 +41,9 @@ void FCSVReader::update(void){
   unsigned int k;
   
   file.open(filein_, ios::in);
+
+  assert(file.good());
+
   if (file.is_open()) {
     // Comments at the beginning of the file are eliminated
     while(!file.eof() && (file.peek() == '#')) {
@@ -60,14 +63,18 @@ void FCSVReader::update(void){
 	// skip the name
 	k++;
       }
-      // Create a new electrode with target and entry (swapped if target point is closer than entry to the Origin)
-      double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
-      // Convert the fcsv points read into the CT space
-      headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
-      headframe_->fromLPS2RAS_(&entry);      // from the LPS space to a RAS space      
-      headframe_->fromCenterToRef_(&target); // traslation from center to ref space
-      headframe_->fromLPS2RAS_(&target);     // from the LPS space to a RAS space
-      headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
+
+      // add the contact only if name exist otherwise it means a blank line was found at the end of fcsv      
+      if( name.length() >= 1) {
+	double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
+	// Convert the fcsv points read into the CT space
+	headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
+	headframe_->fromLPS2RAS_(&entry);      // from the LPS space to a RAS space      
+	headframe_->fromCenterToRef_(&target); // traslation from center to ref space
+	headframe_->fromLPS2RAS_(&target);     // from the LPS space to a RAS space
+	// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
+	headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
+      }
     }
   }
 }
