@@ -29,7 +29,7 @@ class AbstractWriter {
 		  istantiated*/
 		void checkFilename_(void){
 			string tmp;
-			tmp = filename_.substr(0, filename_.length() - filename_.find_last_of(".")-1);
+			tmp = filename_.substr(0, filename_.find_last_of(".")+1);
 			filename_  = tmp.append(extension_);
 			cout<<filename_<<endl;
 		}
