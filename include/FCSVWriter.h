@@ -5,7 +5,8 @@
 #include "AbstractWriter.h"
 #include <ostream>
 
-/** FCSVWriter class
+/** 
+  FCSVWriter class
  */
 class FCSVWriter: public AbstractWriter{
 
