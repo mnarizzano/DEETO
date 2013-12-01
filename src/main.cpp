@@ -15,15 +15,16 @@ int main (int argc, char **argv) {
 
   // Temporary definition. Should be read form command line.
     // char fileCT[]   = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/Release8-mox/data/input-example-files/tonelli-test.nii.gz";
-  // char fileCT[]   = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Tonelli/tonelli/test.nii.gz";
-  char fileCT[]   = "/home/mox/Dropbox/GABRI/segm_elec_tool/data/s1/r_oarm_seeg_cleaned.nii.gz";
+  // char fileCT[]   = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Tonelli/tonelli/test.nii.gz"; 
+  //  char fileCT[]   = "/home/mox/Dropbox/GABRI/segm_elec_tool/data/s1/r_oarm_seeg_cleaned.nii.gz";
+  char fileCT[] = "/home/mox/Desktop/WORK/BIO/Test/s1/r_oarm_seeg_cleaned.nii.gz";
   char fileMRI[]  = "/home/";
   // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/Release8-mox/data/input-example-files/tonelli-SEEG2.fcsv";
   // char filefcsv[] = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Tonelli/tonelli/SEEG-2.fcsv";
   // char filefcsv[] = "/home/mox/Dropbox/TESI_BIO-STAR-LAB_2012/data/Marchesi/marchesi_seeg.fcsv";
   // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/segm_elec_tool/v0.0/data/input-example-files/marchesi_seeg-corretti.fcsv";
   // char filefcsv[] = "/home/mox/Desktop/Luca-Paoletti0Tesi2.3/segm_elec_tool/v0.0/data/input-example-files/marchesi_seeg-non-corretti.fcsv";
-  char filefcsv[] = "/home/mox/Dropbox/GABRI/segm_elec_tool/data/s1/SEEG.fcsv";
+  char filefcsv[] = "/home/mox/Desktop/WORK/BIO/Test/s1/seeg.fcsv";
 
   char fileout[]  = "/home/";
 
