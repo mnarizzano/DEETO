@@ -5,7 +5,11 @@
 #define FCSV_READER_H
 
 #include <Definitions.h>
-
+/**
+  this class reads entry and target points from fiducial file and outputs the clinical frame.
+  this assumes that fiducial data are represented in LPS - Centered space. Usually file constructed
+  with 3DSlicer are defined in this space.
+  */
 class FCSVReader {
 public:
 
@@ -16,22 +20,29 @@ public:
 	  filein_ = NULL;
 	  headframe_ = NULL;
   }
-  
+  // setter methods // 
   void setFileInput(string* filein) { filein_ = filein;}
   void setClinicalFrame(ClinicalFrame* cf){ headframe_ = cf; }
   void setCT(ImageType::Pointer ctImage);
+
+  /** this function actually reads the fiducial file and populate the ClinicalFrame information 
+   it's not important the order of entry/target points till they are represented in LPS-Centered space. 
+   This function computes the distance from the center (0,0,0) to understand whether a coordiante triplet is a target or entry point. 
+   Comments at the beginning of file are ignored.*/
   void update(void);  
+
+  /** returns a pointer to the constructed ClinicalFrame */
   ClinicalFrame* getOutput() { return headframe_; }
 
 private:
-  const static int MAX_NUMBER_OF_ELECTRODES = 20;
+//  const static int MAX_NUMBER_OF_ELECTRODES = 20;
 
-  string*                 filein_;   // File where are stored the target/entry points.
-  ImageType::Pointer    ctImage_;  // Input CT, it is necessary for
-                                   // electrode reconstruction
-  ClinicalFrame*        headframe_;
+  string*                 filein_;  /** File where are stored the target/entry points.*/
+  ImageType::Pointer    ctImage_;  /** Input CT, it is necessary for
+                                    electrode reconstruction */
+  ClinicalFrame*        headframe_; /** clinical frame object */
 
-  // read a line from the file that should be a point.
+  /** read a line from the file that should be a point. */
   PhysicalPointType readPoint(ifstream* file );
 
 };
@@ -71,21 +82,23 @@ void FCSVReader::update(void){
 
       // add the contact only if name exist otherwise it means a blank line was found at the end of fcsv      
       if( name.length() >= 1) {
-	double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
-	// Convert the fcsv points read into the CT space
-	headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
-	headframe_->fromLPS2RAS_(&entry);      // from the LPS space to a RAS space      
-	headframe_->fromCenterToRef_(&target); // traslation from center to ref space
-	headframe_->fromLPS2RAS_(&target);     // from the LPS space to a RAS space
-	// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
-	headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
+		double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - 
+			(pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
+
+		// Convert the fcsv points read into the CT space
+		headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
+		headframe_->fromLPS2RAS_(&entry);      // from the LPS space to a RAS space      
+		headframe_->fromCenterToRef_(&target); // traslation from center to ref space
+		headframe_->fromLPS2RAS_(&target);     // from the LPS space to a RAS space
+		// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
+		headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
       }
     }
   }
 }
 
-// Read a line of the file looking for a point (either a target or an
-// entry point)
+/** Read a line of the file looking for a point (either a target or an
+ entry point) */
 PhysicalPointType FCSVReader::readPoint(ifstream* file ) {
   long j = 0;
   string str;

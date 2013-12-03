@@ -3,7 +3,9 @@
 
 #include <itkPoint.h>
 #include "ElectrodeModel.h"
-
+/**
+  This class represents the electrode structure
+  */
 class Electrode {
 
  public:
@@ -40,52 +42,86 @@ class Electrode {
 	  return os;
   }
 
-  
+  /** this method returns a pointer to HEAD of vector< Contact >*/  
   ContactIterator begin(){ return contacts_.begin();}
+
+  /** this method returns a pointer to TAIL of vector< Contact >*/  
+ ContactIterator end() {return contacts_.end();}
+
+  /** this method returns a const pointer to HEAD of vector< Contact >*/  
   ConstContactIterator begin()const{return contacts_.begin();}
+
+  /** this method returns a const pointer to TAIL of vector< Contact >*/  
   ConstContactIterator end()const{return contacts_.end();}
 
+  /** this function computes the distance at which the algorithm should search for the next contact */
   float getDistanceToNext(ulong next) const;
+
+  /** this funciont computes the distance of one from previosu contact */
   float getDistanceFromPrev(ulong prev) const;
 
+  /** this function adds contact to the vector< Contact > */
   void addContact(Contact c) {
     contacts_.resize(contacts_.size() + 1, c);
   }
 
+  /** get const pointer to contact given contact position along vector < Contact >
+	@param id the contact index in vector
+    @return NULL pointer in case of overflow (id > vector.size) */
   ConstContact* getContact(ulong id)const{ 
     if (id < contacts_.size()) return &contacts_[id];
     return NULL;
   }
 
+  /** get pointer to contact given contact position along vector < Contact >
+	@param id the contact index in vector
+    @return NULL pointer in case of overflow (id > vector.size) */
   Contact* getContact(ulong id){ 
     if (id < contacts_.size()) return &contacts_[id];
     return NULL;
   }
 
+  /** get number of contacts present in vector< Contact >*/
   ulong getContactNumber() const{ return contacts_.size();}
+
+  /** this function returns the target point in mm as read from fiducial list*/
   Contact getTarget() const{ return targetPoint_; }
+
+  /** this function returns the entry point in mm as read from fiducial list*/
   Contact getEntry() const{ return entryPoint_; }
 
+   
+  /** this function converts Contact target to double[3] target */
   void getTargetAsDouble(double* t) const{ for(short i=0;i<3;i++) t[i]=targetPoint_[i];}
   
+  /** this function converts Contact entry to double[3] entry */
   void getEntryAsDouble(double* e) const{  for(short i=0;i<3;i++) e[i]=entryPoint_[i];}
 
+  /** set the target point*/
   void setTarget(Contact c) { targetPoint_ = c;}
+  /** set the entry point */
   void setEntry(Contact c) { entryPoint_ = c;}
-  
+ 
+  /** getter for name string */
   string getName() const{ return name_; }
+
+  /** setter for name string */
   void setName( string name) { name_ = name; }
 
+  /** setter for ElectrodeModel */
   void setModel(ElectrodeModel model);
+
+  /** getter for ElectrodeModel */
   ElectrodeModel getModel(){return model_;};  
-  void sort();
+
+  //void sort(); //is this supposed to be used to reorder (ie flip) vector< Contact >?
 
 private:
-  string 	     name_;
-  Contact	     targetPoint_;
-  Contact	     entryPoint_;
-  vector< Contact >  contacts_;
-  ElectrodeModel     model_;
+  string 	     name_; /** electrode name usually in SEEG responds to ^\w[']?\d+ regexp which means it is of the form A1 (rh) as well as A'1 (lh)*/
+  Contact	     targetPoint_; /** this is the target point, the most deep point around the electrode tip */
+  Contact	     entryPoint_; /** this is the entry point on the scalp/dura-mater*/
+  vector< Contact >  contacts_; /** this holds the reconstructed contact centroids*/
+  ElectrodeModel     model_; /** this represents the electrode model */
 
 };
 
