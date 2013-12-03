@@ -26,6 +26,8 @@
 #include <itkDerivativeOperator.h>
 #include <itkNiftiImageIO.h>
 
+#include <tclap/CmdLine.h>
+
 using namespace std;
 
 typedef typename itk::Image<short, 3>           ImageType;

@@ -12,10 +12,16 @@
 class ContactConstructor {
 
  public:
+  ContactConstructor(  ImageType::Pointer ctImage, ClinicalFrame* headFrame, TCLAP::CmdLine* c ) {
+    ctImage_   = ctImage;
+    headFrame_ = headFrame;
+  }
+
   ContactConstructor(  ImageType::Pointer ctImage, ClinicalFrame* headFrame) {
     ctImage_   = ctImage;
     headFrame_ = headFrame;
   }
+
   ~ContactConstructor(){}
   
   void update( void );

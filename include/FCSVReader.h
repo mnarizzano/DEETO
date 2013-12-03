@@ -8,6 +8,14 @@
 
 class FCSVReader {
 public:
+
+  FCSVReader( void ){};
+  FCSVReader( TCLAP::CmdLine* c){};
+  FCSVReader(string* filein, TCLAP::CmdLine* c){};
+  ~FCSVReader(){
+	  filein_ = NULL;
+	  headframe_ = NULL;
+  }
   
   void setFileInput(string* filein) { filein_ = filein;}
   void setClinicalFrame(ClinicalFrame* cf){ headframe_ = cf; }
@@ -28,9 +36,6 @@ private:
 
 };
 
-// Here we must add the constraint of how the file should be formatted
-// ERROR: se il file ha una linea in piu' vuota, aggiunge l'ultimo
-//        contatto due volte.
 void FCSVReader::update(void){
   // read from a file as written in filein_
   string str;

@@ -9,6 +9,7 @@ class ClinicalFrame {
   typedef vector< Electrode >::iterator ElectrodeIterator;
   typedef vector< Electrode >::const_iterator ConstElectrodeIterator;
 
+  ClinicalFrame( TCLAP::CmdLine* ){ };
   ClinicalFrame( void ){ };
   ~ClinicalFrame( void ){ };
   

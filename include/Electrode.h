@@ -13,12 +13,20 @@ class Electrode {
   typedef vector< Contact >::iterator ContactIterator;
   typedef vector< Contact >::const_iterator ConstContactIterator;
 
+  Electrode(string name, Contact& target, Contact& entry, TCLAP::CmdLine* c) { 
+    setName(name);
+    setTarget(target);
+    setEntry(entry);
+    contacts_.reserve(20); // TODO numero a caso, usare magari il numero custodito in model_
+  };
+
   Electrode(string name, Contact& target, Contact& entry) { 
     setName(name);
     setTarget(target);
     setEntry(entry);
     contacts_.reserve(20); // TODO numero a caso, usare magari il numero custodito in model_
   };
+
   Electrode(string id, Contact& target, Contact& entry, ElectrodeModel m);
   ~Electrode(){};
 
