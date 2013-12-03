@@ -9,7 +9,7 @@
 
 /**
 @mainpage DEETO
-@author Massimo Narizzano Gabriele Arnulfo
+@author Massimo Narizzano Gabriele Arnulfet
 */
 
 using namespace std;
@@ -21,15 +21,22 @@ int main (int argc, char **argv) {
     TCLAP::ValueArg<string> fiducialArg("f","fid","Fiducials File IN",false,"","string",cmd);
     TCLAP::ValueArg<string> file_outArg("o","out","fname OUT",false,"","string",cmd);
     TCLAP::ValueArg<string> out_type("t","o_type"," Output Type",false,"","string",cmd);
-    
+
+    string fileCT;
+    string filefcsv;	
+    string fileout;
+
+    FCSVWriter writer1(fileout, cmd);
+    VTKWriter writer2(fileout, cmd);
+
     cmd.parse( argc, argv );
-    
-    string fileCT  = ctArg.getValue();
-    string filefcsv = fiducialArg.getValue();	
-    string fileout  = file_outArg.getValue();
-    
-    
-    cout<<fileCT<<" "<<filefcsv<<" "<<fileout<<endl;
+
+    fileCT  = ctArg.getValue();
+    filefcsv = fiducialArg.getValue();	
+    fileout  = file_outArg.getValue();
+
+	writer1.setFilename(fileout);
+	writer2.setFilename(fileout);
 		
     if( fileCT.length() == 0 ||
 	filefcsv.length() == 0 ||
@@ -70,8 +77,7 @@ int main (int argc, char **argv) {
     VoxelPointType voxelEntry;
     contactConstructor.update();  
     
-    FCSVWriter writer1(fileout);
-    VTKWriter writer2(fileout);
+  
     
     writer1.setClinicalFrame(headFrame);
     writer2.setClinicalFrame(headFrame);

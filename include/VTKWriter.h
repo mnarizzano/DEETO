@@ -5,6 +5,7 @@
 #include "AbstractWriter.h"
 #include "VTKModelConstructor.h"
 #include <ostream>
+#include <sstream>
 
 /**
   VTKWriter class
@@ -13,17 +14,23 @@
 class VTKWriter: public AbstractWriter{
 
 	public:
-		/** VTKWriter(string filename)
-		  @param filename
-		 */
-	    VTKWriter(string filename){setFilename(filename);setExtension("vtk");}
+	    VTKWriter(string filename, TCLAP::CmdLine& c) :
+			singleFileOut_("1","vtk-single-fout","Single output file for implant", c, false)
+		{
+			setFilename(filename);
+			setExtension("vtk");
+		}
 
-		/** ~VTKWriter */
 		virtual ~VTKWriter( void ){ };
 
 
-		/** implementation of virtual AbstractFileWriter::update */
-		int update() ;
+		/** implementation of virtual AbstractFileWriter::update 
+		 This function navigate through vtkModelConstructor output and write them down*/
+		int update(); 
+	private:
+		string getNextFilename_( ushort );
+
+		TCLAP::SwitchArg singleFileOut_;
 
 
 };
@@ -34,15 +41,9 @@ int VTKWriter::update()
 {
 	checkFilename_();
 
-	VTKModelConstructor vtkModels(getClinicalFrame());
+	VTKModelConstructor vtkModels(getClinicalFrame(), singleFileOut_.getValue());
 
-	vtkSmartPointer<vtkPolyDataWriter> writer =
-		vtkSmartPointer<vtkPolyDataWriter>::New();
 
-	writer->SetFileName(getFilename().c_str());
-
-	vtkSmartPointer<vtkAppendPolyData> appendPolyData = 
-		vtkSmartPointer<vtkAppendPolyData>::New();
 	
 	VTKModelConstructor::ModelIterator model_it;
 
@@ -50,16 +51,62 @@ int VTKWriter::update()
 
 	if( vtkModels.empty()) return 0;
 
-	for( model_it = vtkModels.begin();
-			model_it != vtkModels.end();
-			model_it++){
+	if(singleFileOut_.getValue()) {
+		vtkSmartPointer<vtkAppendPolyData> appendPolyData = 
+			vtkSmartPointer<vtkAppendPolyData>::New();
 
-		appendPolyData->AddInput( (*model_it).GetPointer() );
+		vtkSmartPointer<vtkPolyDataWriter> writer =
+			vtkSmartPointer<vtkPolyDataWriter>::New();
+
+		writer->SetFileName(getFilename().c_str());
+
+
+		for( model_it = vtkModels.begin();
+				model_it != vtkModels.end();
+				model_it++){
+
+			appendPolyData->AddInput( (*model_it).GetPointer() );
+		}
+
+		writer->SetInputConnection(appendPolyData->GetOutputPort());
+		writer->Write();
+	} else {
+		ushort index = 0;
+
+		for( model_it = vtkModels.begin();
+				model_it != vtkModels.end();
+				model_it++){
+
+			vtkSmartPointer<vtkPolyDataWriter> writer =
+				vtkSmartPointer<vtkPolyDataWriter>::New();
+
+			writer->SetFileName(getNextFilename_(index++).c_str());
+			writer->SetInput((*model_it));
+			writer->Write();
+		}
 	}
-
-	writer->SetInputConnection(appendPolyData->GetOutputPort());
-	writer->Write();
 
 	return 1;
 }
+
+string VTKWriter::getNextFilename_( ushort it ){
+
+	// get base filename
+	string baseFilename = getFilename();
+
+	stringstream tmp;
+
+	// strip extension
+	// append incremental index
+	string tt = baseFilename.substr(0, baseFilename.find_last_of("."));
+
+	tmp<<tt<<"_"<<it<<".vtk";
+
+	cout<<tmp.str()<<endl;
+
+
+	// return lvalue
+	return tmp.str();
+}
+
 

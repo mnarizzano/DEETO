@@ -12,31 +12,54 @@
 #include <vtkPolyDataWriter.h>
 
 
-/** VTKModelConstructor class*/
+/** VTKModelConstructor class
+
+  This class constructs VTK 3D model based on reconstructed information
+ 
+*/
 
 class VTKModelConstructor{
 
 	public:
 		typedef vector< vtkSmartPointer<vtkPolyData> >::const_iterator ConstModelIterator;
 		typedef vector< vtkSmartPointer<vtkPolyData> >::iterator ModelIterator;
+		
+		/** Constructor 
+		 @param cf holds the pointer to ClinicalFrame and to vector< Electrode >
+		 @param c is a pointer to TCLAP::CmdLine class to set/get command line options*/ 
+		VTKModelConstructor(const ClinicalFrame* cf, bool s){
+			clinicalframe_ = cf; 
+			singleOutputFile_ = s;
+		}
 
-		VTKModelConstructor(const ClinicalFrame* cf ){clinicalframe_ = cf;}
+		/** Constructor */
+		VTKModelConstructor(const ClinicalFrame* cf){clinicalframe_ = cf; singleOutputFile_= true;}
 
 		~VTKModelConstructor( void ){};
 
+		/** setter for clinical frame pointer that holds the implant information */
 		inline void setClinicalFrame(ClinicalFrame* cf){clinicalframe_= cf;}
 
+		/** methods that returns a pointer to the HEAD of VTK model vector */
 		inline ModelIterator begin( void ) {return vtkmodels_.begin();}
 
-
+		/** methods that returns a pointer to the TAIL of VTK model vector */
 		inline ModelIterator end( void ) {return vtkmodels_.end();}
-
+	
+		/** methods that check whether VTK model vector is empty */
 		inline bool empty( void ){ return vtkmodels_.empty();}
-
+		
+		/** core method that navigate the clinical frame, extracts the centroids for each contact, 
+		  estimates the contact as well as the electrode asxes and builds the vtk model based on reconstructed information
+		  @return this function returns 0 or 1 upon failure or success, respectively
+		 */
 		int update();
 
+
+		bool getOutputMode( void )const{return singleOutputFile_;}
+
 	protected:
-		/* for each contact it estimates its position along the spline */
+		/* for each contact it estimates its position along the line that connectes contact1 and contact2 */
 		void estimateContactExtent_( double* , double* , vtkLineSource* );
 		double distance_(double* p1, double *p2);
 	
@@ -44,12 +67,14 @@ class VTKModelConstructor{
 		/* this holds the implant details*/
 		const ClinicalFrame* clinicalframe_;	
 		vector< vtkSmartPointer<vtkPolyData> > vtkmodels_;
+		bool singleOutputFile_;
 };
 
 
 int VTKModelConstructor::update(){
 	//returns 0 on failure if clinicalframe is empty
 	//returns 1 on success if models have been constructed
+		cout<<"building "<<(singleOutputFile_ ? "single":"multiple")<<" files "<<endl; 
 		
 		// check wheter the clinicalframe is empty
 		if(clinicalframe_->isempty()) return 0;
@@ -62,10 +87,14 @@ int VTKModelConstructor::update(){
 		ClinicalFrame::ConstElectrodeIterator const_elec_it;
 		Electrode::ConstContactIterator const_contact_it;
 
+
 		// for each electorde in clinical frame
 		for(const_elec_it = clinicalframe_->begin(); const_elec_it != clinicalframe_->end(); const_elec_it++){
 
-			// fit data with spline and get the electrode axis
+			vtkSmartPointer< vtkAppendPolyData > appendFilter = 
+				vtkSmartPointer< vtkAppendPolyData >::New();
+
+			// fit data with spline 
 			vtkSmartPointer<vtkParametricSpline> spline = 
 				vtkSmartPointer<vtkParametricSpline>::New();
 
@@ -103,9 +132,11 @@ int VTKModelConstructor::update(){
 			cables->SetCapping(true);
 			cables->Update();
 
-			vtkmodels_.push_back( cables->GetOutput() );
+			if(singleOutputFile_)
+				vtkmodels_.push_back( cables->GetOutput() );
 
-
+			else
+				appendFilter->AddInput(cables->GetOutput());
 
 			// TODO we can evaluate the spline at fixed t to get
 			// the points that approximate each contact (how to deal with t=0 and t=1) 
@@ -148,13 +179,23 @@ int VTKModelConstructor::update(){
 				cylinder->SetCapping(true);
 				cylinder->Update();
 
-				vtkmodels_.push_back( cylinder->GetOutput() );
+				if( singleOutputFile_){
+					vtkmodels_.push_back( cylinder->GetOutput() );
+				} else {
+					appendFilter->AddInput(cylinder->GetOutput());
+				}
 
 				++cont;
 			}		
+			
+			if( !singleOutputFile_){
+				appendFilter->Update();
+				vtkmodels_.push_back(appendFilter->GetOutput());
+			}
 
 
 		}
+		cout<<vtkmodels_.size()<<endl;
 		return 1;
 
 
