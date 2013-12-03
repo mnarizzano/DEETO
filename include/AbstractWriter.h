@@ -28,10 +28,12 @@ class AbstractWriter {
 		inline ClinicalFrame::ConstElectrodeIterator begin( void ) const{return clinicalframe_->begin();}
 		/** returns the tail fo ConstElectrodeIterator */
 		inline ClinicalFrame::ConstElectrodeIterator end( void ) const{return clinicalframe_->end();}
+
+		/** pure virtual method that each child should implement depending on file formats */
 		virtual int update() = 0;
 
 	protected:
-		/** checkFilename_() checks for proper file extension depending on which subclass has been 
+		/** appends correct extension to filename depending on which subclass has been 
 		  istantiated*/
 		void checkFilename_(void){
 			string tmp;
@@ -39,15 +41,15 @@ class AbstractWriter {
 			filename_  = tmp.append(extension_);
 		}
 
-		/** Purposely proteced since it is istantiated only by its child*/
+		/** Purposely proteced since it is supposed to be istantiated only by its child*/
 		AbstractWriter(){ };
 
 		/** It sets the ClinicalFrame* to NULL upon call */
 		virtual ~AbstractWriter(){ clinicalframe_ = NULL;}
 
 	private:
-		string extension_;
-		string filename_;
-		ClinicalFrame* clinicalframe_;
+		string extension_; /** string that saves the filename extension for checking consistency */
+		string filename_; /** string that holds the actual filename + extension (after correction) */
+		ClinicalFrame* clinicalframe_; /** pointer to clinica frame and reconstructed implant points */
 };
 #endif //ABSTRACT_WRITER
