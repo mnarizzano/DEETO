@@ -86,7 +86,7 @@ void ContactConstructor::update( void ){
       } else {
 	distance += 0.5;
       }
-    } while ((targetPoint.EuclideanDistanceTo(entryPoint) > (entryPoint.EuclideanDistanceTo(contact1) + 3.5)) && (distance <= 10.5)); 
+    } while ((targetPoint.EuclideanDistanceTo(entryPoint) > (entryPoint.EuclideanDistanceTo(contact1) + 3.5)) && (distance <= 11.5)); // 10mm distanza tra banchi 
     electrodeItr++;
   }
 }
