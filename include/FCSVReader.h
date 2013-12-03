@@ -29,7 +29,7 @@ public:
    it's not important the order of entry/target points till they are represented in LPS-Centered space. 
    This function computes the distance from the center (0,0,0) to understand whether a coordiante triplet is a target or entry point. 
    Comments at the beginning of file are ignored.*/
-  void update(void);  
+  int update(void);  
 
   /** returns a pointer to the constructed ClinicalFrame */
   ClinicalFrame* getOutput() { return headframe_; }
@@ -47,10 +47,11 @@ private:
 
 };
 
-void FCSVReader::update(void){
+int FCSVReader::update(void){
   // read from a file as written in filein_
   string str;
   string name;
+  string prev_name;
   ifstream file;
   PhysicalPointType target;
   PhysicalPointType entry;
@@ -69,15 +70,21 @@ void FCSVReader::update(void){
       k = 0;
       // read two lines at the time.
       while (k < 2) {
-	// First read the name of the electrode.
-	getline(file,name,',');      
-	// The first 3 are number of interest representing a Point
-	if (k == 0) target = readPoint(&file);
-	else entry = readPoint(&file);
-	// skip what it is left.
-	getline(file,str,'\n');
-	// skip the name
-	k++;
+		// First read the name of the electrode.
+		getline(file,name,',');      
+		// The first 3 are number of interest representing a Point
+		if (k == 0) {
+			target = readPoint(&file);
+			prev_name = name;
+		}
+		else entry = readPoint(&file);
+		// skip what it is left.
+		getline(file,str,'\n');
+		// check whehter prev_name is equal to curr_name
+		// which means that we have an fcsv with t-e pairs 
+		// for each electrode. In case this is not true, returns 0
+		if( prev_name != name )	return 0;
+		k++;
       }
 
       // add the contact only if name exist otherwise it means a blank line was found at the end of fcsv      
@@ -95,6 +102,7 @@ void FCSVReader::update(void){
       }
     }
   }
+  return 1;
 }
 
 /** Read a line of the file looking for a point (either a target or an

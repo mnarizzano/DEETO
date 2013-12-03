@@ -9,7 +9,7 @@
 
 /**
 @mainpage DEETO
-@author Massimo Narizzano Gabriele Arnulfet
+@author Massimo Narizzano Gabriele Arnulfo
 */
 
 using namespace std;
@@ -69,7 +69,7 @@ int main (int argc, char **argv) {
     FCSVReader fcsvReader;
     fcsvReader.setFileInput(&filefcsv);
     fcsvReader.setClinicalFrame(headFrame);
-    fcsvReader.update();
+    assert(fcsvReader.update());
     headFrame = fcsvReader.getOutput();
     
     ContactConstructor contactConstructor(ctImage,headFrame);
