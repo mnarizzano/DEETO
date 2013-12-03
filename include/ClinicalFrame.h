@@ -4,6 +4,14 @@
 #include <Definitions.h>
 #include <Electrode.h> 
 
+
+/**
+  ClinicalFrame class
+  ===================
+
+  this class is the central object that holds the information for reconstruction and saves the reconstructed data.
+  It has a pointer to CT data which constitutes the reference space.
+  */
 class ClinicalFrame {
  public:
   typedef vector< Electrode >::iterator ElectrodeIterator;
@@ -12,27 +20,39 @@ class ClinicalFrame {
   ClinicalFrame( TCLAP::CmdLine* ){ };
   ClinicalFrame( void ){ };
   ~ClinicalFrame( void ){ };
-  
-  void setCT( ImagePointerType ct) {ct_ = ct;}
-  void addElectrode(Electrode e ) { headframe_.resize(headframe_.size() + 1, e);}
 
+  /** setter method for CT pointer */
+  void setCT( ImagePointerType ct) {ct_ = ct;}
+
+  /** add one Electrode to the vector< Electrode > once it has been reconstructed */
+  void addElectrode(Electrode e ) { headframe_.resize(headframe_.size() + 1, e);}
+	
+  /** this function returns a pointer to HEAD in vector< Electrode > */
   ElectrodeIterator begin(){return headframe_.begin();}
+
+  /** this function returns a pointer to TAIL in vector< Electrode > */
   ElectrodeIterator end(){return headframe_.end();}
 
+  /** this function returns a const pointer to HEAD in vector< Electrode >*/
   ConstElectrodeIterator begin() const{return headframe_.begin();}
+
+  /** this function returns a const pointer to TAIL in vector< Electrode >*/
   ConstElectrodeIterator end() const{return headframe_.end();}
 
+  /** this function transform a physicalPoint from Ref to Centered space */
   void fromRefToCenter_(PhysicalPointType *physicalPoint);
+
+  /** this function transform a physicalPoint from Centered to Reference space */
   void fromCenterToRef_(PhysicalPointType *physicalPoint);
+
+  /** this function transform a physicalPoint from LPS to RAS space */
   void fromLPS2RAS_(PhysicalPointType *physicalPoint);
 
-
+  /** this function returns true or false whether the vector< Electrode> is empty or not */
   bool isempty( void) const{ return headframe_.empty();}
 
  private:
   
-  string              name_; // [TODO]: is it better char*? usually it's 1/2 chars
-  ulong               id_;
   ImagePointerType    ct_;
   vector< Electrode > headframe_;
 
@@ -75,8 +95,4 @@ void ClinicalFrame::fromRefToCenter_(PhysicalPointType *physicalPoint){
   (*physicalPoint)[1] += physicalCenter[1];
   (*physicalPoint)[2] -= physicalCenter[2];
 }
-
-
-
 #endif // CLINICAL_FRAME_H
- 
