@@ -25,12 +25,17 @@ class VTKWriter: public AbstractWriter{
 
 
 		/** implementation of virtual AbstractFileWriter::update 
-		 This function navigate through vtkModelConstructor output and write them down*/
+		 This function navigate through vtkModelConstructor output and writes them down*/
 		int update(); 
-	private:
-		string getNextFilename_( ushort );
 
-		TCLAP::SwitchArg singleFileOut_;
+	private:
+
+		/** this function constructs unique filename for multiple electrode write-out
+		  it reads from clinicalFrame the electrode names and append labels to filenames.
+		 */
+		string getNextFilename_( string name);
+
+		TCLAP::SwitchArg singleFileOut_; /** command line parametr to switch between single/multiple files write-out*/
 
 
 };
@@ -69,8 +74,15 @@ int VTKWriter::update()
 		writer->SetInputConnection(appendPolyData->GetOutputPort());
 		writer->Write();
 	} else {
-		ushort index = 0;
 
+		const ClinicalFrame* cf = getClinicalFrame();
+
+		// something went wrong in VTKModel we have reconstructed 
+		// a wrong amount of electrodes
+		if( cf->getElectrodesNumber() != vtkModels.size())
+			return 0;
+
+		ClinicalFrame::ConstElectrodeIterator elect_it = cf->begin();
 		for( model_it = vtkModels.begin();
 				model_it != vtkModels.end();
 				model_it++){
@@ -78,7 +90,7 @@ int VTKWriter::update()
 			vtkSmartPointer<vtkPolyDataWriter> writer =
 				vtkSmartPointer<vtkPolyDataWriter>::New();
 
-			writer->SetFileName(getNextFilename_(index++).c_str());
+			writer->SetFileName(getNextFilename_( (elect_it++)->getName()).c_str());
 			writer->SetInput((*model_it));
 			writer->Write();
 		}
@@ -87,7 +99,7 @@ int VTKWriter::update()
 	return 1;
 }
 
-string VTKWriter::getNextFilename_( ushort it ){
+string VTKWriter::getNextFilename_( string name ){
 
 	// get base filename
 	string baseFilename = getFilename();
@@ -95,11 +107,10 @@ string VTKWriter::getNextFilename_( ushort it ){
 	stringstream tmp;
 
 	// strip extension
-	// append incremental index
 	string tt = baseFilename.substr(0, baseFilename.find_last_of("."));
-
-	cout<<tmp.str()<<endl;
-
+	
+	// construct the unique filename
+	tmp<<tt<<"_"<<name<<".vtk";
 
 	// return lvalue
 	return tmp.str();

@@ -51,6 +51,8 @@ class ClinicalFrame {
   /** this function returns true or false whether the vector< Electrode> is empty or not */
   bool isempty( void) const{ return headframe_.empty();}
 
+  int getElectrodesNumber (void) const {return headframe_.size();}
+
  private:
   
   ImagePointerType    ct_;
