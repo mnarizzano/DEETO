@@ -43,8 +43,6 @@ int VTKWriter::update()
 
 	VTKModelConstructor vtkModels(getClinicalFrame(), singleFileOut_.getValue());
 
-
-	
 	VTKModelConstructor::ModelIterator model_it;
 
 	assert(vtkModels.update());
@@ -99,8 +97,6 @@ string VTKWriter::getNextFilename_( ushort it ){
 	// strip extension
 	// append incremental index
 	string tt = baseFilename.substr(0, baseFilename.find_last_of("."));
-
-	tmp<<tt<<"_"<<it<<".vtk";
 
 	cout<<tmp.str()<<endl;
 

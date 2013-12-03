@@ -46,6 +46,8 @@ class VTKModelConstructor{
 		/** methods that check whether VTK model vector is empty */
 		inline bool empty( void ){ return vtkmodels_.empty();}
 		
+
+		/** function that computes the euclidean distance between two points */
 		/** core method that navigate the clinical frame, extracts the centroids for each contact, 
 		  estimates the contact as well as the electrode axes, and builds the vtk model (cylinder + spline) based on reconstructed information
 		  @return this function returns 0 or 1 upon failure or success, respectively
@@ -75,7 +77,80 @@ class VTKModelConstructor{
 int VTKModelConstructor::update(){
 	//returns 0 on failure if clinicalframe is empty
 	//returns 1 on success if models have been constructed
-		cout<<"building "<<(singleOutputFile_ ? "single":"multiple")<<" files "<<endl; 
+
+	// check wheter the clinicalframe is empty
+	if(clinicalframe_->isempty()) return 0;
+
+	// in order to be as accurate as possible
+	// we should indeed fit all the points with a spline (which order?)
+	// then take for each centroid the tangent to the spline as vtkLineSource
+	// on the tangent line build the vtkTubeFilter as cylinder object
+
+	ClinicalFrame::ConstElectrodeIterator const_elec_it;
+	Electrode::ConstContactIterator const_contact_it;
+
+
+	// for each electorde in clinical frame
+	for(const_elec_it = clinicalframe_->begin(); const_elec_it != clinicalframe_->end(); const_elec_it++){
+
+		vtkSmartPointer< vtkAppendPolyData > appendFilter = 
+			vtkSmartPointer< vtkAppendPolyData >::New();
+
+		// fit data with spline 
+		vtkSmartPointer<vtkParametricSpline> spline = 
+			vtkSmartPointer<vtkParametricSpline>::New();
+
+		vtkSmartPointer<vtkParametricFunctionSource> cableSource =
+			vtkSmartPointer< vtkParametricFunctionSource >::New();
+
+		vtkSmartPointer<vtkPoints>	points = 
+			vtkSmartPointer<vtkPoints>::New();
+
+		vtkSmartPointer< vtkTubeFilter > cables = 
+			vtkSmartPointer< vtkTubeFilter >::New();
+
+		
+		for(const_contact_it = const_elec_it->begin();
+				const_contact_it != const_elec_it->end();
+				const_contact_it++){
+
+			// add all the centroids to the spline
+			double x = (*const_contact_it)[0];
+			double y = (*const_contact_it)[1];
+			double z = (*const_contact_it)[2];
+			
+			points->InsertNextPoint(x,y,z);
+		}
+
+		
+		// fill the spline with points
+		spline->SetPoints(points.GetPointer());
+
+		cableSource->SetParametricFunction(spline.GetPointer());
+
+		cables->SetInputConnection(cableSource->GetOutputPort());
+		cables->SetRadius(0.2);
+		cables->SetNumberOfSides(10);
+		cables->SetCapping(true);
+		cables->Update();
+
+		if(singleOutputFile_)
+			vtkmodels_.push_back( cables->GetOutput() );
+
+		else
+			appendFilter->AddInput(cables->GetOutput());
+
+		// TODO we can evaluate the spline at fixed t to get
+		// the points that approximate each contact (how to deal with t=0 and t=1) 
+		// once we get this spline->Evaluate(u1,p1); spline->Evaluate(u2,p2);
+		// then line->SetPoint1(p1); line->SetPoint2(p2) and build the cylinders 
+		// as we did in prev version
+
+		ushort cont = 0;
+
+		for(const_contact_it = const_elec_it->begin();
+				const_contact_it != const_elec_it->end();
+				const_contact_it++){
 		
 		// check wheter the clinicalframe is empty
 		if(clinicalframe_->isempty()) return 0;
@@ -196,11 +271,56 @@ int VTKModelConstructor::update(){
 
 
 		}
-		cout<<vtkmodels_.size()<<endl;
-		return 1;
 
+			vtkSmartPointer< vtkTubeFilter > cylinder = vtkSmartPointer< vtkTubeFilter >::New();
+			vtkSmartPointer< vtkLineSource > line = vtkSmartPointer< vtkLineSource >::New();
 
+			double p1[3],  p2[3];
+
+			if( cont == const_elec_it->getContactNumber()-1){
+				//is last contact 
+				for( short i = 0; i<3; i++){
+					p1[i] = (*(const_contact_it-1))[i];
+					p2[i] = (*const_contact_it)[i];
+				}
+			}else{
+				// all the other contacts
+				for( short i = 0; i<3; i++){
+					p2[i] = (*const_contact_it)[i];
+					p1[i] = (*(const_contact_it+1))[i];
+				}
+			}
+			
+
+			estimateContactExtent_(p1,p2, line.GetPointer());
+
+			cylinder->SetInputConnection(line->GetOutputPort());
+
+			cylinder->SetRadius(0.8);
+			cylinder->SetNumberOfSides(10);
+			cylinder->SetCapping(true);
+			cylinder->Update();
+
+			if( singleOutputFile_){
+				vtkmodels_.push_back( cylinder->GetOutput() );
+			} else {
+				appendFilter->AddInput(cylinder->GetOutput());
+			}
+
+			++cont;
+		}		
+		
+		if( !singleOutputFile_){
+			appendFilter->Update();
+			vtkmodels_.push_back(appendFilter->GetOutput());
 		}
+
+
+	}
+	return 1;
+
+
+}
 #endif //VTK_MODEL_CONSTRUCTOR_H
 
 void VTKModelConstructor::estimateContactExtent_(double* p1, double* p2, vtkLineSource* line){
