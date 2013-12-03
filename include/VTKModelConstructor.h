@@ -24,17 +24,14 @@ class VTKModelConstructor{
 		typedef vector< vtkSmartPointer<vtkPolyData> >::const_iterator ConstModelIterator;
 		typedef vector< vtkSmartPointer<vtkPolyData> >::iterator ModelIterator;
 		
-		/** Constructor 
-		 @param cf holds the pointer to ClinicalFrame and to vector< Electrode >
+		/**	@param cf holds the pointer to ClinicalFrame and to vector< Electrode >
 		 @param c is a pointer to TCLAP::CmdLine class to set/get command line options*/ 
 		VTKModelConstructor(const ClinicalFrame* cf, bool s){
 			clinicalframe_ = cf; 
 			singleOutputFile_ = s;
 		}
 
-		/** Constructor */
 		VTKModelConstructor(const ClinicalFrame* cf){clinicalframe_ = cf; singleOutputFile_= true;}
-
 		~VTKModelConstructor( void ){};
 
 		/** setter for clinical frame pointer that holds the implant information */
@@ -50,26 +47,30 @@ class VTKModelConstructor{
 		inline bool empty( void ){ return vtkmodels_.empty();}
 		
 		/** core method that navigate the clinical frame, extracts the centroids for each contact, 
-		  estimates the contact as well as the electrode asxes and builds the vtk model based on reconstructed information
+		  estimates the contact as well as the electrode axes, and builds the vtk model (cylinder + spline) based on reconstructed information
 		  @return this function returns 0 or 1 upon failure or success, respectively
 		 */
 		int update();
 
-
+		/** this function returns whether the user requested a single vtk file (ie all the electrodes together 
+		  as output or multiple files (ie each electrode as separate vtk file) */
 		bool getOutputMode( void )const{return singleOutputFile_;}
 
 	protected:
-		/* for each contact it estimates its position along the line that connectes contact1 and contact2 */
+		/** for each contact it estimates its position along the line that connectes contact1 and contact2 
+		 ATM the function assumes that p1 and p2 are 3.5 mm apart, better estimation needs to be used 
+		 in order to create more physically reliable models*/
 		void estimateContactExtent_( double* , double* , vtkLineSource* );
+
+		/** function that computes the euclidean distance between two points */
 		double distance_(double* p1, double *p2);
 	
 	private:
-		/* this holds the implant details*/
-		const ClinicalFrame* clinicalframe_;	
-		vector< vtkSmartPointer<vtkPolyData> > vtkmodels_;
-		bool singleOutputFile_;
-};
 
+		const ClinicalFrame* clinicalframe_; /** This variable holds the information about the implant */	
+		vector< vtkSmartPointer<vtkPolyData> > vtkmodels_; /** write-out variable this is read by VTKWriter to save the data*/ 
+		bool singleOutputFile_; /** boolean flag to choose between single or multiple (ie one for each electrode) files out */
+};
 
 int VTKModelConstructor::update(){
 	//returns 0 on failure if clinicalframe is empty
@@ -204,6 +205,8 @@ int VTKModelConstructor::update(){
 
 void VTKModelConstructor::estimateContactExtent_(double* p1, double* p2, vtkLineSource* line){
 	// here we should solve parametric equation of the line to get the correct line extent 
+	// this indeed assumes that dist(p1,p2) ~ 3.5mm ... 
+	// TODO better line estimation
 
 	double p_beg[3], p_end[3];
 				
