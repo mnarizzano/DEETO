@@ -211,11 +211,15 @@ void VTKModelConstructor::estimateContactExtent_(double* p1, double* p2, vtkLine
 	// TODO better line estimation
 
 	double p_beg[3], p_end[3];
+
+	double dist = distance_(p1,p2);
+
+	double t = 1.0 / dist;
 				
 	// estimate line extent
 	for(ushort ii = 0 ; ii < 3 ; ii++){
-		p_beg[ii] = p1[ii] + 5.0/7.0*(p2[ii] - p1[ii]);
-		p_end[ii] = p1[ii] + 9.0/7.0*(p2[ii] - p1[ii]);
+		p_beg[ii] = p1[ii] + (1-t)*(p2[ii] - p1[ii]);
+		p_end[ii] = p1[ii] + (1+t)*(p2[ii] - p1[ii]);
 	}
 	
 	// fill line with estimated initial and final points
