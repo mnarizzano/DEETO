@@ -3,9 +3,12 @@
 #include <unistd.h>
 #include <FCSVReader.h>
 #include <FCSVWriter.h>
-#include <VTKWriter.h>
 #include <ContactConstructor.h>
 #include <tclap/CmdLine.h>
+
+#ifdef WITH_VTK
+#include <VTKWriter.h>
+#endif
 
 /**
 @mainpage DEETO
@@ -27,7 +30,9 @@ int main (int argc, char **argv) {
     string fileout;
 
     FCSVWriter writer1(fileout, cmd);
+	#ifdef WITH_VTK
     VTKWriter writer2(fileout, cmd);
+	#endif
 
     cmd.parse( argc, argv );
 
@@ -36,7 +41,10 @@ int main (int argc, char **argv) {
     fileout  = file_outArg.getValue();
 
 	writer1.setFilename(fileout);
+
+	#ifdef WITH_VTK
 	writer2.setFilename(fileout);
+	#endif
 		
     if( fileCT.length() == 0 ||
 	filefcsv.length() == 0 ||
@@ -80,10 +88,25 @@ int main (int argc, char **argv) {
   
     
     writer1.setClinicalFrame(headFrame);
-    writer2.setClinicalFrame(headFrame);
     try{
       writer1.update();
+    }catch(itk::ExceptionObject e){
+      cerr<<e.what()<<endl;
+      return EXIT_FAILURE;
+    }
+
+	#ifdef WITH_VTK
+    writer2.setClinicalFrame(headFrame);
+	try{
       writer2.update();
+    }catch(itk::ExceptionObject e){
+      cerr<<e.what()<<endl;
+      return EXIT_FAILURE;
+    }
+	#endif
+
+    try{
+      writer1.update();
     }catch(itk::ExceptionObject e){
       cerr<<e.what()<<endl;
       return EXIT_FAILURE;

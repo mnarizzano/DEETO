@@ -207,8 +207,6 @@ int VTKModelConstructor::update(){
 
 void VTKModelConstructor::estimateContactExtent_(double* p1, double* p2, vtkLineSource* line){
 	// here we should solve parametric equation of the line to get the correct line extent 
-	// this indeed assumes that dist(p1,p2) ~ 3.5mm ... 
-	// TODO better line estimation
 
 	double p_beg[3], p_end[3];
 

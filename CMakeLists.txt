@@ -2,17 +2,18 @@ cmake_minimum_required(VERSION 2.6)
 project(DEETO)
 
 # search for VTK
-find_package(VTK REQUIRED)
+find_package(VTK)
 if(VTK_FOUND)
   include(${VTK_USE_FILE})
   message(STATUS "VTK Ok!")
+  add_definitions(-DWITH_VTK)
+  set(VTK_LIBRARIES vtkIO vtkVolumeRendering vtkWidgets vtkHybrid) 
 endif(VTK_FOUND)
 
 # search for ITK
 find_package(ITK REQUIRED)
 if(ITK_FOUND)
   include(${ITK_USE_FILE})
-  message(STATUS "ITK Ok!")
 endif(ITK_FOUND)
 
 #Check pkg-config
@@ -38,10 +39,9 @@ if(DOXYGEN_FOUND)
 		)
 endif(DOXYGEN_FOUND)
 
-set(VTK_LIBRARIES vtkIO vtkVolumeRendering vtkWidgets vtkHybrid) 
 set(LINK_LIBRARIES ${VTK_LIBRARIES} ${ITK_LIBRARIES})
 set(SRC src/main.cpp)
-include(${VTK_USE_FILE})
+
 include_directories(include/)
 add_definitions(${VTK_DEFINITIONS})
 add_definitions(${ITK_DEFINITIONS})
