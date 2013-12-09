@@ -11,22 +11,16 @@
   This class implements 3DSlicer fiducial list for reconstructed data.
   ATM, only v3 standard is supported. v4 support (which consists in a single file for fiducial point will be 
   handled in next stable release (since v4 support v3 std as retro-comp)
- */
+*/
 
 class FCSVWriter: public AbstractWriter{
 
 	public:
-		/**@param filename
-		  @param cmd*/
-	    FCSVWriter(string filename, TCLAP::CmdLine& cmd){
+		FCSVWriter(string filename, TCLAP::CmdLine& cmd){
 			setFilename(filename); 
 			setExtension("fcsv"); 
-			color_[0]=0.4;
-			color_[1]=1;
-			color_[2]=1;
 		}
 
-		/** @param filename the output file name*/
 	    FCSVWriter(string filename){setFilename(filename); setExtension("fcsv");}
 
 		virtual ~FCSVWriter( void ){ };
@@ -35,7 +29,7 @@ class FCSVWriter: public AbstractWriter{
 		int update();
 
 	private:
-		float color_[3];
+		//float color_[3];
 
 
 
@@ -82,7 +76,8 @@ int FCSVWriter::update()
 	}
 	catch(ostream::failure e){
 		// add logging information
-		cerr<<" "<<endl;
+		cerr<<"Error while writing the code"<<e.what()<<endl;
+		return 0;
 	}
 
 	return 1;

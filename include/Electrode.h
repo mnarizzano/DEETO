@@ -54,13 +54,9 @@ class Electrode {
   /** this method returns a const pointer to TAIL of vector< Contact >*/  
   ConstContactIterator end()const{return contacts_.end();}
 
-  /** this function computes the distance at which the algorithm should search for the next contact */
-  float getDistanceToNext(ulong next) const;
+  //float getDistanceToNext(ulong next) const;
+  //float getDistanceFromPrev(ulong prev) const;
 
-  /** this funciont computes the distance of one from previosu contact */
-  float getDistanceFromPrev(ulong prev) const;
-
-  /** this function adds contact to the vector< Contact > */
   void addContact(Contact c) {
     contacts_.resize(contacts_.size() + 1, c);
   }
@@ -97,24 +93,15 @@ class Electrode {
   /** this function converts Contact entry to double[3] entry */
   void getEntryAsDouble(double* e) const{  for(short i=0;i<3;i++) e[i]=entryPoint_[i];}
 
-  /** set the target point*/
   void setTarget(Contact c) { targetPoint_ = c;}
-  /** set the entry point */
   void setEntry(Contact c) { entryPoint_ = c;}
  
-  /** getter for name string */
   string getName() const{ return name_; }
-
-  /** setter for name string */
   void setName( string name) { name_ = name; }
 
-  /** setter for ElectrodeModel */
   void setModel(ElectrodeModel model);
-
-  /** getter for ElectrodeModel */
   ElectrodeModel getModel(){return model_;};  
 
-  //void sort(); //is this supposed to be used to reorder (ie flip) vector< Contact >?
 
 private:
   string 	     name_; /** electrode name usually in SEEG responds to ^\w[']?\d+ regexp which means it is of the form A1 (rh) as well as A'1 (lh)*/

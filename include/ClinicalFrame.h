@@ -7,11 +7,13 @@
 
 /**
   ClinicalFrame class
-  ===================
 
   this class is the central object that holds the information for reconstruction and saves the reconstructed data.
-  It has a pointer to CT data which constitutes the reference space.
-  */
+  It has a pointer to CT data which constitutes the reference space (**Ref. Space**) .
+  Initially, as read from FCSV (3DSlicer format) each Electrode has 2 points entry and target which are represented
+  in a Centered Coordinate system. For this, the class provides methods to transform each point from Ref to Centered and back-
+*/
+
 class ClinicalFrame {
  public:
   typedef vector< Electrode >::iterator ElectrodeIterator;
@@ -21,10 +23,8 @@ class ClinicalFrame {
   ClinicalFrame( void ){ };
   ~ClinicalFrame( void ){ };
 
-  /** setter method for CT pointer */
   void setCT( ImagePointerType ct) {ct_ = ct;}
 
-  /** add one Electrode to the vector< Electrode > once it has been reconstructed */
   void addElectrode(Electrode e ) { headframe_.resize(headframe_.size() + 1, e);}
 	
   /** this function returns a pointer to HEAD in vector< Electrode > */

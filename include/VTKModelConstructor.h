@@ -34,7 +34,6 @@ class VTKModelConstructor{
 		VTKModelConstructor(const ClinicalFrame* cf){clinicalframe_ = cf; singleOutputFile_= true;}
 		~VTKModelConstructor( void ){};
 
-		/** setter for clinical frame pointer that holds the implant information */
 		inline void setClinicalFrame(ClinicalFrame* cf){clinicalframe_= cf;}
 
 		/** methods that returns a pointer to the HEAD of VTK model vector */

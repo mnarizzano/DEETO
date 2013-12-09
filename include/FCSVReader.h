@@ -45,14 +45,14 @@ private:
   /** read a line from the file that should be a point. */
   PhysicalPointType readPoint(ifstream* file );
 
-	struct fiducialPoint{
-			string name;
-			PhysicalPointType point;
+  struct fiducialPoint{
+	string name;
+	PhysicalPointType point;
 
-			bool operator==(fiducialPoint a){
-					return name == a.name;
-			}
-	};
+	bool operator==(fiducialPoint a){
+		return name == a.name;
+	}
+  };
 
 };
 
