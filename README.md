@@ -1,119 +1,95 @@
 DEETO
 =====
 
-seeg electroDE  rEconstruction TOol 
+	seeg electroDE  rEconstruction TOol 
 
 Software requirments
 ====================
-
-CMAKE, VTK, ITK
-
-For Debian- and RedHat-based distribution use apt-get or yum to install required libraries.
+	
+	CMAKE, VTK, ITK, tclap
+	
+	For Debian- and RedHat-based distribution use apt-get or yum to install required libraries.
 
 
 MANUL INSTALLATION
 ==================
 
+Download and install tclap
+==========================
+	Download the latest version 1.2.1 from http://sourceforge.net/projects/tclap/files/. Extract the archive and enter in the unpacked directory. The directory contains the autoconf and automake configuration files required for compilining and installing the library. It is sufficient to run within the unpacked directory:
+	$ ./configure
+	$ make && make install
+	
+	For problems with installation of this third-party library please refer to the sourceforge project page. 
+
 Download and Install CMake
 ==========================
 
-As first step you need to download and install CMAKE in your computer. Cmake can download from following URL,
-
-http://www.cmake.org/cmake/resources/software.html
-
-Extract the downloaded file. Then go to the extracted folder using Terminal.
-
-Next type
+	Moreover, you need to download and install CMAKE in your computer. Cmake is a cross-platform compiler and can be downloaded from http://www.cmake.org/cmake/resources/software.html
 	
-./configure
-
-on terminal.
-
-After running configuration type
+	Soon after the download has ended, extract the downloaded file and from the terminal
 	
-make
-
-in the terminal, after its make process type
+	$ ./configure
 	
-sudo make install
-
-If you typed
+	$ make
+	$ sudo make install
 	
-make install
-
-instead of
-	
-sudo make install
-
-at the end of the process it will show an error of writing permission to the disk.  After this process installation of CMake is complete.
-
  
-Download and Install VTK
-========================
-
-Download VTK and VTK data from VTK web page.
-
-URL: http://www.vtk.org/VTK/resources/software.html
-
-Then extract vtk and vtk data files.
-
-Goto vtk folder using Terminal and type
-	
-ccmake .
-
-After processing it will prompt a configuration option, press ‘c‘ to configure.
-
-In some cases VTK data root may not be detected by the installer, then manually set the VTK data source as the extracted folder of VTK data as below.vtk
-
-Edit its settings as required and press c, if generate option (g) is not present press c again.
-
-Press g to generate.
-
-Type
-	
-make
-
-, this process will take some considerable time (maybe hours).
-
-Finally type
-	
-sudo make install
-
-for complete the installation.
-
 
 Download and Install ITK
 ========================
 
-This process is also similar to installing VTK. Following are the steps for installing ITK on Ubuntu.
-
-Download ITK files from ITK web site.
-
-Extract all ITK files.
-
-Create folder named ITK.
-
-Go to ITK folder from Terminal.
-
-Type
+	Download the latest ITK files from ITK web site http://www.itk.org/ITK/resources/software.html.
 	
-ccmake . itk/InsightToolkit-4.3.1 (location where ITK file extracted)
-
-Press c to configure the ITK setup. After configuration process press c again.
-
-Press g to generate and exit from configuration window.
-
-Type
+	Extract all ITK files and enter in the unpacked directory.
+		
+	$ cmake . itk/InsightToolkit-4.3.1 ( assuming standard installation path and configurations)
 	
-make
-
-for make process. Then type
+	$ ccmake . .... to call the ncursed configuration gui.
 	
-sudo make install
+		Press c to configure the ITK setup. After configuration process press c again.
+	
+		Press g to generate and exit from configuration window.
+	
+	Once the process has ended, and the Makefile has been created in your directory
+		
+	$ make 
+	$ sudo make install
+	
+	
 
-For final step of installation. Then ITK installation is complete.
+Download and Install VTK
+========================
 
-
+	Download VTK from VTK web page.
+	
+	URL: http://www.vtk.org/VTK/resources/software.html
+	
+	Then extract vtk and vtk data files.
+	
+	Goto vtk folder using Terminal and type
+		
+	ccmake .
+	
+	After processing it will prompt a configuration option, press ‘c‘ to configure.
+	
+	In some cases VTK data root may not be detected by the installer, then manually set the VTK data source as the extracted folder of VTK data as below.vtk
+	
+	Edit its settings as required and press c, if generate option (g) is not present press c again.
+	
+	Press g to generate.
+	
+	Type
+		
+	make
+	
+	, this process will take some considerable time (maybe hours).
+	
+	Finally type
+		
+	sudo make install
+	
+	for complete the installation.
 Build and Run
 =============
 
