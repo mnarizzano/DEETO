@@ -1,81 +1,90 @@
 #!/usr/bin/perl
-#variabili da modificare all'occorrenza
-$subjects_dir="/biomix/home/staff/gabri/Dropbox/DEETO-DATA";
+package deeto;
 
-$numMax_campioni = 5; #10
-$init_distanza = 1.0; #1.0
-$end_distanza = 16.0; # 10.0
+use Exporter;
 
-# Subject index from CLI
-if ($#ARGV < 0)  {
-	$subj = 1;
-}else{
-    $subj = $ARGV[0]; 
-} 
+our @ISA=qw( Exporter );
+our @EXPORT_OK=qw(prepare_analysis_file);
 
-$subject_dir=$subjects_dir."/subject".sprintf("%02s",$subj);
-$conf=$subject_dir."/test.conf";
+sub prepare_analysis_files{
+	#variabili da modificare all'occorrenza
+	$subjects_dir="/biomix/home/staff/gabri/Dropbox/DEETO-DATA";
 
-printf("Doing Analyses on subject %d\n\t config file $conf\n",$subj);
- 
-open(CONFIG,"< $conf") or die $!;
-@config = <CONFIG>;
-close(CONFIG);
+	$numMax_campioni = 5; #10
+	$init_distanza = 1.0; #1.0
+	$end_distanza = 16.0; # 10.0
 
-# Prima riga contiene il nome della CT
-$file_ct=$subject_dir.'/'.$config[0];
-chomp($file_ct);
-# Seconda riga contiene il nome del file fcsv
-$file=$subject_dir.'/'.$config[1];
-chomp($file);
-# La terza riga contiene l'output directory dove mettere i files
-$outdir = $subject_dir.'/'.$config[2];
-chomp($outdir);
+	# Subject index from CLI
+	if (scalar(@_) < 0)  {
+		$subj = 1;
+	}else{
+		$subj = @_; 
+	} 
 
-printf("\t%s\n\t%s\n\t%s\n",$file_ct,$file,$outdir);
+	$subject_dir=$subjects_dir."/subject".sprintf("%02s",$subj);
+	$conf=$subject_dir."/test.conf";
 
-open(FCSV,"< $file") or die $!;
-@fcsv = <FCSV>;
-close(FCSV);
+	printf("Doing Analyses on subject %d\n\t config file $conf\n",$subj);
+	 
+	open(CONFIG,"< $conf") or die $!;
+	@config = <CONFIG>;
+	close(CONFIG);
 
-for($distanza = $init_distanza; $distanza < $end_distanza; $distanza*=2) {
-  for($campione = 0; $campione < $numMax_campioni; $campione++){
-			$file_out = $outdir . "sample_d".$distanza . "_c".$campione.".fcsv";
-			open(OUT,"> $file_out") or die $!;
-	
-			$i = 0;
-			## stampa header del file fcsv 
-			while (!($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),/)){
-					printf(OUT "$fcsv[$i]");
-					$i++;
-					
+	# Prima riga contiene il nome della CT
+	$file_ct=$subject_dir.'/'.$config[0];
+	chomp($file_ct);
+	# Seconda riga contiene il nome del file fcsv
+	$file=$subject_dir.'/'.$config[1];
+	chomp($file);
+	# La terza riga contiene l'output directory dove mettere i files
+	$outdir = $subject_dir.'/'.$config[2];
+	chomp($outdir);
+
+	printf("\t%s\n\t%s\n\t%s\n",$file_ct,$file,$outdir);
+
+	open(FCSV,"< $file") or die $!;
+	@fcsv = <FCSV>;
+	close(FCSV);
+
+	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza*=2) {
+	  for($campione = 0; $campione < $numMax_campioni; $campione++){
+				$file_out = $outdir . "sample_d".$distanza . "_c".$campione.".fcsv";
+				open(OUT,"> $file_out") or die $!;
+		
+				$i = 0;
+				## stampa header del file fcsv 
+				while (!($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),/)){
+						printf(OUT "$fcsv[$i]");
+						$i++;
+						
+				}
+				
+				# genera nuovi punti target per ogni elettrodo nel file fcsv originale
+				for(; $i <= $#fcsv; $i+=1){
+						if($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
+							$c = $1; # contatto
+							$x1 = scalar($2);
+							$y1 = scalar($3);
+							$z1 = scalar($4);	
+							$t1 = scalar($5);
+							$s1 = scalar($6);
+							$j = $i + 1;
+							if($fcsv[$j] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
+								$x2 = scalar($2);
+								$y2 = scalar($3);
+								$z2 = scalar($4);
+								$t2 = scalar($5);
+								$s2 = scalar($6);
+								printNewTarget($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
+								$i++;
+							}
+						} 
+				}
 			}
-			
-			# genera nuovi punti target per ogni elettrodo nel file fcsv originale
-			for(; $i <= $#fcsv; $i+=1){
-					if($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
-						$c = $1; # contatto
-						$x1 = scalar($2);
-						$y1 = scalar($3);
-						$z1 = scalar($4);	
-						$t1 = scalar($5);
-						$s1 = scalar($6);
-						$j = $i + 1;
-						if($fcsv[$j] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
-							$x2 = scalar($2);
-							$y2 = scalar($3);
-							$z2 = scalar($4);
-							$t2 = scalar($5);
-							$s2 = scalar($6);
-							printNewTarget($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
-							$i++;
-						}
-					} 
-			}
-		}
+	}
+	close(OUT);
+	exit(0);
 }
-close(OUT);
-exit(0);
 
 sub printNewTarget
 {
@@ -188,3 +197,5 @@ sub printNewTarget
     printf(OUT "$contatto,$xt,$yt,$zt,$tt,$st\n");
 
 }
+
+1;
