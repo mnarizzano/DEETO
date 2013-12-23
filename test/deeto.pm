@@ -6,25 +6,19 @@ use Exporter;
 our @ISA=qw( Exporter );
 our @EXPORT_OK=qw(prepare_analysis_file);
 
-sub prepare_analysis_files{
-	#variabili da modificare all'occorrenza
-	$subjects_dir="/biomix/home/staff/gabri/Dropbox/DEETO-DATA";
+our $subjects_dir="/biomix/home/staff/gabri/Dropbox/DEETO-DATA";
 
-	$numMax_campioni = 5; #10
-	$init_distanza = 1.0; #1.0
-	$end_distanza = 16.0; # 10.0
+our $file_ct;
+our $file_fcsv;
+our $outdir;
 
-	# Subject index from CLI
-	if (scalar(@_) < 0)  {
-		$subj = 1;
-	}else{
-		$subj = @_; 
-	} 
 
-	$subject_dir=$subjects_dir."/subject".sprintf("%02s",$subj);
+sub read_conf_file{
+
+	$subject_dir=$subjects_dir."/subject".sprintf("%02s",@_);
 	$conf=$subject_dir."/test.conf";
 
-	printf("Doing Analyses on subject %d\n\t config file $conf\n",$subj);
+	printf("Doing Analyses on subject %d\n\t config file $conf\n",@_);
 	 
 	open(CONFIG,"< $conf") or die $!;
 	@config = <CONFIG>;
@@ -34,15 +28,30 @@ sub prepare_analysis_files{
 	$file_ct=$subject_dir.'/'.$config[0];
 	chomp($file_ct);
 	# Seconda riga contiene il nome del file fcsv
-	$file=$subject_dir.'/'.$config[1];
-	chomp($file);
+	$file_fcsv=$subject_dir.'/'.$config[1];
+	chomp($file_fcsv);
 	# La terza riga contiene l'output directory dove mettere i files
 	$outdir = $subject_dir.'/'.$config[2];
 	chomp($outdir);
 
-	printf("\t%s\n\t%s\n\t%s\n",$file_ct,$file,$outdir);
+	printf("\t\t%s\n\t\t%s\n\t\t%s\n",$file_ct,$file_fcsv,$outdir);
+}
 
-	open(FCSV,"< $file") or die $!;
+sub prepare_analysis_files{
+	#variabili da modificare all'occorrenza
+
+	$numMax_campioni = 5; #10
+	$init_distanza = 1.0; #1.0
+	$end_distanza = 16.0; # 10.0
+
+	if (scalar(@_) < 0)  {
+		$subj = 1;
+	}else{
+		$subj = @_; 
+	} 
+	 read_conf_file($subj);
+
+	open(FCSV,"< $file_fcsv") or die $!;
 	@fcsv = <FCSV>;
 	close(FCSV);
 
@@ -129,15 +138,12 @@ sub printNewTarget
 			$te = $tb;
 			$se = $sb;
     }
-#    printf("$contatto,($xt,$yt,$zt)");
     $x0 = $xt;
     $y0 = $yt;
     $z0 = $zt;
     $x1 = $xe;
     $y1 = $ye;
     $z1 = $ze;
-    # P0 = (xt,yt,zt)
-    # P1 = (xe,yt,zt)
     # tiro a caso due numeri per (l,m,n) e fisso il terzo di conseguenza.
     
 
@@ -192,9 +198,24 @@ sub printNewTarget
 	$yt = sprintf("%.4f",$yt);
 	$zt = sprintf("%.4f",$zt);
 
-#    printf("($xt,$yt,$zt)\n");
     printf(OUT "$contatto,$xe,$ye,$ze,$te,$se\n");
     printf(OUT "$contatto,$xt,$yt,$zt,$tt,$st\n");
+
+}
+
+sub run_single{
+	#this case is quite simple
+	`deeto -c $file_ct -f $file_fcsv -o ciccio.fcsv -1 2> /dev/null`; 
+}
+
+sub run_robustness_test{
+	# this is a bit more complicated 
+
+	@files_in=glob($outdir.'/sample*');
+
+	foreach(@files_in){
+		`deeto -c $file_ct -f $files_in -o ciccio.fcsv -1 2> /dev/null`; 	
+	}
 
 }
 
