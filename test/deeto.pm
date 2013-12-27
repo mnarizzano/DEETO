@@ -42,14 +42,9 @@ sub prepare_analysis_files{
 
 	$numMax_campioni = 5; #10
 	$init_distanza = 1.0; #1.0
-	$end_distanza = 16.0; # 10.0
+	$end_distanza = 16.0; #10.0
 
-	if (scalar(@_) < 0)  {
-		$subj = 1;
-	}else{
-		$subj = @_; 
-	} 
-	 read_conf_file($subj);
+	read_conf_file(@_);
 
 	open(FCSV,"< $file_fcsv") or die $!;
 	@fcsv = <FCSV>;
@@ -92,7 +87,6 @@ sub prepare_analysis_files{
 			}
 	}
 	close(OUT);
-	exit(0);
 }
 
 sub printNewTarget
@@ -204,19 +198,25 @@ sub printNewTarget
 }
 
 sub run_single{
-	#this case is quite simple
-	`deeto -c $file_ct -f $file_fcsv -o ciccio.fcsv -1 2> /dev/null`; 
+	# this case is quite simple
+	my $out_dir;
+	$out_dir = $subjects_dir."/subject".sprintf("%02s",@_);
+	@args ="deeto -c $file_ct -f $file_fcsv -o $out_dir/recon_test.fcsv -1 2>> error.log 1> out.log " ;
+	system(@args) == 0 or die "system @args failed: $?";
 }
 
 sub run_robustness_test{
 	# this is a bit more complicated 
+	my @files_in= glob($outdir.'sample*');
 
-	@files_in=glob($outdir.'/sample*');
+	foreach $file (@files_in){
 
-	foreach(@files_in){
-		`deeto -c $file_ct -f $files_in -o ciccio.fcsv -1 2> /dev/null`; 	
+		$fcsv_in = $file;
+		($fcsv_out= $file ) =~ s|sample|recon_test|g;
+
+		@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 2>> error.log 1> out.log " ;
+		system(@args) ==0 or die "system @args failed: $?"; 	
 	}
-
 }
 
 1;
