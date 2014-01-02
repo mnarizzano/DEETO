@@ -50,7 +50,7 @@ sub prepare_analysis_files{
 	@fcsv = <FCSV>;
 	close(FCSV);
 
-	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza*=2) {
+	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza+=2) {
 	  for($campione = 0; $campione < $numMax_campioni; $campione++){
 				$file_out = $outdir . "sample_d".$distanza . "_c".$campione.".fcsv";
 				open(OUT,"> $file_out") or die $!;

@@ -18,7 +18,7 @@ for subj_id = 1:2
 	% read the original recon.file
 	parent_folder = [subjects_dir 'subject' num2str(sprintf('%02d',subj_id))];
 
-	Afname = [parent_folder '/recon_test.fcsv']
+	Afname = [parent_folder '/recon_test.fcsv'];
 	recon_files   = dir([parent_folder '/data/recon_test*.fcsv']);
 	filenames	  = arrayfun(@(x)(x.name),recon_files,'UniformOutput',false);
 	samples_order = regexp(filenames,'\d+','match');
