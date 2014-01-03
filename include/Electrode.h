@@ -34,10 +34,11 @@ class Electrode {
 
   friend ostream& operator<<(ostream& os, const Electrode& obj){
 	  ConstContactIterator it;
-	  ulong n = obj.getContactNumber();
+	  //ulong n = obj.getContactNumber();
+	  ushort n = 1;
 
 	  for(it = obj.begin(); it != obj.end(); it++){
-		  os<<obj.getName()<<n--<<","<<(*it)[0]<<","<<(*it)[1]<<","<<(*it)[2]<<",1,1"<<endl;
+		  os<<obj.getName()<<n++<<","<<(*it)[0]<<","<<(*it)[1]<<","<<(*it)[2]<<",1,1"<<endl;
 	  }
 	  return os;
   }
