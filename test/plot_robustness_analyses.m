@@ -9,8 +9,8 @@ subjects_dir = '/biomix/home/staff/gabri/Dropbox/DEETO-DATA/';
 
 
 %subjs_idx = [2,3,5,6,7,8,9,11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
-%subjs_idx = [2,3];
-subjs_idx = [11,15,17,19,24,31,34,38,39,40,41,42];
+%subjs_idx = [11];
+subjs_idx = [11,15,17,19,24,31,34,39,40,41,42]; % 38 ??
 nSubjects = numel(subjs_idx);
 
 subj_offset= 0;
@@ -53,10 +53,11 @@ for subj_id = subjs_idx
 		subj_offset = subj_offset+1;
 	else
 		Bfname = [parent_folder '/recon_manual.fcsv'];
-		DD1(subj_id) = analysis(Afname, Bfname);
+		[DD1(subj_id) ,~  ,NN1(subj_id)]= analysis(Afname, Bfname);
 	end
  
 end
+
 %
 %
 %figure, 
@@ -70,8 +71,9 @@ end
 %	ylabel('# missing contacts');
 %	xlim([min(dist_indices) max(dist_indices)]);
 %	box off;
-DD1
-find(isnan(DD1))
+mean(DD1(DD1~=0))
+std(DD1(DD1~=0))
+sum(NN1)
 
 end
 
@@ -85,15 +87,31 @@ function [DD, nContactsMissing, nContacts] = analysis(A,B)
 	% the lines above are necessary only
 	%+ in the comparison with manually segmented data
 	%+ since they are defined in centered geometrical space
+%	BPoints = BPoints .* repmat([-1, -1, 1],[size(BPoints,1) 1]);
 	offset  = readTransform(B);
-	BPoints = BPoints + repmat(offset(1:end-1)',[size(BPoints,1) 1]);
+	offset  = offset(1:3)';
+	BPoints = BPoints + repmat(offset,[size(BPoints,1) 1]);
+	BPoints = BPoints .* repmat([-1, -1, 1],[size(BPoints,1) 1]);
+
 
 	% Check points order based on label ordering
 	[f, ord] = ismember(BLabels, ALabels);
+%	fid = fopen('test.dat','w');
+%	AA = ALabels(ord(f==1));
+%	AP = APoints(ord(f==1),:);
+%	BB = BLabels(f==1);
+%	BP = BPoints(f==1,:);
+
+%	for ii = 1:numel(find(f))
+%		fprintf(fid,'%s,%f,%f,%f,%s,%f,%f,%f\n',BB{ii},BP(ii,1),BP(ii,2),BP(ii,3),...
+%				AA{ii},AP(ii,1),AP(ii,2),AP(ii,3));
+%	end
+%	fclose(fid);
 
 	DD = mean( sqrt( sum( (BPoints(f==1,:) - APoints(ord(f==1),:)).^2,2)));
 	nContactsMissing = numel(ALabels) - numel(f==1);
-	nContacts = numel(ALabels);
+%	nContacts = numel(ALabels);
+	nContacts = numel(BLabels);
 	
 end
 
@@ -107,11 +125,10 @@ function t = readTransform(B)
 	end
 
 	ref					= load_untouch_header_only(fname{1});
-	center	 			= round(ref.dime.dim(2:4)./2.0);
+	center	 			= floor(ref.dime.dim(2:4)./2.0);
 	ref_sform			= [ref.hist.srow_x;ref.hist.srow_y;ref.hist.srow_z;0 0 0 1];
 	clear ref;
 
 	t 					= ref_sform * [center, 1]';
 
 end
-
