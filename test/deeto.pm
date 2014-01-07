@@ -13,38 +13,28 @@ our $file_fcsv;
 our $outdir;
 
 
-sub read_conf_file{
-
+sub init{
 	$subject_dir=$subjects_dir."/subject".sprintf("%02s",@_);
-	$conf=$subject_dir."/test.conf";
-
-	printf("Doing Analyses on subject %d\n\t config file $conf\n",@_);
 	 
-	open(CONFIG,"< $conf") or die $!;
-	@config = <CONFIG>;
-	close(CONFIG);
+	$file_ct=$subject_dir.'/r_oarm_seeg_cleaned.nii.gz';
 
-	# Prima riga contiene il nome della CT
-	$file_ct=$subject_dir.'/'.$config[0];
-	chomp($file_ct);
-	# Seconda riga contiene il nome del file fcsv
-	$file_fcsv=$subject_dir.'/'.$config[1];
-	chomp($file_fcsv);
-	# La terza riga contiene l'output directory dove mettere i files
-	$outdir = $subject_dir.'/'.$config[2];
-	chomp($outdir);
+	$file_fcsv=$subject_dir.'/seeg.fcsv';
 
+	$outdir = $subject_dir.'/data';
+
+	printf("Doing Analyses on subject %d\n");
 	printf("\t\t%s\n\t\t%s\n\t\t%s\n",$file_ct,$file_fcsv,$outdir);
+
 }
 
-sub prepare_analysis_files{
+sub run_robustness_test{
 	#variabili da modificare all'occorrenza
 
 	$numMax_campioni = 5; #10
 	$init_distanza = 1.0; #1.0
 	$end_distanza = 16.0; #10.0
 
-	read_conf_file(@_);
+	init(@_);
 
 	open(FCSV,"< $file_fcsv") or die $!;
 	@fcsv = <FCSV>;
@@ -52,41 +42,44 @@ sub prepare_analysis_files{
 
 	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza+=2) {
 	  for($campione = 0; $campione < $numMax_campioni; $campione++){
-				$file_out = $outdir . "sample_d".$distanza . "_c".$campione.".fcsv";
-				open(OUT,"> $file_out") or die $!;
 		
-				$i = 0;
-				## stampa header del file fcsv 
-				while (!($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),/)){
-						printf(OUT "$fcsv[$i]");
-						$i++;
-						
-				}
+		$file_out = $outdir . "sample_d".$distanza . "_c".$campione.".fcsv";
+		open(OUT,"> $file_out") or die $!;
+
+		$i = 0;
+		## stampa header del file fcsv 
+		## probably useless ... 
+		while (!($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),/)){
+				printf(OUT "$fcsv[$i]");
+				$i++;
 				
-				# genera nuovi punti target per ogni elettrodo nel file fcsv originale
-				for(; $i <= $#fcsv; $i+=1){
-						if($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
-							$c = $1; # contatto
-							$x1 = scalar($2);
-							$y1 = scalar($3);
-							$z1 = scalar($4);	
-							$t1 = scalar($5);
-							$s1 = scalar($6);
-							$j = $i + 1;
-							if($fcsv[$j] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
-								$x2 = scalar($2);
-								$y2 = scalar($3);
-								$z2 = scalar($4);
-								$t2 = scalar($5);
-								$s2 = scalar($6);
-								printNewTarget($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
-								$i++;
-							}
-						} 
-				}
+		}
+		
+		# genera nuovi punti target per ogni elettrodo nel file fcsv originale
+		for(; $i <= $#fcsv; $i+=1){
+				if($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
+					$c = $1; # contatto
+					$x1 = scalar($2);
+					$y1 = scalar($3);
+					$z1 = scalar($4);	
+					$t1 = scalar($5);
+					$s1 = scalar($6);
+					$j = $i + 1;
+					if($fcsv[$j] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
+						$x2 = scalar($2);
+						$y2 = scalar($3);
+						$z2 = scalar($4);
+						$t2 = scalar($5);
+						$s2 = scalar($6);
+						printNewTarget($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
+						$i++;
+					}
+				} 
 			}
+		}
+		close(OUT);
+
 	}
-	close(OUT);
 }
 
 sub printNewTarget
@@ -104,7 +97,7 @@ sub printNewTarget
     $zb = $punti[8];
     $tb = $punti[9];
     $sb = $punti[10];
-    $R= $punti[11]; #RAGGIO DELLA SFERA
+    $R  = $punti[11]; #RAGGIO DELLA SFERA
 
     #calcolo la distanza tra O e i due punti:
     $da = $xa**2 + $ya**2 + $za**2;
@@ -112,23 +105,23 @@ sub printNewTarget
     if($da > $db) { 
 			$xt = $xb; 
 			$yt = $yb;
-      $zt = $zb;
+      		$zt = $zb;
 			$tt = $tb;
 			$st = $sb;
 			$xe = $xa; 
 			$ye = $ya;
-      $ze = $za;	
+      		$ze = $za;	
 			$te = $ta;
 			$se = $sa;
     } else {
 			$xt = $xa; 
 			$yt = $ya;
-      $zt = $za;
+      		$zt = $za;
 			$tt = $ta;
 			$st = $sa;
 			$xe = $xb; 
 			$ye = $yb;
-      $ze = $zb;	
+      		$ze = $zb;	
 			$te = $tb;
 			$se = $sb;
     }
@@ -167,7 +160,7 @@ sub printNewTarget
     $pari = int(rand()*1000) % 2;
     if ($pari == 0) {
 			$t = $R/$delta;
-    }else {
+    } else {
 			$t = -1*$R/$delta;
     }
     $xt += $l*$t;
@@ -205,18 +198,18 @@ sub run_single{
 	system(@args) == 0 or die "system @args failed: $?";
 }
 
-sub run_robustness_test{
-	# this is a bit more complicated 
-	my @files_in= glob($outdir.'sample*');
-
-	foreach $file (@files_in){
-
-		$fcsv_in = $file;
-		($fcsv_out= $file ) =~ s|sample|recon_test|g;
-
-		@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 2>> error.log 1> out.log " ;
-		system(@args) ==0 or die "system @args failed: $?"; 	
-	}
-}
+#sub run_robustness_test{
+#	# this is a bit more complicated 
+#	my @files_in= glob($outdir.'sample*');
+#
+#	foreach $file (@files_in){
+#
+#		$fcsv_in = $file;
+#		($fcsv_out= $file ) =~ s|sample|recon_test|g;
+#
+#		@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 2>> error.log 1> out.log " ;
+#		system(@args) ==0 or die "system @args failed: $?"; 	
+#	}
+#}
 
 1;
