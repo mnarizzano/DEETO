@@ -2,15 +2,15 @@ function varargout = plotRobustnessResults(varargin)
 % plotRobustnessResults
 
 % Edited 2013-12-23 by Gabriele Arnulfo <gabriele.arnulfo@gmail.com>
-method = 2;
+method = 1;
 
 subjects_dir = '/biomix/home/staff/gabri/Dropbox/DEETO-DATA/';
 % pre allocate mem to speed up computation
 
 
-%subjs_idx = [2,3,5,6,7,8,9,11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
-%subjs_idx = [11];
-subjs_idx = [11,15,17,19,24,31,34,39,40,41,42]; % 38 ??
+subjs_idx = [1,2,3,6,8,9,11,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
+%subjs_idx = [42];
+%subjs_idx = [11,15,17,19,24,31,34,39,40,41,42]; % 38 ??
 nSubjects = numel(subjs_idx);
 
 subj_offset= 0;
@@ -58,22 +58,22 @@ for subj_id = subjs_idx
  
 end
 
-%
-%
-%figure, 
-%subplot(2,1,1), errorbar(dist_indices,mean(DD,2),std(DD,[],2)./sqrt(size(DD,2)));
-%	xlim([min(dist_indices) max(dist_indices)]);
-%	xlabel('Displacement (mm) ');
-%	ylabel('Erorr (mm) ');
-%	box off;
-%subplot(2,1,2), errorbar(dist_indices,mean(abs(MM),2),std(abs(MM),[],2)./sqrt(size(MM,2)));
-%	xlabel('Displacement (mm) ');
-%	ylabel('# missing contacts');
-%	xlim([min(dist_indices) max(dist_indices)]);
-%	box off;
-mean(DD1(DD1~=0))
-std(DD1(DD1~=0))
-sum(NN1)
+
+
+figure, 
+subplot(2,1,1), errorbar(dist_indices,mean(DD,2),std(DD,[],2)./sqrt(size(DD,2)));
+	xlim([min(dist_indices) max(dist_indices)]);
+	xlabel('Displacement (mm) ');
+	ylabel('Erorr (mm) ');
+	box off;
+subplot(2,1,2), errorbar(dist_indices,mean(abs(MM),2),std(abs(MM),[],2)./sqrt(size(MM,2)));
+	xlabel('Displacement (mm) ');
+	ylabel('# missing contacts');
+	xlim([min(dist_indices) max(dist_indices)]);
+	box off;
+%mean(DD1(DD1~=0))
+%std(DD1(DD1~=0))
+%sum(NN1)
 
 end
 
@@ -88,11 +88,11 @@ function [DD, nContactsMissing, nContacts] = analysis(A,B)
 	%+ in the comparison with manually segmented data
 	%+ since they are defined in centered geometrical space
 %	BPoints = BPoints .* repmat([-1, -1, 1],[size(BPoints,1) 1]);
-	offset  = readTransform(B);
-	offset  = offset(1:3)';
-	BPoints = BPoints + repmat(offset,[size(BPoints,1) 1]);
-	BPoints = BPoints .* repmat([-1, -1, 1],[size(BPoints,1) 1]);
-
+%	offset  = readTransform(B);
+%	offset  = offset(1:3)';
+%	BPoints = BPoints + repmat(offset,[size(BPoints,1) 1]);
+%	BPoints = BPoints .* repmat([-1, -1, 1],[size(BPoints,1) 1]);
+%
 
 	% Check points order based on label ordering
 	[f, ord] = ismember(BLabels, ALabels);
@@ -110,8 +110,8 @@ function [DD, nContactsMissing, nContacts] = analysis(A,B)
 
 	DD = mean( sqrt( sum( (BPoints(f==1,:) - APoints(ord(f==1),:)).^2,2)));
 	nContactsMissing = numel(ALabels) - numel(f==1);
-%	nContacts = numel(ALabels);
-	nContacts = numel(BLabels);
+	nContacts = numel(ALabels);
+%	nContacts = numel(BLabels);
 	
 end
 

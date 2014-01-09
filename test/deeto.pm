@@ -20,9 +20,9 @@ sub init{
 
 	$file_fcsv=$subject_dir.'/seeg.fcsv';
 
-	$outdir = $subject_dir.'/data';
+	$outdir = $subject_dir.'/data/';
 
-	printf("Doing Analyses on subject %d\n");
+	printf("Doing Analyses on subject %d\n",@_);
 	printf("\t\t%s\n\t\t%s\n\t\t%s\n",$file_ct,$file_fcsv,$outdir);
 
 }
@@ -43,61 +43,128 @@ sub run_robustness_test{
 	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza+=2) {
 	  for($campione = 0; $campione < $numMax_campioni; $campione++){
 		
-		$file_out = $outdir . "sample_d".$distanza . "_c".$campione.".fcsv";
+		$file_out = $outdir . "sample_entry_d".$distanza . "_c".$campione.".fcsv";
 		open(OUT,"> $file_out") or die $!;
 
-		$i = 0;
+		my	$i = 0;
 		## stampa header del file fcsv 
 		## probably useless ... 
 		while (!($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),/)){
 				printf(OUT "$fcsv[$i]");
 				$i++;
-				
 		}
-		
-		# genera nuovi punti target per ogni elettrodo nel file fcsv originale
-		for(; $i <= $#fcsv; $i+=1){
-				if($fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
-					$c = $1; # contatto
-					$x1 = scalar($2);
-					$y1 = scalar($3);
-					$z1 = scalar($4);	
-					$t1 = scalar($5);
-					$s1 = scalar($6);
+		print "Running ";
+		do{
+			# genera nuovi punti target per ogni elettrodo nel file fcsv originale
+			for(; $i <= $#fcsv; $i+=1){
+				if(@res1 = $fcsv[$i] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
+					($c,$x1,$y1,$z1,$t1,$s1) = @res1;
 					$j = $i + 1;
-					if($fcsv[$j] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
-						$x2 = scalar($2);
-						$y2 = scalar($3);
-						$z2 = scalar($4);
-						$t2 = scalar($5);
-						$s2 = scalar($6);
-						printNewTarget($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
-						$i++;
+					if(@res2 = $fcsv[$j] =~/^([A-Z]\'*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),(-*[0-9]*\.*[0-9]*),([0-1]*),([0-1]*)/){
+						if($c == @res2[0]){
+							($cc,$x2,$y2,$z2,$t2,$s2) = @res2;
+
+							($entry,$target) = printNewEntry($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
+							printf( OUT join(',',@$entry)."\n");
+							printf( OUT join(',',@$target)."\n");
+							$i++;
+						}
 					}
 				} 
-			}
-		}
-		close(OUT);
 
+			}
+
+			close(OUT);
+			$fcsv_in = $file_out;
+			($fcsv_out= $file_out ) =~ s|sample|recon_test|g;
+
+			@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 2>> error.log 1> out.log " ;
+			print ".";
+		} until(system(@args) ==0 );
+		print "\n";
+	  } #end for campioni
+	}#end for distanza
+}
+
+sub distance
+{
+	my(@a, @b) = @_;
+	my $dist = 0;
+	my $i=0;
+
+	for(;$i < $#a; $i++)
+	{
+		$dist += ($a[$i] - $b[$i])**2;
 	}
+	return sqrt($dist);
+}
+
+sub printNewEntry
+{
+	my($name, $xa, $ya, $za, $ta,$sa,$xb,$yb,$zb,$tb,$sb,$R) = @_;
+	@a = ($xa, $ya, $za, $ta, $sa);
+	@b = ($xb, $yb, $zb, $tb, $sb);
+
+	$da = distance(@a,(0,0,0));
+	$db = distance(@b,(0,0,0));
+
+	if($da > $db){
+		# then a is the entry point and b is the target
+		@entry = @a;
+		@target = @b;
+	}else{
+		@entry = @b;
+		@target = @a;
+	}
+
+	$a = int(rand()*1000)/100;
+    $b = int(rand()*1000)/100;
+
+    if ((@entry[0] - @target[0]) != 0) {
+			# fisso m,n e l lo assegno di conseguenza. 
+			$m = $a;
+			$n = $b;
+			$l = -((@entry[1]-@target[1])*$m + (@entry[2]-@target[2])*$n) / (@entry[0]- @target[0]);
+    } elsif ((@entry[1] - @target[1]) != 0) {
+			# fisso l,n e m lo assegno di conseguenza. 
+			$l = $a;
+			$n = $b;
+			$m = -((@entry[0]-@target[0])*$m + (@entry[2]-@target[2])*$n) / (@entry[1]- @target[1]);
+    } elsif ((@entry[2] - @target[2]) != 0) {
+			# fisso l,m e n lo assegno di conseguenza. 
+			$l = $a;
+			$m = $b;
+			$n = -((@entry[0]-@target[0])*$m + (@entry[1]-@target[1])*$n) / (@entry[2]- @target[2]);
+		}else {
+			printf("Errore, il target giace su un piano extradimensionale!!!\n");
+			exit(0);
+    }
+	
+	@coeff = ($l,$m,$n);
+
+    $delta = sqrt($l**2 + $m**2 + $n**2);
+    $pari = int(rand()*1000) % 2;
+    if ($pari == 0) {
+			$t = $R/$delta;
+    } else {
+			$t = -1*$R/$delta;
+    }
+
+	for($i=0;$i<$#entry;$i++){
+		@entry[$i] += @coeff[$i]*$t;
+	}
+    
+	@str_entry = sprintf("%s,%.4f,%.4f,%.4f,1,1",$name, @entry);
+	@str_target = sprintf("%s,%.4f,%.4f,%.4f,1,1",$name, @target);
+	
+	return (\@str_entry, \@str_target);
 }
 
 sub printNewTarget
 {
     my @punti = @_;
+	my($contatto, $xa, $ya, $za, $ta,$sa,$xb,$yb,$zb,$tb,$sb,$R) = @_;
     my @newpunto;
-    $contatto = $punti[0];
-    $xa = $punti[1];
-    $ya = $punti[2];
-    $za = $punti[3];
-    $ta = $punti[4];
-    $sa = $punti[5];
-    $xb = $punti[6];
-    $yb = $punti[7];
-    $zb = $punti[8];
-    $tb = $punti[9];
-    $sb = $punti[10];
-    $R  = $punti[11]; #RAGGIO DELLA SFERA
 
     #calcolo la distanza tra O e i due punti:
     $da = $xa**2 + $ya**2 + $za**2;
@@ -192,24 +259,11 @@ sub printNewTarget
 
 sub run_single{
 	# this case is quite simple
+	init(@_);
 	my $out_dir;
 	$out_dir = $subjects_dir."/subject".sprintf("%02s",@_);
 	@args ="deeto -c $file_ct -f $file_fcsv -o $out_dir/recon_test.fcsv -1 2>> error.log 1> out.log " ;
 	system(@args) == 0 or die "system @args failed: $?";
 }
-
-#sub run_robustness_test{
-#	# this is a bit more complicated 
-#	my @files_in= glob($outdir.'sample*');
-#
-#	foreach $file (@files_in){
-#
-#		$fcsv_in = $file;
-#		($fcsv_out= $file ) =~ s|sample|recon_test|g;
-#
-#		@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 2>> error.log 1> out.log " ;
-#		system(@args) ==0 or die "system @args failed: $?"; 	
-#	}
-#}
 
 1;
