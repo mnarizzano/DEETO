@@ -117,26 +117,26 @@ int FCSVReader::update(void){
       vector< fiducialPoint>::iterator next_it = find(it+1,elements.end(),*it);
       
       if( next_it != elements.end()){
-	target = it->point;
-	entry  = next_it->point;
-	name = it->name;
-	
-	// add the contact only if name exist otherwise it means a blank line was found at the end of fcsv      
-	double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - 
-	  (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
-	
-	// Convert the fcsv points read into the CT space
-	if (optCent_.getValue() == true) {
-	  headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
-	  headframe_->fromCenterToRef_(&target); // traslation from center to ref space
-	}
-	// FILE FCSV is assumed in RAS (like ct) but since itk uses
-	// LPS we need to transform the point to LPS
-	headframe_->fromRAS2LPS_(&entry);      // from the LPS space to a RAS space      
-	headframe_->fromRAS2LPS_(&target);     // from the LPS space to a RAS space
-	cout<<name<<" "<<target<<" "<<entry<<" "<<endl;
-	// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
-	headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
+		target = it->point;
+		entry  = next_it->point;
+		name = it->name;
+		
+		// add the contact only if name exist otherwise it means a blank line was found at the end of fcsv      
+		double distance = (pow(target[0],2.0) + pow(target[1],2.0) + pow(target[2],2.0)) - 
+		  (pow(entry[0],2.0) + pow(entry[1],2.0) + pow(entry[2],2.0));    
+		
+		// Convert the fcsv points read into the CT space
+		if (optCent_.getValue() == true) {
+		  headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
+		  headframe_->fromCenterToRef_(&target); // traslation from center to ref space
+		}
+		// FILE FCSV is assumed in RAS (like ct) but since itk uses
+		// LPS we need to transform the point to LPS
+		headframe_->fromRAS2LPS_(&entry);      // from the LPS space to a RAS space      
+		headframe_->fromRAS2LPS_(&target);     // from the LPS space to a RAS space
+		cout<<name<<" "<<target<<" "<<entry<<" "<<endl;
+		// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
+		headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
       }
     }
   }

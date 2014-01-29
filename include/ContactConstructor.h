@@ -65,20 +65,25 @@ PhysicalPointType ContactConstructor::getPointWithHigherMoment_(PhysicalPointTyp
   double regionSize = minRegionSize;
   do {
     ctImage_->TransformPhysicalPointToIndex(center,vcenter);
-    filter->SetRegionOfInterest(retriveRegionAroundContact_(vcenter,regionSize));
-    calculator->SetImage(filter->GetOutput());
-    try {
-      filter->Update();
-      calculator->Compute();
-      center[0] = calculator->GetCenterOfGravity()[0]; 
-      center[1] = calculator->GetCenterOfGravity()[1]; 
-      center[2] = calculator->GetCenterOfGravity()[2]; 
-      //cout << "M " << calculator->GetTotalMass() << endl;
-      return center; 
-    } catch (itk::ExceptionObject &ex) {
-      //cerr<<"Error : " << "Momento Nullo" << __LINE__<<ex.what()<<endl;
-      regionSize += 1;
-    }
+	RegionType region = retriveRegionAroundContact_(vcenter,regionSize);
+	if(ctImage_->GetLargestPossibleRegion().IsInside( region )){
+		filter->SetRegionOfInterest(region );
+		calculator->SetImage(filter->GetOutput());
+		try {
+		  filter->Update();
+		  calculator->Compute();
+		  center[0] = calculator->GetCenterOfGravity()[0]; 
+		  center[1] = calculator->GetCenterOfGravity()[1]; 
+		  center[2] = calculator->GetCenterOfGravity()[2]; 
+		  //cout << "M " << calculator->GetTotalMass() << endl;
+		  return center; 
+		} catch (itk::ExceptionObject &ex) {
+		  //cerr<<"Error : " << "Momento Nullo" << __LINE__<<ex.what()<<endl;
+		  regionSize += 1;
+		}
+	} else {
+		maxRegionSize--;
+	}
   } while (regionSize < maxRegionSize);
   return center;
 }
@@ -91,6 +96,7 @@ void ContactConstructor::update( void ){
     PhysicalPointType targetPoint = electrodeItr->getTarget(); // set the first contact to the entry point
     printContact_(electrodeItr->getName(),0,entryPoint);
     printContact_(electrodeItr->getName(),0,targetPoint);
+
     int regionSize = 3;
     int maxRegionSize = 7;
     int k = 1;
@@ -106,8 +112,9 @@ void ContactConstructor::update( void ){
     double distance = 3.5;
     double delta = 0.3;
     int rs = regionSize;
-    printContact_(electrodeItr->getName(),0,entryPoint);
-    printContact_(electrodeItr->getName(),k,targetPoint);
+
+//    printContact_(electrodeItr->getName(),0,entryPoint);
+//    printContact_(electrodeItr->getName(),k,targetPoint);
     // pezza perche' il target point va fuori 
     if (getValue2_(targetPoint,rs) > 7000) {
       electrodeItr->addContact(targetPoint);
@@ -115,6 +122,7 @@ void ContactConstructor::update( void ){
     }
     // Inizio cerca dei punti
     do {
+
       // punto candidato
       c = getNextContact_(start,r1,r2,distance);
       //printContact_("C",k,c);
@@ -122,44 +130,44 @@ void ContactConstructor::update( void ){
       cprime = getPointWithHigherMoment_(c,rs,rs);
       //printContact_("C'",k,cprime);
       // calcolo angolo di deviazione tra il cprime e i punti precedenti
-      if ((r2.EuclideanDistanceTo(cprime) < 0.001) || 
-	  (r2.EuclideanDistanceTo(entryPoint) < 0.001)) 
-	angle = computeCos(r1,r2,r1,cprime);
+      if ((r2.EuclideanDistanceTo(cprime) < 0.001) || (r2.EuclideanDistanceTo(entryPoint) < 0.001)) 
+			angle = computeCos(r1,r2,r1,cprime);
       else angle = computeCos(r1,r2,r2,cprime);
       
       //cout << angle << " : " << r2.EuclideanDistanceTo(cprime) << " : " << getValue2_(cprime,rs) << " : " << rs << endl;
 
       if((angle <= MAX_ANGLE) && (rs > 1)) {
-	//distance = 3.2;
-	rs -= 1;
-	//cout << "Region Size " << rs << endl;
-	//  printContact_("S",k,n2);
+		//distance = 3.2;
+		rs -= 1;
+		//cout << "Region Size " << rs << endl;
+		//  printContact_("S",k,n2);
       } else if ((r2.EuclideanDistanceTo(entryPoint) > 0.1) &&                            // se non e' il primo punto.
 		 ((r2.EuclideanDistanceTo(cprime) > (distance + delta)) ||
 		  (r2.EuclideanDistanceTo(cprime)  < (distance - delta))) && (rs > 1)) {
-	rs -= 1;
+			rs -= 1;
       } else { 
-	if (rs == 1) {
-	  if (//(angle <= MAX_ANGLE) || 
-	      ((r2.EuclideanDistanceTo(entryPoint) > 0.1) &&                            // se non e' il primo punto.
-	      ((r2.EuclideanDistanceTo(cprime) > (distance + delta)) ||
-	       (r2.EuclideanDistanceTo(cprime)  < (distance - delta)))))
-	    cprime = c;
-	}
+		if (rs == 1) {
+		  if (//(angle <= MAX_ANGLE) || 
+			  ((r2.EuclideanDistanceTo(entryPoint) > 0.1) &&                            // se non e' il primo punto.
+			  ((r2.EuclideanDistanceTo(cprime) > (distance + delta)) ||
+			   (r2.EuclideanDistanceTo(cprime)  < (distance - delta)))))
+			cprime = c;
+		}
 	
-	if (getValue2_(cprime,rs)  > (rs*1500)) { // getValue2 calcola il momento
+		if (getValue2_(cprime,rs)  > (rs*1500)) { // getValue2 calcola il momento
        
-	  rs = regionSize;
-	  if (r1.EuclideanDistanceTo(targetPoint) > 0.1) r1 = r2;
-	  //cout << "D: " << r2.EuclideanDistanceTo(cprime) << endl;
-	  r2 = cprime;
-	  start = cprime;
-	  electrodeItr->addContact(cprime);
-	  printContact_(electrodeItr->getName(),k,cprime);
-	  k++;
-	}
+		  rs = regionSize;
+		  if (r1.EuclideanDistanceTo(targetPoint) > 0.1) r1 = r2;
+		  //cout << "D: " << r2.EuclideanDistanceTo(cprime) << endl;
+		  r2 = cprime;
+		  start = cprime;
+		  electrodeItr->addContact(cprime);
+		  printContact_(electrodeItr->getName(),k,cprime);
+		  k++;
+		}
       }
-    }while((getValue2_(cprime,rs)  > (rs*1500)) && (rs >= 1));
+    }while((getValue2_(cprime,rs)  > (rs*1500)) && (rs >= 1) && (k < 21));
+
     electrodeItr++;
   }
 }
@@ -191,27 +199,36 @@ void ContactConstructor::printContact_(string name,int number,PhysicalPointType 
 double ContactConstructor::getValue_(PhysicalPointType point) {
   VoxelPointType    voxelPoint;
   ctImage_->TransformPhysicalPointToIndex(point,voxelPoint);
-  return ctImage_->GetPixel(voxelPoint);
+
+  if(ctImage_->GetLargestPossibleRegion().IsInside(voxelPoint) )
+	  return ctImage_->GetPixel(voxelPoint);
+    else 
+	  return 0.0;
 }
 
 double ContactConstructor::getValue2_(PhysicalPointType point, double regionSize) {
   VoxelPointType    vcenter;
   ctImage_->TransformPhysicalPointToIndex(point,vcenter);
   RegionType region = retriveRegionAroundContact_(vcenter,regionSize);
-  itk::ImageRegionIterator<ImageType> imageIterator(ctImage_,region);
-  VoxelPointType p;
-  PhysicalPointType tmp;  
-  int num = 0;
-  double sum = 0.0;
-  while(!imageIterator.IsAtEnd()){
-    p = imageIterator.GetIndex();
-    ctImage_->TransformIndexToPhysicalPoint(p,tmp);
-    sum += getValue_(tmp);
-    num++;
-    ++imageIterator;
-  }
-  if (num > 0) return sum;
-  return 0;
+
+  if(ctImage_->GetLargestPossibleRegion().IsInside(vcenter) &&
+		  ctImage_->GetLargestPossibleRegion().IsInside(region)){
+
+	  itk::ImageRegionIterator<ImageType> imageIterator(ctImage_,region);
+	  VoxelPointType p;
+	  PhysicalPointType tmp;  
+	  int num = 0;
+	  double sum = 0.0;
+	  while(!imageIterator.IsAtEnd()){
+		p = imageIterator.GetIndex();
+		ctImage_->TransformIndexToPhysicalPoint(p,tmp);
+		sum += getValue_(tmp);
+		num++;
+		++imageIterator;
+	  }
+	  if (num > 0) return sum;
+	  return 0;
+  }else return 0.0;
 }
 
 
