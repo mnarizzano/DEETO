@@ -46,7 +46,7 @@ class ClinicalFrame {
   void fromCenterToRef_(PhysicalPointType *physicalPoint);
 
   /** this function transform a physicalPoint from LPS to RAS space */
-  void fromLPS2RAS_(PhysicalPointType *physicalPoint);
+  void fromRAS2LPS_(PhysicalPointType *physicalPoint);
 
   /** this function returns true or false whether the vector< Electrode> is empty or not */
   bool isempty( void) const{ return headframe_.empty();}
@@ -76,7 +76,7 @@ void ClinicalFrame::fromCenterToRef_(PhysicalPointType *physicalPoint){
   (*physicalPoint)[2] += physicalCenter[2];
 }
   
-void ClinicalFrame::fromLPS2RAS_(PhysicalPointType *physicalPoint){
+void ClinicalFrame::fromRAS2LPS_(PhysicalPointType *physicalPoint){
   // Transformed for the neurological space
   (*physicalPoint)[0] *= -1;
   (*physicalPoint)[1] *= -1;

@@ -49,6 +49,7 @@ class ContactConstructor {
   void printRegion_(RegionType region);
   double computeCos(PhysicalPointType a1,PhysicalPointType a2,PhysicalPointType b1,PhysicalPointType b2);
   double loadStatistics_( void );
+  double distanceToSurface_(PhysicalPointType p1,PhysicalPointType p2,PhysicalPointType p);
 };
 
 // Calcola il punto con il maggior momento in un cubo di larghezza regionSize e centro center. 
@@ -307,12 +308,15 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   // TODO : Nuovo criterio di stop: non si deve superare l'emisfero in cui giace l'elettrodo, ergo il piano passante per il centro (0,0,0)
   distance = 0.5;
   c = n2;
+  double d = entryPoint.EuclideanDistanceTo(n2) - distanceToSurface_(entryPoint,targetPoint,entryPoint);
+
   /// [TODO] se guarda solo il valore non va bene perche' se target point e' ad minchiam si ferma prima
   // Bisogna che continui per una distanza > 5.0 e si tenga in memoria l'ultimo valore > 500
-  while (distance < 10.5) {
+    while ((distance < 10.5) && (d < 2.5)){
     if(getValue_(c) > 500) n2 = c;
     c = getNextContact_(start,r1,r2,distance);
     distance += 0.5;
+    d = entryPoint.EuclideanDistanceTo(c) - distanceToSurface_(entryPoint,targetPoint,entryPoint);
     //printContact_("C",1,c);
   }
   //printContact_("C",1,c);
@@ -411,5 +415,17 @@ double ContactConstructor::loadStatistics_( void ) {
   cout << "MEAN   : " << mean << endl;
   cout << "STD   : " << std << endl;
 }
+
+/* 
+   Compute the distance between the point p from the surface passing
+   for O(0,0,0) (RAS) and having vector director ortogonal to the
+   stright line passing for (P2-P1)
+ */
+double ContactConstructor::distanceToSurface_(PhysicalPointType p1,PhysicalPointType p2,PhysicalPointType p){
+  double d = abs((p2[0]-p1[0])*p[0] + (p2[1]-p1[1])*p[1] + (p2[2]-p1[2])*p[2]) / sqrt(pow((p2[0]-p1[0]),2.0) + pow((p2[1]-p1[1]),2.0) + pow((p2[2]-p1[2]),2.0));
+  return d;
+}
   
 #endif //CONTACT_CONSTRUCTOR_H
+
+ 

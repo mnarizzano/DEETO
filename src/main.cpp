@@ -28,24 +28,24 @@ int main (int argc, char **argv) {
     string fileCT;
     string filefcsv;	
     string fileout;
-
+    FCSVReader fcsvReader(&cmd);
     FCSVWriter writer1(fileout, cmd);
-	#ifdef WITH_VTK
+#ifdef WITH_VTK
     VTKWriter writer2(fileout, cmd);
-	#endif
-
+#endif
+    
     cmd.parse( argc, argv );
-
+    
     fileCT  = ctArg.getValue();
     filefcsv = fiducialArg.getValue();	
     fileout  = file_outArg.getValue();
-
-	writer1.setFilename(fileout);
-
-	#ifdef WITH_VTK
-	writer2.setFilename(fileout);
-	#endif
-		
+    
+    writer1.setFilename(fileout);
+    
+#ifdef WITH_VTK
+    writer2.setFilename(fileout);
+#endif
+    
     if( fileCT.length() == 0 ||
 	filefcsv.length() == 0 ||
 	fileout.length() == 0){
@@ -74,7 +74,7 @@ int main (int argc, char **argv) {
     
     headFrame->setCT(ctImage);
     
-    FCSVReader fcsvReader;
+
     fcsvReader.setFileInput(&filefcsv);
     fcsvReader.setClinicalFrame(headFrame);
     assert(fcsvReader.update());
