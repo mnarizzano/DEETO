@@ -5,6 +5,7 @@
 #include <FCSVWriter.h>
 #include <ContactConstructor.h>
 #include <tclap/CmdLine.h>
+#include <itkOrientImageFilter.h>
 
 #ifdef WITH_VTK
 #include <VTKWriter.h>
@@ -59,6 +60,8 @@ int main (int argc, char **argv) {
     
     // CT read and send to handframe as parameter
     ImageReaderType::Pointer ctReader = ImageReaderType::New();
+	typedef itk::OrientImageFilter< ImageType, ImageType> orientFilter;
+	orientFilter::Pointer filter = orientFilter::New();
     itk::NiftiImageIO::Pointer niftiImage = itk::NiftiImageIO::New();
     ctReader->SetImageIO(niftiImage);
     ctReader->SetFileName(string(fileCT));
@@ -69,8 +72,21 @@ int main (int argc, char **argv) {
       cerr<<e.what()<<endl;
       return EXIT_FAILURE;
     }
+
+
+	filter->SetInput(ctReader->GetOutput());
+	filter->UseImageDirectionOn();
+	filter->SetDesiredCoordinateOrientation(itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAS);
+
+	try{
+		filter->Update();
+	}catch( ... ){
+		cerr<< " dammit "<<endl;
+		return EXIT_FAILURE;
+	}
     
     ImageType::Pointer ctImage = ctReader->GetOutput();
+//    ImageType::Pointer ctImage = filter->GetOutput();
     
     headFrame->setCT(ctImage);
     
@@ -84,8 +100,6 @@ int main (int argc, char **argv) {
     VoxelPointType voxelTarget;
     VoxelPointType voxelEntry;
     contactConstructor.update();  
-    
-  
     
     writer1.setClinicalFrame(headFrame);
     try{
