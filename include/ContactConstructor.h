@@ -7,25 +7,30 @@
 #include "Definitions.h"
 #include "Electrode.h"
 #include "ClinicalFrame.h"
-
+#include "itkImageToListSampleAdaptor.h"
+#include "itkHistogram.h"
+#include "itkSampleToHistogramFilter.h"
+#include "itkMinimumMaximumImageCalculator.h"
 
 class ContactConstructor {
 
  public:
   const static double MAX_ANGLE  = 0.988;
+
   //double maxAngle= 0.984807753; // dieci gradi
   //double maxAngle = 0.996194698; // cinque gradi
 
   ContactConstructor(  ImageType::Pointer ctImage, ClinicalFrame* headFrame, TCLAP::CmdLine* c ) {
     ctImage_   = ctImage;
     headFrame_ = headFrame;
+    
     //loadStatistics_();
   }
 
   ContactConstructor(  ImageType::Pointer ctImage, ClinicalFrame* headFrame) {
     ctImage_   = ctImage;
     headFrame_ = headFrame;
-    //loadStatistics_();
+    calcolaThreshold_();
   }
 
   ~ContactConstructor(){}
@@ -37,6 +42,7 @@ class ContactConstructor {
   ClinicalFrame*     headFrame_;
   
   double             angle_; 
+  double             threshold_; // Threshold for the intensity point
 
   RegionType retriveRegionAroundContact_(VoxelPointType index, int regionDim);
   void printContact_(string name,int  number,PhysicalPointType point);
@@ -50,6 +56,7 @@ class ContactConstructor {
   double computeCos(PhysicalPointType a1,PhysicalPointType a2,PhysicalPointType b1,PhysicalPointType b2);
   double loadStatistics_( void );
   double distanceToSurface_(PhysicalPointType p1,PhysicalPointType p2,PhysicalPointType p);
+  void calcolaThreshold_( void );
 };
 
 // Calcola il punto con il maggior momento in un cubo di larghezza regionSize e centro center. 
@@ -146,9 +153,12 @@ void ContactConstructor::update( void ){
 	       (r2.EuclideanDistanceTo(cprime)  < (distance - delta)))))
 	    cprime = c;
 	}
-	
-	if (getValue2_(cprime,rs)  > (rs*1500)) { // getValue2 calcola il momento
-       
+
+	// getValue2
+	// calcola il momento come sommatoria dei punti intorno a
+	// cprime, regione grande rs. almeno un terzo dei punti deve
+	// avere un valore sopra la soglia	
+	if (getValue2_(cprime,rs)  > (rs*3*threshold_)) { 
 	  rs = regionSize;
 	  if (r1.EuclideanDistanceTo(targetPoint) > 0.1) r1 = r2;
 	  //cout << "D: " << r2.EuclideanDistanceTo(cprime) << endl;
@@ -159,7 +169,7 @@ void ContactConstructor::update( void ){
 	  k++;
 	}
       }
-    }while((getValue2_(cprime,rs)  > (rs*1500)) && (rs >= 1));
+    }while((getValue2_(cprime,rs)  > (rs*rs*rs*threshold_/3)) && (rs >= 1));
     electrodeItr++;
   }
 }
@@ -259,8 +269,8 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   int rs = regionSize;
   
   int k = 0;
-  /* printContact_("T",k,entryPoint); */
-  /* k++; */
+  printContact_("T",k,entryPoint);
+  k++; 
   r1 = entryPoint;
   r2 = targetPoint;
   start = entryPoint;
@@ -268,11 +278,11 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   do {
     // punto candidato
     c = getNextContact_(start,r1,r2,distance);
-    //printContact_("C",k,c);
+    printContact_("C",k,c);
     // centro di massa
     n2 = getPointWithHigherMoment_(c,rs,rs);
     // calcolo l'angolo tra il centro e i precedenti punti per vedere se ha deviato.
-    //printContact_("N",k,n2);
+    printContact_("N",k,n2);
     if ((r2.EuclideanDistanceTo(n2) < 0.001) || (r2.EuclideanDistanceTo(targetPoint) < 0.001)) angle = computeCos(r1,r2,r1,n2);
     else angle = computeCos(r1,r2,r2,n2);
     // Se il punto nuovo C viene preso nel vuoto cosmico allora il
@@ -280,7 +290,7 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
     // cosmico' allora bisogna prendere un nuovo punto piu' distante
     // (distance += 0.5)
     //cout << angle << " : " << r2.EuclideanDistanceTo(n2) << " : " << getValue_(n2) << " : " << rs << endl;
-    if ((r2.EuclideanDistanceTo(n2) < 0.001) || (getValue_(n2) < 500)) {
+    if ((r2.EuclideanDistanceTo(n2) < 0.001) || (getValue_(n2) < threshold_)) {
       rs = regionSize;
       distance += 0.5;
       //cout << "DIST " << distance << endl;
@@ -292,7 +302,7 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
       //  printContact_("S",k,n2);
     } else {
       if(angle <= MAX_ANGLE){
-	if (getValue_(c) > 500) {
+	if (getValue_(c) > threshold_) {
 	  n2 = c;
 	}
       }
@@ -311,9 +321,9 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   double d = entryPoint.EuclideanDistanceTo(n2) - distanceToSurface_(entryPoint,targetPoint,entryPoint);
 
   /// [TODO] se guarda solo il valore non va bene perche' se target point e' ad minchiam si ferma prima
-  // Bisogna che continui per una distanza > 5.0 e si tenga in memoria l'ultimo valore > 500
+  // Bisogna che continui per una distanza > 5.0 e si tenga in memoria l'ultimo valore > threshold_
     while ((distance < 10.5) && (d < 2.5)){
-    if(getValue_(c) > 500) n2 = c;
+    if(getValue_(c) > threshold_) n2 = c;
     c = getNextContact_(start,r1,r2,distance);
     distance += 0.5;
     d = entryPoint.EuclideanDistanceTo(c) - distanceToSurface_(entryPoint,targetPoint,entryPoint);
@@ -371,7 +381,7 @@ double ContactConstructor::computeCos(PhysicalPointType a1,PhysicalPointType a2,
 
 
 double ContactConstructor::loadStatistics_( void ) {
-  // Non va bene, bisognerebbe considerare solo i valori > di una soglia minima (200/500)
+  // Non va bene, bisognerebbe considerare solo i valori > di una soglia minima 
   // visto che ci sono troppi punti = a 0;
   // Idea : fare una regione grande quanto un immagine (size = 255/255/255?)
   // Fare un filtro e iterare sulla regione e calcolare Mean/std/Min/Max a mano)
@@ -388,7 +398,7 @@ double ContactConstructor::loadStatistics_( void ) {
   while(!imageIterator.IsAtEnd()){
     
     value = ctImage_->GetPixel(imageIterator.GetIndex());
-    if (value >= 500.0) {
+    if (value >= threshold_) {
       sum += value;
       max = (value >= max ? value : max);
       min = (value < min ? value : min);
@@ -404,7 +414,7 @@ double ContactConstructor::loadStatistics_( void ) {
   itk::ImageRegionIterator<ImageType> imageIterator2(ctImage_,region);
   while(!imageIterator2.IsAtEnd()){  
     value = ctImage_->GetPixel(imageIterator2.GetIndex());
-    if (value >= 500.0) {
+    if (value >= threshold_) {
       sum += (mean - value) * (mean - value);
     }
     ++imageIterator2;
@@ -420,12 +430,67 @@ double ContactConstructor::loadStatistics_( void ) {
    Compute the distance between the point p from the surface passing
    for O(0,0,0) (RAS) and having vector director ortogonal to the
    stright line passing for (P2-P1)
- */
+*/
 double ContactConstructor::distanceToSurface_(PhysicalPointType p1,PhysicalPointType p2,PhysicalPointType p){
   double d = abs((p2[0]-p1[0])*p[0] + (p2[1]-p1[1])*p[1] + (p2[2]-p1[2])*p[2]) / sqrt(pow((p2[0]-p1[0]),2.0) + pow((p2[1]-p1[1]),2.0) + pow((p2[2]-p1[2]),2.0));
   return d;
 }
+
+void ContactConstructor::calcolaThreshold_( void ) {
+
+  // Questo calcola l'istogramma, ma non mi e' chiarissimo.
+  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType > AdaptorType;
+  AdaptorType::Pointer adaptor = AdaptorType::New();
+  adaptor->SetImage(ctImage_ );
+  typedef short HistogramMeasurementType;
+  typedef itk::Statistics::Histogram< HistogramMeasurementType > HistogramType;
+  typedef itk::Statistics::SampleToHistogramFilter< AdaptorType, HistogramType > FilterType;
+  FilterType::Pointer filter = FilterType::New();
+
+
+  typedef itk::MinimumMaximumImageCalculator <ImageType> ImageCalculatorFilterType;
   
+  ImageCalculatorFilterType::Pointer imageCalculatorFilter = ImageCalculatorFilterType::New ();
+  imageCalculatorFilter->SetImage(ctImage_);
+  imageCalculatorFilter->Compute();
+  
+  HistogramType::SizeType size( 1 );
+  size.Fill(255);
+  filter->SetInput( adaptor );
+  filter->SetHistogramSize( size );
+  filter->SetMarginalScale( 10 );
+  HistogramType::MeasurementVectorType min( 1 );
+  HistogramType::MeasurementVectorType max( 1 );
+  min.Fill( 0 );
+  max.Fill( 255 );
+  filter->SetHistogramBinMinimum( min );
+  filter->SetHistogramBinMaximum( max );
+  filter->Update();
+  HistogramType::ConstPointer histogram = filter->GetOutput();
+  const unsigned int histogramSize = histogram->Size();
+  std::cout << "Histogram size " << histogramSize << std::endl;
+  
+  double maxValue = imageCalculatorFilter->GetMaximum();
+  double totFreq = histogram->GetTotalFrequency();
+  double freqCumulativa = 0.0;
+  double sommaCumulativa = 0.0;
+  unsigned int bin=0;
+  while (freqCumulativa <= 0.99972) {
+    sommaCumulativa += histogram->GetFrequency( bin, 0 );
+    freqCumulativa = sommaCumulativa / totFreq;
+    bin++;
+  }
+  
+  threshold_ = (maxValue/255)*bin;
+  
+  
+  std::cout << "Number of bins = " << histogram->Size() << std::endl 
+            << " Total frequency = " << histogram->GetTotalFrequency() << std::endl 
+	    << " bin = "         << bin << std::endl 
+    	    << " max = "         << maxValue << std::endl 
+	    << " value = "         << threshold_ << std::endl 
+            << " Dimension sizes = " << histogram->GetSize() << std::endl;
+}
 #endif //CONTACT_CONSTRUCTOR_H
 
  
