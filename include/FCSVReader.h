@@ -127,6 +127,7 @@ int FCSVReader::update(void){
 		
 		// Convert the fcsv points read into the CT space
 		if (optCent_.getValue() == true) {
+		  // traslation from center to ref space		  
 		  headframe_->fromCenterToRef_(&entry);  // traslation from center to ref space
 		  headframe_->fromCenterToRef_(&target); // traslation from center to ref space
 		}
@@ -134,7 +135,7 @@ int FCSVReader::update(void){
 		// LPS we need to transform the point to LPS
 		headframe_->fromRAS2LPS_(&entry);      // from the LPS space to a RAS space      
 		headframe_->fromRAS2LPS_(&target);     // from the LPS space to a RAS space
-		cout<<name<<" "<<target<<" "<<entry<<" "<<endl;
+		//cout<<name<<" "<<target<<" "<<entry<<" "<<endl;
 		// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
 		headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
       }
