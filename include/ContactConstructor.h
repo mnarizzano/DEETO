@@ -16,10 +16,10 @@ class ContactConstructor {
 
  public:
   const static double MAX_ANGLE  = 0.988;
-
+  
   //double maxAngle= 0.984807753; // dieci gradi
   //double maxAngle = 0.996194698; // cinque gradi
-
+  
   ContactConstructor(  ImageType::Pointer ctImage, ClinicalFrame* headFrame, TCLAP::CmdLine* c ) {
     ctImage_   = ctImage;
     headFrame_ = headFrame;
@@ -101,13 +101,14 @@ void ContactConstructor::update( void ){
   while(electrodeItr != headFrame_->end()) {
     PhysicalPointType entryPoint = electrodeItr->getEntry(); // set the first contact to the entry point
     PhysicalPointType targetPoint = electrodeItr->getTarget(); // set the first contact to the entry point
-    //printContact_(electrodeItr->getName(),0,entryPoint);
-    // printContact_(electrodeItr->getName(),0,targetPoint);
+    printContact_(electrodeItr->getName(),0,entryPoint);
+    printContact_(electrodeItr->getName(),0,targetPoint);
 
     int regionSize = 3;
     int maxRegionSize = 7;
     int k = 1;
     entryPoint = lookForEntryPoint_(entryPoint,regionSize,maxRegionSize);
+    printContact_("REP",0,entryPoint);
     targetPoint = lookForTargetPoint_(entryPoint,targetPoint,regionSize,(maxRegionSize - 2)); // -2 perche' in teoria si e' sulla linea giusta ...
     PhysicalPointType c;                   // candidate
     PhysicalPointType cprime;              // best candidate
@@ -120,7 +121,6 @@ void ContactConstructor::update( void ){
     double delta = 0.3;
     int rs = regionSize;
 
-    /* printContact_("REP",0,entryPoint); */
     /* printContact_("RTP",0,targetPoint); */
     // pezza perche' il target point va fuori 
     if (getValue_(targetPoint,rs) > threshold_*3) {
@@ -129,6 +129,9 @@ void ContactConstructor::update( void ){
       k++;
     }
     // Inizio cerca dei punti
+    double distance2Entry = targetPoint.EuclideanDistanceTo(entryPoint);
+    double distance2cprime;
+
     do {
       // punto candidato
       c = getNextContact_(start,r1,r2,distance);
@@ -136,6 +139,7 @@ void ContactConstructor::update( void ){
       // cout << getValue_(c,rs) << ";" << rs << endl;
       // centro di massa
       cprime = getPointWithHigherMoment_(c,rs,rs);
+      distance2cprime = targetPoint.EuclideanDistanceTo(cprime);
       //printContact_("P'",k,cprime);
       //cout << getValue_(cprime,rs) << ";" << rs << endl;
       // calcolo angolo di deviazione tra il cprime e i punti precedenti
@@ -146,31 +150,19 @@ void ContactConstructor::update( void ){
       //cout << angle << " : " << r2.EuclideanDistanceTo(cprime) << " : " << getValue_(cprime,rs) << " : " << rs << endl;
 
       if((angle <= MAX_ANGLE) && (rs > 1)) {
-		//distance = 3.2;
-		rs -= 1;
-		//cout << "Region Size " << rs << endl;
-		//  printContact_("S",k,n2);
+	//distance = 3.2;
+	rs -= 1;
+	//cout << "Region Size " << rs << endl;
+	//  printContact_("S",k,n2);
       } else if ((r2.EuclideanDistanceTo(entryPoint) > 0.1) &&                            // se non e' il primo punto.
 		 ((r2.EuclideanDistanceTo(cprime) > (distance + delta)) ||
 		  (r2.EuclideanDistanceTo(cprime)  < (distance - delta))) && (rs > 1)) {
 	rs -= 1;
       } else { 
-	/*Inutile se rs = 1 allora cprime e c differiscono di pochissimo*/
-	/* if (rs == 1) { */
-	/*   if (//(angle <= MAX_ANGLE) ||  */
-	/*       ((r2.EuclideanDistanceTo(entryPoint) > 0.1) &&                            // se non e' il primo punto. */
-	/*       ((r2.EuclideanDistanceTo(cprime) > (distance + delta)) || */
-	/*        (r2.EuclideanDistanceTo(cprime)  < (distance - delta))))) */
-	/*     if() */
-	/*     cprime = c; */
-	/* } */
-
-	// getValue2
-	// calcola il momento come sommatoria dei punti intorno a
-	// cprime, regione grande rs. almeno un terzo dei punti deve
-	// avere un valore sopra la soglia	
-	
-	if (getValue_(cprime,rs)  > (threshold_)) { 
+	// Se distanza tra target-cprime e < distanza tra target ed entry a meno di un delta (4.0 poco piu' della distanza tra due contatti)
+	// allora probabilmente cprime e' un contatto, pero' per colpa della sogliatura e altri fattori, li non c'e' nulla.
+        // viene comunque considerato un valore.
+	if ((getValue_(cprime,rs)  > threshold_) || (distance2Entry - distance2cprime) > 4.0) { 
 	  rs = regionSize;
 	  if (r1.EuclideanDistanceTo(targetPoint) > 0.1) r1 = r2;
 	  //cout << "D: " << r2.EuclideanDistanceTo(cprime) << endl;
@@ -181,7 +173,7 @@ void ContactConstructor::update( void ){
 	  k++;
 	}
       }
-    }while((getValue_(cprime,rs)  > (threshold_)) && (rs >= 1) && (k<21));
+    }while(((getValue_(cprime,rs)  > (threshold_)) && (rs >= 1) && (k<21)) || ((distance2Entry - distance2cprime) > 4.0));
     electrodeItr++;
   }
 }
@@ -295,9 +287,8 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   
   double size = 0.0;
   double d;  // E' la distanza tra il punto corrente e il piano che taglia a meta' il cervello nella direzione ortogonale alla retta su cui giace il punto corrente
-  double d1; // E' la distanza tra l'ultimo punto calcolato con un valore significativo e il punto corrente.
-  // Scelgo come end point il piu' lontano tra target e/o il piano che
-  // passa per l'origine.
+
+  // Scelgo come end point il piu' lontano tra target e/o il piano che passa per l'origine.
   double riferimento1 = distanceToSurface_(entryPoint,targetPoint,entryPoint);
   double riferimento2 = entryPoint.EuclideanDistanceTo(targetPoint);
   double riferimento = (riferimento1 > riferimento2 ? riferimento2 : riferimento1);
@@ -306,31 +297,32 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   double maxDelta = -1.5;
   do {
     // punto candidato
-    c = getNextContact_(start,p1,p2,distance);
-    d = riferimento - entryPoint.EuclideanDistanceTo(c);
-    while((getValue_(c,3) < threshold_) && ((d >= maxDelta) || (d1 < 6.0))){
+    do {
+      c = getNextContact_(start,p1,p2,distance);
+      d = riferimento - entryPoint.EuclideanDistanceTo(c);
       distance += 1.0;
-      c = getNextContact_(p2,p1,p2,distance);
-      d = riferimento - entryPoint.EuclideanDistanceTo(c); // distanza dal piano mezzano
-      d1 = c.EuclideanDistanceTo(p2);
-      //cout << "DIST: " << d1 << ";" << d << ";" << distance<< endl;
-    }
-    //printContact_("C",k,c);
+      printContact_("C",k,c);
+      //cout << "DIST: " << getValue_(c,3) << " ; " << getValue_(c,2) << " ; " << getValue_(c,1) << " ; " << getValue_(c) << " ; " << d << " ; " << distance<< endl;
+    } while((getValue_(c,2) < 2*2*2*threshold_) && ((d >= maxDelta) || (distance < 6.0)));
+
     // centro di massa
-    if ((d >= maxDelta) || (d1 < 6.0)){ 
+    if ((d >= maxDelta) || (distance < 6.0)){ 
       p = getPointWithHigherMoment_(c,rs,rs);
       // calcolo l'angolo tra il centro e i precedenti punti per vedere se ha deviato.
       //printContact_("P",k,p);
       if ((p2.EuclideanDistanceTo(p) < 0.001) || (p2.EuclideanDistanceTo(targetPoint) < 0.001)) {
 	angle = computeCos(p1,p2,p1,p);
-	d1 = 1.0;
       } else {
 	angle = computeCos(p1,p2,p2,p);
-	d1 = p.EuclideanDistanceTo(p2);
       }
       d = riferimento - entryPoint.EuclideanDistanceTo(p);
       //cout << "DIST1: " << d1 << ";" << d << endl;
-      if((angle <= MAX_ANGLE) && (rs > 1)){
+      // k > 6: 6 e' un numero magico preso da analisi sperimentale(forse da tunare).
+      // Se k < 6 significa che si e' vicini all'entry point, quindi:
+      // - difficile che ci siano altri elettrodi vicini (poco rischio di deviazione)
+      // - e' piu' facile che abbia ragione il centro di massa che non
+      //   l'angolo preso tra punti poco precisi
+      if((angle <= MAX_ANGLE) && (rs > 1) && (k > 6)){ 
 	rs -= 1;
       } else {
 	distance = 3.2;
@@ -344,7 +336,7 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
     } else {
       if (getValue_(c,regionSize) > getValue_(p,regionSize)) p = c;
     }
-  } while ((d >= maxDelta) || (d1 < 6.0));
+  } while ((d >= maxDelta) || (distance < 6.0));
   distance = 1.0;
   //printContact_("x",k,p);
   c = p;
@@ -492,12 +484,12 @@ void ContactConstructor::calcolaThreshold_( void ) {
   
   threshold_ = (maxValue/255)*bin;
   
-  //  std::cout << "Histogram size " << histogramSize << std::endl;
-  /* std::cout << "Number of bins = " << histogram->Size() << std::endl  */
-  /*           << " Total frequency = " << histogram->GetTotalFrequency() << std::endl  */
-  /* 	    << " bin = "         << bin << std::endl  */
-  /*   	    << " max = "         << maxValue << std::endl  */
-  /* 	    << " value = "         << threshold_ << std::endl  */
+  /*  std::cout << "Histogram size " << histogramSize << std::endl; */
+  /* std::cout << "Number of bins = " << histogram->Size() << std::endl */
+  /*           << " Total frequency = " << histogram->GetTotalFrequency() << std::endl */
+  /* 	    << " bin = "         << bin << std::endl */
+  /*   	    << " max = "         << maxValue << std::endl */
+  /* 	    << " value = "         << threshold_ << std::endl */
   /*           << " Dimension sizes = " << histogram->GetSize() << std::endl; */
 }
 #endif //CONTACT_CONSTRUCTOR_H
