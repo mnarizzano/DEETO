@@ -43,7 +43,7 @@ sub run_robustness_test{
 	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza+=2) {
 	  for($campione = 0; $campione < $numMax_campioni; $campione++){
 		
-		$file_out = $outdir . "sample_entry_d".$distanza . "_c".$campione.".fcsv";
+		$file_out = $outdir . "sample_target_d".$distanza . "_c".$campione.".fcsv";
 		open(OUT,"> $file_out") or die $!;
 
 		my	$i = 0;
@@ -64,9 +64,14 @@ sub run_robustness_test{
 						if($c == @res2[0]){
 							($cc,$x2,$y2,$z2,$t2,$s2) = @res2;
 
-							($entry,$target) = printNewEntry($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
-							printf( OUT join(',',@$entry)."\n");
-							printf( OUT join(',',@$target)."\n");
+#							($entry,$target) = printNewEntry($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
+							($entry,$target) = printNewTarget($c,$x1,$y1,$z1,$t1,$s1,$x2,$y2,$z2,$t2,$s2,$distanza);
+							$str_entry = join(',',@entry);
+							$str_target = join(',',@target);
+							chomp($str_entry);
+							chomp($str_target);
+							printf( OUT "$str_entry");
+							printf( OUT "$str_target");
 							$i++;
 						}
 					}
@@ -78,7 +83,7 @@ sub run_robustness_test{
 			$fcsv_in = $file_out;
 			($fcsv_out= $file_out ) =~ s|sample|recon_test|g;
 
-			@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 2>> error.log 1> out.log " ;
+			@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 -r 2>> error.log 1> out.log " ;
 			print ".";
 		} until(system(@args) ==0 );
 		print "\n";
@@ -262,7 +267,7 @@ sub run_single{
 	init(@_);
 	my $out_dir;
 	$out_dir = $subjects_dir."/subject".sprintf("%02s",@_);
-	@args ="deeto -c $file_ct -f $file_fcsv -o $out_dir/recon_test.fcsv -1 2>> error.log 1> out.log " ;
+	@args ="deeto -c $file_ct -f $file_fcsv -o $out_dir/recon_test.fcsv -1 -r 2>> error.log 1> out.log " ;
 	system(@args) == 0 or die "system @args failed: $?";
 }
 

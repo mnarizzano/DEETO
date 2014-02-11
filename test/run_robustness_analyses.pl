@@ -5,8 +5,9 @@ use deeto;
 
 $subjects_dir="/biomix/home/staff/gabri/Dropbox/DEETO-DATA";
 
-@subjects= glob($subjects_dir."/subject02");
-#splice(@subjects,1,1);
+#@subjects=(2 .. 9, 11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42);
+#@subjects=(34,35,37,38,39,40,41,42);
+@subjects=(11,15,17,19,24,31,34,38,39,40,41,42);
 
 foreach(@subjects){
 
@@ -16,10 +17,8 @@ foreach(@subjects){
 	$subj_id =~ s|(\D)||g;
 	print $subj_id."\n";
 
-#	deeto::run_single($subj_id);
+	deeto::run_single($subj_id);
 
-	deeto::run_robustness_test($subj_id);
+#	deeto::run_robustness_test($subj_id);
 
 }
-
-
