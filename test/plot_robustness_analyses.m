@@ -2,13 +2,13 @@ function varargout = plotRobustnessResults(varargin)
 % plotRobustnessResults
 
 % Edited 2013-12-23 by Gabriele Arnulfo <gabriele.arnulfo@gmail.com>
-method = 1;
+method = 3;
 
 subjects_dir = '/biomix/home/staff/gabri/Dropbox/DEETO-DATA/';
 % pre allocate mem to speed up computation
 
-%subjs_idx = [2:9, 11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
-subjs_idx = [15,17,19,24,31,34,38,39,40,41,42];
+subjs_idx = [2:9, 11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
+%subjs_idx = [15,17,19,24,31,34,38,39,40,41,42];
 %%subjs_idx = [11,12,15,17,22,39,40,41,42]; % 38 ??
 %subjs_idx = [34];
 nSubjects = numel(subjs_idx)
@@ -109,13 +109,13 @@ MMsz   = cellfun(@numel,MMcat);
 figure, 
 subplot(2,1,1), errorbar(dist_indices,DDmean,DDstd./sqrt(DDsz));
 	xlim([min(dist_indices) max(dist_indices)]);
-	xlabel('Distance');
+	xlabel('Distance (mm)');
 	ylabel('Erorr (mm) ');
 	box off;
 
 subplot(2,1,2), errorbar(dist_indices,MMmean,MMstd./sqrt(MMsz./sqrt(MMsz)));
-	xlabel('Distance');
-	ylabel('# missing contacts');
+	xlabel('Distance (mm)');
+	ylabel('% missing contacts');
 	xlim([min(dist_indices) max(dist_indices)]);
 	box off;
 
@@ -161,26 +161,26 @@ function [DD, nContactsMissing, nContactRef] = analysis(A,B, offset)
 	% the lines above are necessary only
 	%+ in the comparison with manually segmented data
 	%+ since they are defined in centered geometrical space
-	offset  = offset(1:3)'
-	offset(3)  =- offset(3);
-	BPoints = BPoints + repmat(offset,[size(BPoints,1) 1]);
+%	offset  = offset(1:3)';
+%	offset(3)  =- offset(3);
+%	BPoints = BPoints + repmat(offset,[size(BPoints,1) 1]);
 %	BPoints = BPoints .* repmat([-1, -1, 1],[size(BPoints,1) 1]);
 %	APoints = APoints .* repmat([-1, -1, 1],[size(APoints,1) 1]);
 
 
 	% Check points order based on label ordering
 	[f, ord] = ismember(BLabels, ALabels);
-	fid = fopen('test.dat','a');
-	AA = ALabels(ord(f==1));
-	AP = APoints(ord(f==1),:);
-	BB = BLabels(f==1);
-	BP = BPoints(f==1,:);
-
-	for ii = 1:numel(find(f))
-		fprintf(fid,'%s,%f,%f,%f,%s,%f,%f,%f\n',BB{ii},BP(ii,1),BP(ii,2),BP(ii,3),...
-				AA{ii},AP(ii,1),AP(ii,2),AP(ii,3));
-	end
-	fclose(fid);
+%	fid = fopen('test.dat','a');
+%	AA = ALabels(ord(f==1));
+%	AP = APoints(ord(f==1),:);
+%	BB = BLabels(f==1);
+%	BP = BPoints(f==1,:);
+%
+%	for ii = 1:numel(find(f))
+%		fprintf(fid,'%s,%f,%f,%f,%s,%f,%f,%f\n',BB{ii},BP(ii,1),BP(ii,2),BP(ii,3),...
+%				AA{ii},AP(ii,1),AP(ii,2),AP(ii,3));
+%	end
+%	fclose(fid);
 
 	DD =sqrt( sum( (BPoints(f,:) - APoints(ord(f),:)).^2,2));
 	DD = DD(:); % force column vector
