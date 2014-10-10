@@ -333,6 +333,12 @@ PhysicalPointType ContactConstructor::lookForTargetPoint_(PhysicalPointType entr
   }
   c = getPointWithHigherMoment_(c,regionSize,regionSize);
   //printContact_("RTP",k,c);
+
+  // [PATCH] fatta per far funzionare deeto su subject01
+  angle = computeCos(p1,p2,p2,c); 
+  if (angle <= MAX_ANGLE) c = p2;
+  // [END PATCH] fatta per far funzionare deeto su subject01b
+
   return c;
 }
 
