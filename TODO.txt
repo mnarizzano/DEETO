@@ -11,3 +11,12 @@
 9) Modulo python per includere algo in 3DSlicer?
 10) Includere file di licenza (GPL??)
 11) Logger ad esempio boost-log2.0 
+12) Nella lookForTargetPoint_ la ricerca della *tail* prosegue fino a
+che o si sfora l'elettrodo, trovo un insieme di punti consecutivi la
+cui intensità è nulla, oppure fino a che non si sfora emisfero. In
+ogni caso dopo essere usciti dal ciclo si fa un ulteriore ciclo per
+trovare la punta dell'elettrodo a partire da p2 (che dovrebbe essere
+l'ultimo punto buono trovato). La ricerca invece prosegue da p (non so
+perchè). Se inoltre due elettrodi hanno l'asse che giace sullo stesso
+piano, si rischia di prendere il secondo per il primo. Per questa
+ragione ho aggiunto un controllo come PATCH, ma da mettere a posto.
