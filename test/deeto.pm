@@ -6,7 +6,8 @@ use Exporter;
 our @ISA=qw( Exporter );
 our @EXPORT_OK=qw(prepare_analysis_file);
 
-our $subjects_dir="/biomix/home/staff/gabri/Dropbox/DEETO-DATA";
+our $subjects_dir="/biomix/home/staff/gabri/data/DEETO-DATA";
+
 
 our $file_ct;
 our $file_fcsv;
@@ -40,6 +41,7 @@ sub run_robustness_test{
 	@fcsv = <FCSV>;
 	close(FCSV);
 
+	print "Running";
 	for($distanza = $init_distanza; $distanza < $end_distanza; $distanza+=2) {
 	  for($campione = 0; $campione < $numMax_campioni; $campione++){
 		
@@ -53,7 +55,6 @@ sub run_robustness_test{
 				printf(OUT "$fcsv[$i]");
 				$i++;
 		}
-		print "Running ";
 		do{
 			# genera nuovi punti target per ogni elettrodo nel file fcsv originale
 			for(; $i <= $#fcsv; $i+=1){
@@ -84,11 +85,12 @@ sub run_robustness_test{
 			($fcsv_out= $file_out ) =~ s|sample|recon_test|g;
 
 			@args ="deeto -c $file_ct -f $fcsv_in -o $fcsv_out -1 -r 2>> error.log 1> out.log " ;
-			print ".";
 		} until(system(@args) ==0 );
-		print "\n";
+		print ".";
 	  } #end for campioni
 	}#end for distanza
+	print "\n";
+	
 }
 
 sub distance
