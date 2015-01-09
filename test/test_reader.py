@@ -1,46 +1,99 @@
 #!/usr/bin/env python 
 
-import itk 
+import vtk
 import os
 import sys
 import tempfile
 import subprocess
+import math
+import numpy as np
 
+from vtk.util.numpy_support import vtk_to_numpy as v2n
 
-subjects = (42,) 
-#subjects = (11,15,17,19,24,31,34,38,39,40,41,42) 
-subjects_dir = '/biomix/home/staff/gabri/Dropbox/DEETO-DATA'
+def MeshToVolume(Filename):
+	reader = vtk.vtkPolyDataReader()
+	pol2stenc = vtk.vtkPolyDataToImageStencil()
+	imgstenc = vtk.vtkImageStencil()
 
-for subject in subjects:
-
-	subject_dir='subject%02d' %subject
-	reader = itk.ImageFileReader.IF3.New(FileName=os.path.join(subjects_dir,subject_dir,'r_oarm_seeg.nii.gz'))
-	
-	segmFilter = itk.ConnectedThresholdImageFilter.IF3IF3.New()
-	maskFilter = itk.MaskNegatedImageFilter.IF3ISS3IF3.New()
-	castFilter = itk.CastImageFilter.IF3ISS3.New()
-	thrFilter  = itk.ThresholdImageFilter.IF3.New()
-
+	reader.SetFileName(os.path.join(subjects_dir,subject_dir,Filename))
 	reader.Update()
 
-	segmFilter.SetInput(reader.GetOutput())
+	ref_mesh = reader.GetOutput()
+	ref_volume = vtk.vtkImageData()
 
-	segmFilter.SetUpper(2600)
-	segmFilter.SetLower(1100)
-	segmFilter.SetSeed((279,228,183))
+	# define output volume dimension
+	spacing = (0.5,0.5,0.5)
 
-	castFilter.SetInput(segmFilter.GetOutput())
-	castFilter.Update()
+	ref_volume.SetSpacing(spacing)
 
-	maskFilter.SetInput1(reader.GetOutput())
-	maskFilter.SetInput2(castFilter.GetOutput())
+	bounds = ref_mesh.GetBounds()
 
-	maskFilter.Update()
+	dim = [math.ceil(bounds[ii*2+1] - bounds[ii*2] / spacing[ii]) for ii in range(0,3)]
+	origin = [bounds[ii*2] + spacing[ii] / 2 for ii in range(0,3)]
+	extent = (0,dim[0] - 1,0,dim[1] -1 ,0,dim[2]-1)
 
-	thrFilter.SetInput(maskFilter.GetOutput())
-	thrFilter.ThresholdBelow(1600)
+	ref_volume.SetOrigin(origin)
+	ref_volume.SetDimensions(dim)
+	ref_volume.SetExtent(extent)
 
-	writer = itk.ImageFileWriter.IF3.New(FileName=os.path.join(subjects_dir,subject_dir,'r_oarm_seeg_skull_strip.nii.gz'))
-	writer.SetInput(thrFilter.GetOutput())
-	
+	ref_volume.SetScalarTypeToUnsignedChar()
+	ref_volume.AllocateScalars()
+
+	# Fill the image with white voxels
+	for i in range(0,ref_volume.GetNumberOfPoints()):
+		ref_volume.GetPointData().GetScalars().SetTuple1(i,255)
+
+	print ref_volume.GetNumberOfPoints()
+
+	pol2stenc.SetInput(ref_mesh)
+
+	pol2stenc.SetOutputOrigin(origin)
+	pol2stenc.SetOutputSpacing(spacing)
+	pol2stenc.SetOutputWholeExtent(ref_volume.GetExtent())
+
+	pol2stenc.Update()
+
+	imgstenc.SetInput(ref_volume)
+	imgstenc.SetStencil(pol2stenc.GetOutput())
+
+	imgstenc.ReverseStencilOff()
+	imgstenc.SetBackgroundValue(0)
+	imgstenc.Update()
+	tmp = imgstenc.GetOutput()
+
+	writer = vtk.vtkImageWriter()
+	writer.SetFileName('prova.nii.gz')
+	writer.SetInput(ref_volume)
 	writer.Update()
+
+	out = v2n(tmp.GetPointData().GetScalars())
+
+	return np.reshape(out, (dim[0],dim[1],dim[2]))
+
+#subjects = (11,15,17,19,24,31,34,38,39,40,41,42) 
+subjects = (01,)
+subjects_dir = '/biomix/home/staff/gabri/data/DEETO-DATA'
+
+for subject in subjects:
+	
+	#for each subject read the null_hypo vtk image file
+	subject_dir='subject%02d' %subject
+	Filename = os.path.join(subjects_dir,subject_dir,'recon-test.vtk')
+
+	ref_volume = MeshToVolume(Filename)
+
+
+
+#	
+#	
+#
+#	for distance in range(1,15,2):
+#		for sample in range(0,4):
+#
+#			Filename = 'recont_test_targetd%02d_c%02' %(distance,sample)
+#			test_volume = MeshToVolume(Filename)
+
+			
+
+
+

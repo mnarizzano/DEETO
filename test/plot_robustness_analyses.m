@@ -4,13 +4,10 @@ function varargout = plotRobustnessResults(varargin)
 % Edited 2013-12-23 by Gabriele Arnulfo <gabriele.arnulfo@gmail.com>
 method = 3;
 
-subjects_dir = '/biomix/home/staff/gabri/Dropbox/DEETO-DATA/';
+subjects_dir = '/biomix/home/staff/gabri/data/DEETO-DATA/';
 % pre allocate mem to speed up computation
 
-subjs_idx = [2:9, 11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
-%subjs_idx = [15,17,19,24,31,34,38,39,40,41,42];
-%%subjs_idx = [11,12,15,17,22,39,40,41,42]; % 38 ??
-%subjs_idx = [34];
+subjs_idx = [1:9, 11,13,15,17,19,20,21,24,25,26,28,31,34,35,37,38,39,40,41,42];
 nSubjects = numel(subjs_idx)
 
 subj_offset= 1;
@@ -151,7 +148,7 @@ subplot(2,1,2), errorbar(dist_indices,MMmean,MMstd./sqrt(MMsz./sqrt(MMsz)));
 
 end
 
-function [DD, nContactsMissing, nContactRef] = analysis(A,B, offset)
+function [DD, nContactsMissing, totContactCount] = analysis(A,B, offset,totContactCount)
 
 	[ALabels, X,Y,Z] = textread(A,'%s%f%f%f%*d%*d','delimiter',',','commentstyle','shell');
 	APoints = cat(2,X,Y,Z);
@@ -185,8 +182,10 @@ function [DD, nContactsMissing, nContactRef] = analysis(A,B, offset)
 	DD =sqrt( sum( (BPoints(f,:) - APoints(ord(f),:)).^2,2));
 	DD = DD(:); % force column vector
 
-	nContactsMissing = (numel(ALabels) - numel(find(f))) / numel(ALabels);
-	nContactRef = numel(ALabels);
+	misses 			= (numel(ALabels) - numel(find(f)));
+	hits			= 
+	totContactCount = totContactCount + numel(ALabels);
+
 	
 end
 
