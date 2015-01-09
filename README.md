@@ -157,7 +157,7 @@ electrodes, half of them with default model and half of them with
 cinque model(contatcs are grouped in group of 5) you need at least
 three files:
 
-1) db-files/default-db.csv a sort of databases. In each line is shown
+1) db-files/model-db.csv a sort of databases. In each line is shown
    the name of the model separated by comma and the path where you can
    find the model structure.
 
@@ -165,7 +165,9 @@ three files:
 
    # name of the electrode model, path to the file containing the electrode model information 
    default,/home/massimo/Tools/mytools/deeto/db-files/default-electrode-model.csv
-   cinque,/home/massimo/Tools/mytools/deeto/db-files/cinque-electrode-model.csv
+   cinque,/home/massimo/Tools/myteeools/deeto/db-files/cinque-electrode-model.csv
+   
+   If no db file is specified, the file db-files/default-db.csv is used
 
 2) The electrode model information, i.e. the file listed in the db files.
    The file is structured as follow:
