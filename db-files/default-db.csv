@@ -1,3 +1,3 @@
 # name of the electrode model, path to the file containing the electrode model information
-default,/home/massimo/Tools/mytools/deeto/db-files/default-electrode-model.csv
-cinque,/home/massimo/Tools/mytools/deeto/db-files/cinque-electrode-model.csv
+default,db-files/default-electrode-model.csv
+cinque,db-files/cinque-electrode-model.csv

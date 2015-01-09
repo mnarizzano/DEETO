@@ -5,37 +5,44 @@ seeg electroDE  rEconstruction TOol:
 
 This tool reconstructs the position of SEEG electrode contacts from a post-implant Cone-beam CT scan.
 
-	USAGE: 
-	
-	   deeto  [-1] [-t <string>] [-o <string>] [-f <string>] [-c <string>] [--]
-	          [--version] [-h]
-	
-	
-	Where: 
-	
-	   -1,  --vtk-single-fout
-	     Single output file for implant
-	
-	   -t <string>,  --o_type <string>
-	      Output Type
-	
-	   -o <string>,  --out <string>
-	     fname OUT
-	
-	   -f <string>,  --fid <string>
-	     Fiducials File IN
-	
-	   -c <string>,  --ct <string>
-	     CT File IN
-	
-	   --,  --ignore_rest
-	     Ignores the rest of the labeled arguments following this flag.
-	
-	   --version
-	     Displays version information and exits.
-	
-	   -h,  --help
-	     Displays usage information and exits.
+USAGE: 
+
+   ./deeto  [-r] [-m <string>] [-d <string>] [-t <string>] [-o <string>]
+            [-f <string>] [-c <string>] [--] [--version] [-h]
+
+
+Where: 
+
+   -r,  --noref
+     File fcsv is assumed in Ref, this flag on allow the file fcsv to be in
+     centered
+
+   -m <string>,  --model_types <string>
+      Models Electrode Types
+
+   -d <string>,  --db_name <string>
+      Data Base Name for the Electrode Type
+
+   -t <string>,  --type <string>
+      Output Type
+
+   -o <string>,  --out <string>
+      fname OUT
+
+   -f <string>,  --fid <string>
+      Fiducials File IN
+
+   -c <string>,  --ct <string>
+      CT File IN
+
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
+   --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
 
 ##Software requirments
 For builiding the tool you have to install some dependecies.
@@ -141,3 +148,42 @@ Build the project with cmake as we have done before with both ITK and VTK
 	$ make
 	
 Run the generated executable file in directory bin
+
+# 
+
+This branch is for testing the feature of having different model for
+the electrodes.  So if you have a subject (s1) containing 10
+electrodes, half of them with default model and half of them with
+cinque model(contatcs are grouped in group of 5) you need at least
+three files:
+
+1) db-files/default-db.csv a sort of databases. In each line is shown
+   the name of the model separated by comma and the path where you can
+   find the model structure.
+
+   In more details this file is structured as follow:
+
+   # name of the electrode model, path to the file containing the electrode model information 
+   default,/home/massimo/Tools/mytools/deeto/db-files/default-electrode-model.csv
+   cinque,/home/massimo/Tools/mytools/deeto/db-files/cinque-electrode-model.csv
+
+2) The electrode model information, i.e. the file listed in the db files.
+   The file is structured as follow:
+   # number of contacts  
+   # contact type (0 = CYLINDER; 1 = cube; 2 = rectangular)
+   # length(mm)
+   # diameter(mm)
+   # distances beetween contacts(first always 0.0)
+   # notice that distance between the current contact and the previous
+   Please take a look at db-files/default-electrode-model.csv
+   
+
+3) subject-model-electrode.txt, a file where it is for each electrode
+   in the file fcsv is reported the model of the electrode. If an
+   electrode is not listed, it is assumed the default electrode model
+   (db-files/default-electrode-model.csv)
+
+   The file is structured as follow:
+   # electrode_name,model_name
+   
+   take a look at db-files/example-of-subject-model-electrode.txt
