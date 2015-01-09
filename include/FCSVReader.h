@@ -23,7 +23,8 @@
 class FCSVReader {
 public:
 
- /* FCSVReader( void ) : optCent_("c","centered","File fcsv is assumed in Ref, if it not enable this flag",c,false){}; */
+ /* FCSVReader( void ) : optCent_("c","centered","File fcsv is assumed
+    in Ref, if it not enable this flag",c,false){}; */
  FCSVReader( TCLAP::CmdLine* c):
   optCent_("r","noref","File fcsv is assumed in Ref, this flag on allow the file fcsv to be in centered",false){
     c->add(optCent_);
@@ -79,10 +80,10 @@ public:
 int FCSVReader::update(void){
   // read from a file as written in filein_
   string str;
-	string name;
+  string name;
   ifstream file;
-	PhysicalPointType target;
-	PhysicalPointType entry;
+  PhysicalPointType target;
+  PhysicalPointType entry;
   vector< fiducialPoint > elements;
   
   file.open(filein_->c_str(), ios::in);
@@ -135,7 +136,8 @@ int FCSVReader::update(void){
 		// LPS we need to transform the point to LPS
 		headframe_->fromRAS2LPS_(&entry);      // from the LPS space to a RAS space      
 		headframe_->fromRAS2LPS_(&target);     // from the LPS space to a RAS space
-		//cout<<name<<" "<<target<<" "<<entry<<" "<<endl;
+		cout<<name<<" "<<target<<" "<< endl;
+		cout<<name<<" "<<entry<<" "<<endl;
 		// Create a new electrode with target and entry (swapped if the target point is closer to the Origin)
 		headframe_->addElectrode(Electrode(name,(distance > 0 ? entry : target),(distance > 0 ? target : entry)));
       }

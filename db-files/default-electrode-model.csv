@@ -1,0 +1,30 @@
+# number of contacts  
+# contact type (0 = CYLINDER; 1 = cube; 2 = rectangular)
+# length(mm)
+# diameter(mm)
+# distances beetween contacts(first always 0.0)
+# notice that with distance we mean the distance between the current
+# contact and the previous
+# Please do not end the file with an empty line
+18
+0
+2.0
+0.8
+0.0
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5
+1.5

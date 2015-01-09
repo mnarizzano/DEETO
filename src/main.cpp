@@ -2,6 +2,7 @@
 #include <Definitions.h>
 #include <unistd.h>
 #include <FCSVReader.h>
+#include <ElectrodeModelReader.h>
 #include <FCSVWriter.h>
 #include <ContactConstructor.h>
 #include <tclap/CmdLine.h>
@@ -21,15 +22,19 @@ using namespace std;
 int main (int argc, char **argv) {
   try{
     TCLAP::CmdLine cmd("DEETO",' ', "0.9");
-    TCLAP::ValueArg<string> ctArg("c","ct","CT File IN",false,"","string",cmd);
-    TCLAP::ValueArg<string> fiducialArg("f","fid","Fiducials File IN",false,"","string",cmd);
-    TCLAP::ValueArg<string> file_outArg("o","out","fname OUT",false,"","string",cmd);
-    TCLAP::ValueArg<string> out_type("t","o_type"," Output Type",false,"","string",cmd);
+    TCLAP::ValueArg<string> ctArg("c","ct"," CT File IN",false,"","string",cmd);
+    TCLAP::ValueArg<string> fiducialArg("f","fid"," Fiducials File IN",false,"","string",cmd);
+    TCLAP::ValueArg<string> file_outArg("o","out"," fname OUT",false,"","string",cmd);
+    TCLAP::ValueArg<string> out_type("t","type"," Output Type",false,"","string",cmd);
+    TCLAP::ValueArg<string> file_db("d","db_name"," Data Base Name for the Electrode Type",false,"db-files/default-db.csv","string",cmd);
+    TCLAP::ValueArg<string> file_model("m","model_types"," Models Electrode Types",false,"","string",cmd);
 
     string fileCT;
     string filefcsv;	
     string fileout;
-    FCSVReader fcsvReader(&cmd);
+    
+    FCSVReader           fcsvReader(&cmd);
+    ElectrodeModelReader emReader;
     FCSVWriter writer1(fileout, cmd);
 #ifdef WITH_VTK
     VTKWriter writer2(fileout, cmd);
@@ -37,12 +42,12 @@ int main (int argc, char **argv) {
     
     cmd.parse( argc, argv );
     
-    fileCT  = ctArg.getValue();
+    fileCT   = ctArg.getValue();
     filefcsv = fiducialArg.getValue();	
     fileout  = file_outArg.getValue();
-    
+
     writer1.setFilename(fileout);
-    
+    cout << "File OUT " << fileout << endl;
 #ifdef WITH_VTK
     writer2.setFilename(fileout);
 #endif
@@ -60,8 +65,8 @@ int main (int argc, char **argv) {
     
     // CT read and send to handframe as parameter
     ImageReaderType::Pointer ctReader = ImageReaderType::New();
-	typedef itk::OrientImageFilter< ImageType, ImageType> orientFilter;
-	orientFilter::Pointer filter = orientFilter::New();
+    typedef itk::OrientImageFilter< ImageType, ImageType> orientFilter;
+    orientFilter::Pointer filter = orientFilter::New();
     itk::NiftiImageIO::Pointer niftiImage = itk::NiftiImageIO::New();
     ctReader->SetImageIO(niftiImage);
     ctReader->SetFileName(string(fileCT));
@@ -74,19 +79,19 @@ int main (int argc, char **argv) {
     }
 
 
-	filter->SetInput(ctReader->GetOutput());
-	filter->UseImageDirectionOn();
-	filter->SetDesiredCoordinateOrientation(itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAS);
-
-	try{
-		filter->Update();
-	}catch( ... ){
-		cerr<< " dammit "<<endl;
-		return EXIT_FAILURE;
-	}
+    filter->SetInput(ctReader->GetOutput());
+    filter->UseImageDirectionOn();
+    filter->SetDesiredCoordinateOrientation(itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAS);
+    
+    try{
+	  filter->Update();
+    }catch( ... ){
+      cerr<< " dammit "<<endl;
+      return EXIT_FAILURE;
+    }
     
     ImageType::Pointer ctImage = ctReader->GetOutput();
-//    ImageType::Pointer ctImage = filter->GetOutput();
+    //    ImageType::Pointer ctImage = filter->GetOutput();
     
     headFrame->setCT(ctImage);
     
@@ -95,6 +100,12 @@ int main (int argc, char **argv) {
     fcsvReader.setClinicalFrame(headFrame);
     assert(fcsvReader.update());
     headFrame = fcsvReader.getOutput();
+    
+    emReader.setDBFile(file_db.getValue());
+    emReader.setModelFile(file_model.getValue());
+    emReader.setClinicalFrame(headFrame);
+    assert(emReader.update());
+    
     
     ContactConstructor contactConstructor(ctImage,headFrame);
     VoxelPointType voxelTarget;
@@ -109,16 +120,16 @@ int main (int argc, char **argv) {
       return EXIT_FAILURE;
     }
 
-	#ifdef WITH_VTK
+#ifdef WITH_VTK
     writer2.setClinicalFrame(headFrame);
-	try{
+    try{
       writer2.update();
     }catch(itk::ExceptionObject e){
       cerr<<e.what()<<endl;
       return EXIT_FAILURE;
     }
-	#endif
-
+#endif
+    
     try{
       writer1.update();
     }catch(itk::ExceptionObject e){

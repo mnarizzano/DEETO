@@ -100,8 +100,8 @@ class Electrode {
   string getName() const{ return name_; }
   void setName( string name) { name_ = name; }
 
-  void setModel(ElectrodeModel model);
-  ElectrodeModel getModel(){return model_;};  
+  void setModel(ElectrodeModel model){model_ = model;}
+  ElectrodeModel getModel(){return model_;}
 
 
 private:
