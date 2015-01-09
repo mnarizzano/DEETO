@@ -1,0 +1,386 @@
+\begin{theindex}
+
+  \item {$\sim $\discretionary {-}{}{}Abstract\discretionary {-}{}{}Writer}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{8}
+  \item {$\sim $\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+  \item {$\sim $\discretionary {-}{}{}Contact\discretionary {-}{}{}Constructor}
+    \subitem {Contact\discretionary {-}{}{}Constructor}, \hyperpage{13}
+  \item {$\sim $\discretionary {-}{}{}Electrode}
+    \subitem {Electrode}, \hyperpage{15}
+  \item {$\sim $\discretionary {-}{}{}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+  \item {$\sim $\discretionary {-}{}{}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}, 
+		\hyperpage{21}
+  \item {$\sim $\discretionary {-}{}{}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+  \item {$\sim $\discretionary {-}{}{}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}, 
+		\hyperpage{26}
+
+  \indexspace
+
+  \item {Abstract\discretionary {-}{}{}Writer}, \hyperpage{7}
+    \subitem {$\sim $\discretionary {-}{}{}Abstract\discretionary {-}{}{}Writer}, 
+		\hyperpage{8}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{8}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{8}
+    \subitem {begin}, \hyperpage{9}
+    \subitem {check\discretionary {-}{}{}Filename\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{9}
+    \subitem {end}, \hyperpage{9}
+    \subitem {get\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}, 
+		\hyperpage{9}
+    \subitem {get\discretionary {-}{}{}Filename}, \hyperpage{9}
+    \subitem {set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}, 
+		\hyperpage{9}
+    \subitem {set\discretionary {-}{}{}Extension}, \hyperpage{9}
+    \subitem {set\discretionary {-}{}{}Filename}, \hyperpage{9}
+    \subitem {update}, \hyperpage{9}
+  \item {Abstract\discretionary {-}{}{}Writer.\discretionary {-}{}{}h}, 
+		\hyperpage{29}
+  \item {add\discretionary {-}{}{}Contact}
+    \subitem {Electrode}, \hyperpage{15}
+  \item {add\discretionary {-}{}{}Electrode}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+  \item {Anatomical\discretionary {-}{}{}Patch\discretionary {-}{}{}Builder$<$ class T $>$}, 
+		\hyperpage{9}
+  \item {Anatomical\discretionary {-}{}{}Patch\discretionary {-}{}{}Builder.\discretionary {-}{}{}h}, 
+		\hyperpage{29}
+
+  \indexspace
+
+  \item {begin}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+    \subitem {Electrode}, \hyperpage{15}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+
+  \indexspace
+
+  \item {Calculator\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {check\discretionary {-}{}{}Filename\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+  \item {Clinical\discretionary {-}{}{}Frame}, \hyperpage{10}
+    \subitem {$\sim $\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}, 
+		\hyperpage{11}
+    \subitem {add\discretionary {-}{}{}Electrode}, \hyperpage{11}
+    \subitem {begin}, \hyperpage{11}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+    \subitem {Const\discretionary {-}{}{}Electrode\discretionary {-}{}{}Iterator}, 
+		\hyperpage{11}
+    \subitem {Electrode\discretionary {-}{}{}Iterator}, \hyperpage{11}
+    \subitem {end}, \hyperpage{11, 12}
+    \subitem {from\discretionary {-}{}{}Center\discretionary {-}{}{}To\discretionary {-}{}{}Ref\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{12}
+    \subitem {from\discretionary {-}{}{}R\discretionary {-}{}{}A\discretionary {-}{}{}S2\discretionary {-}{}{}L\discretionary {-}{}{}P\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{12}
+    \subitem {from\discretionary {-}{}{}Ref\discretionary {-}{}{}To\discretionary {-}{}{}Center\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{12}
+    \subitem {get\discretionary {-}{}{}Electrodes\discretionary {-}{}{}Number}, 
+		\hyperpage{12}
+    \subitem {isempty}, \hyperpage{12}
+    \subitem {set\discretionary {-}{}{}C\discretionary {-}{}{}T}, 
+		\hyperpage{12}
+  \item {Clinical\discretionary {-}{}{}Frame.\discretionary {-}{}{}h}, 
+		\hyperpage{30}
+  \item {Const\discretionary {-}{}{}Contact}
+    \subitem {Electrode}, \hyperpage{15}
+  \item {Const\discretionary {-}{}{}Contact\discretionary {-}{}{}Iterator}
+    \subitem {Electrode}, \hyperpage{15}
+  \item {Const\discretionary {-}{}{}Electrode\discretionary {-}{}{}Iterator}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+  \item {Const\discretionary {-}{}{}Model\discretionary {-}{}{}Iterator}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+  \item {Contact}
+    \subitem {Electrode}, \hyperpage{15}
+  \item {Contact\discretionary {-}{}{}Constructor}, \hyperpage{12}
+    \subitem {$\sim $\discretionary {-}{}{}Contact\discretionary {-}{}{}Constructor}, 
+		\hyperpage{13}
+    \subitem {Contact\discretionary {-}{}{}Constructor}, \hyperpage{13}
+    \subitem {Contact\discretionary {-}{}{}Constructor}, \hyperpage{13}
+    \subitem {M\discretionary {-}{}{}A\discretionary {-}{}{}X\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}A\discretionary {-}{}{}N\discretionary {-}{}{}G\discretionary {-}{}{}L\discretionary {-}{}{}E}, 
+		\hyperpage{13}
+    \subitem {update}, \hyperpage{13}
+  \item {Contact\discretionary {-}{}{}Constructor.\discretionary {-}{}{}h}, 
+		\hyperpage{30}
+  \item {Contact\discretionary {-}{}{}Iterator}
+    \subitem {Electrode}, \hyperpage{15}
+
+  \indexspace
+
+  \item {Definitions.\discretionary {-}{}{}h}, \hyperpage{31}
+    \subitem {Calculator\discretionary {-}{}{}Type}, \hyperpage{32}
+    \subitem {Filter\discretionary {-}{}{}Type}, \hyperpage{32}
+    \subitem {Image\discretionary {-}{}{}Pointer\discretionary {-}{}{}Type}, 
+		\hyperpage{32}
+    \subitem {Image\discretionary {-}{}{}Reader\discretionary {-}{}{}Type}, 
+		\hyperpage{32}
+    \subitem {Image\discretionary {-}{}{}Type}, \hyperpage{32}
+    \subitem {Physical\discretionary {-}{}{}Point\discretionary {-}{}{}Type}, 
+		\hyperpage{32}
+    \subitem {Region\discretionary {-}{}{}Type}, \hyperpage{32}
+    \subitem {Size\discretionary {-}{}{}Type}, \hyperpage{32}
+    \subitem {Spacing\discretionary {-}{}{}Type}, \hyperpage{32}
+    \subitem {Voxel\discretionary {-}{}{}Point\discretionary {-}{}{}Type}, 
+		\hyperpage{32}
+  \item {distance\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+
+  \indexspace
+
+  \item {Electrode}, \hyperpage{13}
+    \subitem {$\sim $\discretionary {-}{}{}Electrode}, \hyperpage{15}
+    \subitem {add\discretionary {-}{}{}Contact}, \hyperpage{15}
+    \subitem {begin}, \hyperpage{15}
+    \subitem {Const\discretionary {-}{}{}Contact}, \hyperpage{15}
+    \subitem {Const\discretionary {-}{}{}Contact\discretionary {-}{}{}Iterator}, 
+		\hyperpage{15}
+    \subitem {Contact}, \hyperpage{15}
+    \subitem {Contact\discretionary {-}{}{}Iterator}, \hyperpage{15}
+    \subitem {Electrode}, \hyperpage{15}
+    \subitem {end}, \hyperpage{15}
+    \subitem {get\discretionary {-}{}{}Contact}, \hyperpage{15, 16}
+    \subitem {get\discretionary {-}{}{}Contact\discretionary {-}{}{}Number}, 
+		\hyperpage{16}
+    \subitem {get\discretionary {-}{}{}Entry}, \hyperpage{16}
+    \subitem {get\discretionary {-}{}{}Entry\discretionary {-}{}{}As\discretionary {-}{}{}Double}, 
+		\hyperpage{16}
+    \subitem {get\discretionary {-}{}{}Model}, \hyperpage{16}
+    \subitem {get\discretionary {-}{}{}Name}, \hyperpage{16}
+    \subitem {get\discretionary {-}{}{}Target}, \hyperpage{16}
+    \subitem {get\discretionary {-}{}{}Target\discretionary {-}{}{}As\discretionary {-}{}{}Double}, 
+		\hyperpage{16}
+    \subitem {operator$<$$<$}, \hyperpage{17}
+    \subitem {set\discretionary {-}{}{}Entry}, \hyperpage{16}
+    \subitem {set\discretionary {-}{}{}Model}, \hyperpage{16}
+    \subitem {set\discretionary {-}{}{}Name}, \hyperpage{16}
+    \subitem {set\discretionary {-}{}{}Target}, \hyperpage{16}
+  \item {Electrode.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {Electrode\discretionary {-}{}{}Iterator}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11}
+  \item {Electrode\discretionary {-}{}{}Model}, \hyperpage{17}
+  \item {Electrode\discretionary {-}{}{}Model.\discretionary {-}{}{}h}, 
+		\hyperpage{33}
+  \item {empty}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+  \item {end}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{11, 12}
+    \subitem {Electrode}, \hyperpage{15}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+  \item {estimate\discretionary {-}{}{}Contact\discretionary {-}{}{}Extent\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+
+  \indexspace
+
+  \item {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{17}
+    \subitem {$\sim $\discretionary {-}{}{}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+    \subitem {get\discretionary {-}{}{}Output}, \hyperpage{18}
+    \subitem {set\discretionary {-}{}{}C\discretionary {-}{}{}T}, 
+		\hyperpage{18}
+    \subitem {set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}, 
+		\hyperpage{18}
+    \subitem {set\discretionary {-}{}{}File\discretionary {-}{}{}Input}, 
+		\hyperpage{18}
+    \subitem {update}, \hyperpage{18}
+  \item {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader.\discretionary {-}{}{}h}, 
+		\hyperpage{34}
+  \item {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}, 
+		\hyperpage{19}
+    \subitem {$\sim $\discretionary {-}{}{}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}, 
+		\hyperpage{21}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}, 
+		\hyperpage{20}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}, 
+		\hyperpage{20}
+    \subitem {update}, \hyperpage{21}
+  \item {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer.\discretionary {-}{}{}h}, 
+		\hyperpage{35}
+  \item {Filter\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {from\discretionary {-}{}{}Center\discretionary {-}{}{}To\discretionary {-}{}{}Ref\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{12}
+  \item {from\discretionary {-}{}{}R\discretionary {-}{}{}A\discretionary {-}{}{}S2\discretionary {-}{}{}L\discretionary {-}{}{}P\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{12}
+  \item {from\discretionary {-}{}{}Ref\discretionary {-}{}{}To\discretionary {-}{}{}Center\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{12}
+
+  \indexspace
+
+  \item {G\discretionary {-}{}{}M\discretionary {-}{}{}P\discretionary {-}{}{}I\discretionary {-}{}{}Estimator}, 
+		\hyperpage{21}
+  \item {G\discretionary {-}{}{}M\discretionary {-}{}{}P\discretionary {-}{}{}I\discretionary {-}{}{}Estimator.\discretionary {-}{}{}h}, 
+		\hyperpage{35}
+  \item {get\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+  \item {get\discretionary {-}{}{}Contact}
+    \subitem {Electrode}, \hyperpage{15, 16}
+  \item {get\discretionary {-}{}{}Contact\discretionary {-}{}{}Number}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {get\discretionary {-}{}{}Electrodes\discretionary {-}{}{}Number}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{12}
+  \item {get\discretionary {-}{}{}Entry}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {get\discretionary {-}{}{}Entry\discretionary {-}{}{}As\discretionary {-}{}{}Double}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {get\discretionary {-}{}{}Filename}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+  \item {get\discretionary {-}{}{}Model}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {get\discretionary {-}{}{}Name}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {get\discretionary {-}{}{}Output}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+  \item {get\discretionary {-}{}{}Output\discretionary {-}{}{}Mode}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+  \item {get\discretionary {-}{}{}Target}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {get\discretionary {-}{}{}Target\discretionary {-}{}{}As\discretionary {-}{}{}Double}
+    \subitem {Electrode}, \hyperpage{16}
+
+  \indexspace
+
+  \item {Image\discretionary {-}{}{}Pointer\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {Image\discretionary {-}{}{}Reader\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {Image\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {isempty}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{12}
+
+  \indexspace
+
+  \item {M\discretionary {-}{}{}A\discretionary {-}{}{}X\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}A\discretionary {-}{}{}N\discretionary {-}{}{}G\discretionary {-}{}{}L\discretionary {-}{}{}E}
+    \subitem {Contact\discretionary {-}{}{}Constructor}, \hyperpage{13}
+  \item {Model\discretionary {-}{}{}Iterator}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+
+  \indexspace
+
+  \item {operator$<$$<$}
+    \subitem {Electrode}, \hyperpage{17}
+
+  \indexspace
+
+  \item {Physical\discretionary {-}{}{}Point\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+
+  \indexspace
+
+  \item {Region\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+
+  \indexspace
+
+  \item {set\discretionary {-}{}{}C\discretionary {-}{}{}T}
+    \subitem {Clinical\discretionary {-}{}{}Frame}, \hyperpage{12}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+  \item {set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{24}
+  \item {set\discretionary {-}{}{}Entry}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {set\discretionary {-}{}{}Extension}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+  \item {set\discretionary {-}{}{}File\discretionary {-}{}{}Input}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+  \item {set\discretionary {-}{}{}Filename}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+  \item {set\discretionary {-}{}{}Model}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {set\discretionary {-}{}{}Name}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {set\discretionary {-}{}{}Target}
+    \subitem {Electrode}, \hyperpage{16}
+  \item {size}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{24}
+  \item {Size\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+  \item {Spacing\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+
+  \indexspace
+
+  \item {update}
+    \subitem {Abstract\discretionary {-}{}{}Writer}, \hyperpage{9}
+    \subitem {Contact\discretionary {-}{}{}Constructor}, \hyperpage{13}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}, 
+		\hyperpage{18}
+    \subitem {F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}, 
+		\hyperpage{21}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{24}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}, 
+		\hyperpage{26}
+
+  \indexspace
+
+  \item {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{21}
+    \subitem {$\sim $\discretionary {-}{}{}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+    \subitem {begin}, \hyperpage{23}
+    \subitem {Const\discretionary {-}{}{}Model\discretionary {-}{}{}Iterator}, 
+		\hyperpage{23}
+    \subitem {distance\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{23}
+    \subitem {empty}, \hyperpage{23}
+    \subitem {end}, \hyperpage{23}
+    \subitem {estimate\discretionary {-}{}{}Contact\discretionary {-}{}{}Extent\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{23}
+    \subitem {get\discretionary {-}{}{}Output\discretionary {-}{}{}Mode}, 
+		\hyperpage{23}
+    \subitem {Model\discretionary {-}{}{}Iterator}, \hyperpage{23}
+    \subitem {set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}, 
+		\hyperpage{24}
+    \subitem {size}, \hyperpage{24}
+    \subitem {update}, \hyperpage{24}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}, 
+		\hyperpage{23}
+  \item {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor.\discretionary {-}{}{}h}, 
+		\hyperpage{35}
+  \item {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}, 
+		\hyperpage{24}
+    \subitem {$\sim $\discretionary {-}{}{}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}, 
+		\hyperpage{26}
+    \subitem {update}, \hyperpage{26}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}, 
+		\hyperpage{26}
+    \subitem {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}, 
+		\hyperpage{26}
+  \item {V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer.\discretionary {-}{}{}h}, 
+		\hyperpage{36}
+  \item {Voxel\discretionary {-}{}{}Point\discretionary {-}{}{}Type}
+    \subitem {Definitions.\discretionary {-}{}{}h}, \hyperpage{32}
+
+\end{theindex}

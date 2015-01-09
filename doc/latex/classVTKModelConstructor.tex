@@ -1,0 +1,181 @@
+\hypertarget{classVTKModelConstructor}{\section{V\-T\-K\-Model\-Constructor Class Reference}
+\label{classVTKModelConstructor}\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}}
+}
+
+
+{\ttfamily \#include $<$V\-T\-K\-Model\-Constructor.\-h$>$}
+
+
+
+Collaboration diagram for V\-T\-K\-Model\-Constructor\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classVTKModelConstructor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef vector\\*
+$<$ vtk\-Smart\-Pointer$<$ vtk\-Poly\-Data $>$\\*
+ $>$\-::const\-\_\-iterator \hyperlink{classVTKModelConstructor_a439d0cca160eb72fc54c6727c69cbb5a}{Const\-Model\-Iterator}
+\item 
+typedef vector\\*
+$<$ vtk\-Smart\-Pointer$<$ vtk\-Poly\-Data $>$\\*
+ $>$\-::iterator \hyperlink{classVTKModelConstructor_a8ab5ac1866904faee9e4120b07f63701}{Model\-Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classVTKModelConstructor_ad454bb3edb39bb81f7e8ea9580d31f05}{V\-T\-K\-Model\-Constructor} (const \hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$cf, bool s)
+\item 
+\hyperlink{classVTKModelConstructor_a6e08f2bba1f5b26d64f74ae64101e211}{V\-T\-K\-Model\-Constructor} (const \hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$cf)
+\item 
+\hyperlink{classVTKModelConstructor_accd2e4a9fce297452524424c56645af0}{$\sim$\-V\-T\-K\-Model\-Constructor} (void)
+\item 
+void \hyperlink{classVTKModelConstructor_a9661f98d603ca128f5bdf22ef78b15f1}{set\-Clinical\-Frame} (\hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$cf)
+\item 
+\hyperlink{classVTKModelConstructor_a8ab5ac1866904faee9e4120b07f63701}{Model\-Iterator} \hyperlink{classVTKModelConstructor_abd4236c1af1eb4c52dca9c89aa504555}{begin} (void)
+\item 
+\hyperlink{classVTKModelConstructor_a8ab5ac1866904faee9e4120b07f63701}{Model\-Iterator} \hyperlink{classVTKModelConstructor_a056e86cab4140ff9975d636de3a33486}{end} (void)
+\item 
+bool \hyperlink{classVTKModelConstructor_ac6f76a490e608339b6aa148089f535f7}{empty} (void)
+\item 
+int \hyperlink{classVTKModelConstructor_a5f939d68c9f15d8ec22ddb6a0c0090c7}{size} (void) const 
+\item 
+int \hyperlink{classVTKModelConstructor_ad6f6baa567097da53cbcaa91cf375531}{update} ()
+\item 
+bool \hyperlink{classVTKModelConstructor_aaec58670f5bb650109de05d2bbc5f8f1}{get\-Output\-Mode} (void) const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classVTKModelConstructor_a97c3716459da1a19e15a1b91283ccc8e}{estimate\-Contact\-Extent\-\_\-} (double $\ast$, double $\ast$, vtk\-Line\-Source $\ast$)
+\item 
+double \hyperlink{classVTKModelConstructor_a458e23ce8a24102118938f2ca18c8c2c}{distance\-\_\-} (double $\ast$p1, double $\ast$p2)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classVTKModelConstructor}{V\-T\-K\-Model\-Constructor} class
+
+This class constructs V\-T\-K 3\-D model based on reconstructed information 
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classVTKModelConstructor_a439d0cca160eb72fc54c6727c69cbb5a}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!Const\-Model\-Iterator@{Const\-Model\-Iterator}}
+\index{Const\-Model\-Iterator@{Const\-Model\-Iterator}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{Const\-Model\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$ vtk\-Smart\-Pointer$<$vtk\-Poly\-Data$>$ $>$\-::const\-\_\-iterator {\bf V\-T\-K\-Model\-Constructor\-::\-Const\-Model\-Iterator}}}\label{classVTKModelConstructor_a439d0cca160eb72fc54c6727c69cbb5a}
+\hypertarget{classVTKModelConstructor_a8ab5ac1866904faee9e4120b07f63701}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!Model\-Iterator@{Model\-Iterator}}
+\index{Model\-Iterator@{Model\-Iterator}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{Model\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$ vtk\-Smart\-Pointer$<$vtk\-Poly\-Data$>$ $>$\-::iterator {\bf V\-T\-K\-Model\-Constructor\-::\-Model\-Iterator}}}\label{classVTKModelConstructor_a8ab5ac1866904faee9e4120b07f63701}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classVTKModelConstructor_ad454bb3edb39bb81f7e8ea9580d31f05}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}}
+\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{V\-T\-K\-Model\-Constructor}]{\setlength{\rightskip}{0pt plus 5cm}V\-T\-K\-Model\-Constructor\-::\-V\-T\-K\-Model\-Constructor (
+\begin{DoxyParamCaption}
+\item[{const {\bf Clinical\-Frame} $\ast$}]{cf, }
+\item[{bool}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_ad454bb3edb39bb81f7e8ea9580d31f05}
+
+\begin{DoxyParams}{Parameters}
+{\em cf} & holds the pointer to \hyperlink{classClinicalFrame}{Clinical\-Frame} and to vector$<$ Electrode $>$ \\
+\hline
+{\em c} & is a pointer to T\-C\-L\-A\-P\-::\-Cmd\-Line class to set/get command line options \\
+\hline
+\end{DoxyParams}
+\hypertarget{classVTKModelConstructor_a6e08f2bba1f5b26d64f74ae64101e211}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}}
+\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{V\-T\-K\-Model\-Constructor}]{\setlength{\rightskip}{0pt plus 5cm}V\-T\-K\-Model\-Constructor\-::\-V\-T\-K\-Model\-Constructor (
+\begin{DoxyParamCaption}
+\item[{const {\bf Clinical\-Frame} $\ast$}]{cf}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_a6e08f2bba1f5b26d64f74ae64101e211}
+\hypertarget{classVTKModelConstructor_accd2e4a9fce297452524424c56645af0}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!$\sim$\-V\-T\-K\-Model\-Constructor@{$\sim$\-V\-T\-K\-Model\-Constructor}}
+\index{$\sim$\-V\-T\-K\-Model\-Constructor@{$\sim$\-V\-T\-K\-Model\-Constructor}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{$\sim$\-V\-T\-K\-Model\-Constructor}]{\setlength{\rightskip}{0pt plus 5cm}V\-T\-K\-Model\-Constructor\-::$\sim$\-V\-T\-K\-Model\-Constructor (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_accd2e4a9fce297452524424c56645af0}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classVTKModelConstructor_abd4236c1af1eb4c52dca9c89aa504555}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!begin@{begin}}
+\index{begin@{begin}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Model\-Iterator} V\-T\-K\-Model\-Constructor\-::begin (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_abd4236c1af1eb4c52dca9c89aa504555}
+methods that returns a pointer to the H\-E\-A\-D of V\-T\-K model vector \hypertarget{classVTKModelConstructor_a458e23ce8a24102118938f2ca18c8c2c}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!distance\-\_\-@{distance\-\_\-}}
+\index{distance\-\_\-@{distance\-\_\-}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{distance\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}double V\-T\-K\-Model\-Constructor\-::distance\-\_\- (
+\begin{DoxyParamCaption}
+\item[{double $\ast$}]{p1, }
+\item[{double $\ast$}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{classVTKModelConstructor_a458e23ce8a24102118938f2ca18c8c2c}
+function that computes the euclidean distance between two points \hypertarget{classVTKModelConstructor_ac6f76a490e608339b6aa148089f535f7}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!empty@{empty}}
+\index{empty@{empty}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{empty}]{\setlength{\rightskip}{0pt plus 5cm}bool V\-T\-K\-Model\-Constructor\-::empty (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_ac6f76a490e608339b6aa148089f535f7}
+methods that check whether V\-T\-K model vector is empty \hypertarget{classVTKModelConstructor_a056e86cab4140ff9975d636de3a33486}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!end@{end}}
+\index{end@{end}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Model\-Iterator} V\-T\-K\-Model\-Constructor\-::end (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_a056e86cab4140ff9975d636de3a33486}
+methods that returns a pointer to the T\-A\-I\-L of V\-T\-K model vector \hypertarget{classVTKModelConstructor_a97c3716459da1a19e15a1b91283ccc8e}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!estimate\-Contact\-Extent\-\_\-@{estimate\-Contact\-Extent\-\_\-}}
+\index{estimate\-Contact\-Extent\-\_\-@{estimate\-Contact\-Extent\-\_\-}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{estimate\-Contact\-Extent\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}void V\-T\-K\-Model\-Constructor\-::estimate\-Contact\-Extent\-\_\- (
+\begin{DoxyParamCaption}
+\item[{double $\ast$}]{p1, }
+\item[{double $\ast$}]{p2, }
+\item[{vtk\-Line\-Source $\ast$}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{classVTKModelConstructor_a97c3716459da1a19e15a1b91283ccc8e}
+for each contact it estimates its position along the line that connectes contact1 and contact2 A\-T\-M the function assumes that p1 and p2 are 3.\-5 mm apart, better estimation needs to be used in order to create more physically reliable models \hypertarget{classVTKModelConstructor_aaec58670f5bb650109de05d2bbc5f8f1}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!get\-Output\-Mode@{get\-Output\-Mode}}
+\index{get\-Output\-Mode@{get\-Output\-Mode}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{get\-Output\-Mode}]{\setlength{\rightskip}{0pt plus 5cm}bool V\-T\-K\-Model\-Constructor\-::get\-Output\-Mode (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_aaec58670f5bb650109de05d2bbc5f8f1}
+this function returns whether the user requested a single vtk file (ie all the electrodes together as output or multiple files (ie each electrode as separate vtk file) \hypertarget{classVTKModelConstructor_a9661f98d603ca128f5bdf22ef78b15f1}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!set\-Clinical\-Frame@{set\-Clinical\-Frame}}
+\index{set\-Clinical\-Frame@{set\-Clinical\-Frame}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{set\-Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}void V\-T\-K\-Model\-Constructor\-::set\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{{\bf Clinical\-Frame} $\ast$}]{cf}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_a9661f98d603ca128f5bdf22ef78b15f1}
+\hypertarget{classVTKModelConstructor_a5f939d68c9f15d8ec22ddb6a0c0090c7}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!size@{size}}
+\index{size@{size}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int V\-T\-K\-Model\-Constructor\-::size (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classVTKModelConstructor_a5f939d68c9f15d8ec22ddb6a0c0090c7}
+\hypertarget{classVTKModelConstructor_ad6f6baa567097da53cbcaa91cf375531}{\index{V\-T\-K\-Model\-Constructor@{V\-T\-K\-Model\-Constructor}!update@{update}}
+\index{update@{update}!VTKModelConstructor@{V\-T\-K\-Model\-Constructor}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}int V\-T\-K\-Model\-Constructor\-::update (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classVTKModelConstructor_ad6f6baa567097da53cbcaa91cf375531}
+function that computes the euclidean distance between two points core method that navigate the clinical frame, extracts the centroids for each contact, estimates the contact as well as the electrode axes, and builds the vtk model (cylinder + spline) based on reconstructed information \begin{DoxyReturn}{Returns}
+this function returns 0 or 1 upon failure or success, respectively 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{VTKModelConstructor_8h}{V\-T\-K\-Model\-Constructor.\-h}\end{DoxyCompactItemize}

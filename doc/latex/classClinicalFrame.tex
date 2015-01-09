@@ -1,0 +1,180 @@
+\hypertarget{classClinicalFrame}{\section{Clinical\-Frame Class Reference}
+\label{classClinicalFrame}\index{Clinical\-Frame@{Clinical\-Frame}}
+}
+
+
+{\ttfamily \#include $<$Clinical\-Frame.\-h$>$}
+
+
+
+Collaboration diagram for Clinical\-Frame\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{classClinicalFrame__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef vector$<$ \hyperlink{classElectrode}{Electrode} $>$\\*
+\-::iterator \hyperlink{classClinicalFrame_a22b67ee42a429de47c1c12ffedf1a803}{Electrode\-Iterator}
+\item 
+typedef vector$<$ \hyperlink{classElectrode}{Electrode} $>$\\*
+\-::const\-\_\-iterator \hyperlink{classClinicalFrame_ab741d0da22f344965de240de63c8a381}{Const\-Electrode\-Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classClinicalFrame_a63046bc9f1c3c07ea610f2761c83719a}{Clinical\-Frame} (T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$)
+\item 
+\hyperlink{classClinicalFrame_a213db09308126a5631c2caef5a3c21a4}{Clinical\-Frame} (void)
+\item 
+\hyperlink{classClinicalFrame_a3bcff6abc229e1693ae6393ca0377c27}{$\sim$\-Clinical\-Frame} (void)
+\item 
+void \hyperlink{classClinicalFrame_a7feb4447a4bba0aea5c6581eb3b30e82}{set\-C\-T} (\hyperlink{Definitions_8h_a6952b2a622249cc460a5875f2a793e61}{Image\-Pointer\-Type} ct)
+\item 
+void \hyperlink{classClinicalFrame_ac18288df5d668d1c2d39ceb1434b0076}{add\-Electrode} (\hyperlink{classElectrode}{Electrode} e)
+\item 
+\hyperlink{classClinicalFrame_a22b67ee42a429de47c1c12ffedf1a803}{Electrode\-Iterator} \hyperlink{classClinicalFrame_a7b3bdd254b65b20a15483c3fd91dc8de}{begin} ()
+\item 
+\hyperlink{classClinicalFrame_a22b67ee42a429de47c1c12ffedf1a803}{Electrode\-Iterator} \hyperlink{classClinicalFrame_a03b243aacb896873c20a2354bfe6c29c}{end} ()
+\item 
+\hyperlink{classClinicalFrame_ab741d0da22f344965de240de63c8a381}{Const\-Electrode\-Iterator} \hyperlink{classClinicalFrame_a11b80ea21454657e3dd1b0778b70df80}{begin} () const 
+\item 
+\hyperlink{classClinicalFrame_ab741d0da22f344965de240de63c8a381}{Const\-Electrode\-Iterator} \hyperlink{classClinicalFrame_a08380f480fa3f27c75c46f24ed8526a8}{end} () const 
+\item 
+void \hyperlink{classClinicalFrame_a68cc0496606299638370b19ee5c44f7b}{from\-Ref\-To\-Center\-\_\-} (\hyperlink{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{Physical\-Point\-Type} $\ast$physical\-Point)
+\item 
+void \hyperlink{classClinicalFrame_a36849a62e3bc8414ec7c161007c38493}{from\-Center\-To\-Ref\-\_\-} (\hyperlink{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{Physical\-Point\-Type} $\ast$physical\-Point)
+\item 
+void \hyperlink{classClinicalFrame_a80a3f86750d4818d5d4c2d7a50b4f529}{from\-R\-A\-S2\-L\-P\-S\-\_\-} (\hyperlink{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{Physical\-Point\-Type} $\ast$physical\-Point)
+\item 
+bool \hyperlink{classClinicalFrame_ac94cf8c7ca13d597bcb961d95f7134cc}{isempty} (void) const 
+\item 
+int \hyperlink{classClinicalFrame_a9f970d38528bbb65dfac9e6fcae23263}{get\-Electrodes\-Number} (void) const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classClinicalFrame}{Clinical\-Frame} class
+
+this class is the central object that holds the information for reconstruction and saves the reconstructed data. It has a pointer to C\-T data which constitutes the reference space ({\bfseries Ref. Space}) . Initially, as read from F\-C\-S\-V (3\-D\-Slicer format) each \hyperlink{classElectrode}{Electrode} has 2 points entry and target which are represented in a Centered Coordinate system. For this, the class provides methods to transform each point from Ref to Centered and back-\/ 
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classClinicalFrame_ab741d0da22f344965de240de63c8a381}{\index{Clinical\-Frame@{Clinical\-Frame}!Const\-Electrode\-Iterator@{Const\-Electrode\-Iterator}}
+\index{Const\-Electrode\-Iterator@{Const\-Electrode\-Iterator}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{Const\-Electrode\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$ {\bf Electrode} $>$\-::const\-\_\-iterator {\bf Clinical\-Frame\-::\-Const\-Electrode\-Iterator}}}\label{classClinicalFrame_ab741d0da22f344965de240de63c8a381}
+\hypertarget{classClinicalFrame_a22b67ee42a429de47c1c12ffedf1a803}{\index{Clinical\-Frame@{Clinical\-Frame}!Electrode\-Iterator@{Electrode\-Iterator}}
+\index{Electrode\-Iterator@{Electrode\-Iterator}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{Electrode\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$ {\bf Electrode} $>$\-::iterator {\bf Clinical\-Frame\-::\-Electrode\-Iterator}}}\label{classClinicalFrame_a22b67ee42a429de47c1c12ffedf1a803}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classClinicalFrame_a63046bc9f1c3c07ea610f2761c83719a}{\index{Clinical\-Frame@{Clinical\-Frame}!Clinical\-Frame@{Clinical\-Frame}}
+\index{Clinical\-Frame@{Clinical\-Frame}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}Clinical\-Frame\-::\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a63046bc9f1c3c07ea610f2761c83719a}
+\hypertarget{classClinicalFrame_a213db09308126a5631c2caef5a3c21a4}{\index{Clinical\-Frame@{Clinical\-Frame}!Clinical\-Frame@{Clinical\-Frame}}
+\index{Clinical\-Frame@{Clinical\-Frame}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}Clinical\-Frame\-::\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a213db09308126a5631c2caef5a3c21a4}
+\hypertarget{classClinicalFrame_a3bcff6abc229e1693ae6393ca0377c27}{\index{Clinical\-Frame@{Clinical\-Frame}!$\sim$\-Clinical\-Frame@{$\sim$\-Clinical\-Frame}}
+\index{$\sim$\-Clinical\-Frame@{$\sim$\-Clinical\-Frame}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{$\sim$\-Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}Clinical\-Frame\-::$\sim$\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a3bcff6abc229e1693ae6393ca0377c27}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classClinicalFrame_ac18288df5d668d1c2d39ceb1434b0076}{\index{Clinical\-Frame@{Clinical\-Frame}!add\-Electrode@{add\-Electrode}}
+\index{add\-Electrode@{add\-Electrode}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{add\-Electrode}]{\setlength{\rightskip}{0pt plus 5cm}void Clinical\-Frame\-::add\-Electrode (
+\begin{DoxyParamCaption}
+\item[{{\bf Electrode}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_ac18288df5d668d1c2d39ceb1434b0076}
+\hypertarget{classClinicalFrame_a7b3bdd254b65b20a15483c3fd91dc8de}{\index{Clinical\-Frame@{Clinical\-Frame}!begin@{begin}}
+\index{begin@{begin}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Electrode\-Iterator} Clinical\-Frame\-::begin (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a7b3bdd254b65b20a15483c3fd91dc8de}
+this function returns a pointer to H\-E\-A\-D in vector$<$ Electrode $>$ \hypertarget{classClinicalFrame_a11b80ea21454657e3dd1b0778b70df80}{\index{Clinical\-Frame@{Clinical\-Frame}!begin@{begin}}
+\index{begin@{begin}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Const\-Electrode\-Iterator} Clinical\-Frame\-::begin (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a11b80ea21454657e3dd1b0778b70df80}
+this function returns a const pointer to H\-E\-A\-D in vector$<$ Electrode $>$ \hypertarget{classClinicalFrame_a03b243aacb896873c20a2354bfe6c29c}{\index{Clinical\-Frame@{Clinical\-Frame}!end@{end}}
+\index{end@{end}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Electrode\-Iterator} Clinical\-Frame\-::end (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a03b243aacb896873c20a2354bfe6c29c}
+this function returns a pointer to T\-A\-I\-L in vector$<$ Electrode $>$ \hypertarget{classClinicalFrame_a08380f480fa3f27c75c46f24ed8526a8}{\index{Clinical\-Frame@{Clinical\-Frame}!end@{end}}
+\index{end@{end}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Const\-Electrode\-Iterator} Clinical\-Frame\-::end (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a08380f480fa3f27c75c46f24ed8526a8}
+this function returns a const pointer to T\-A\-I\-L in vector$<$ Electrode $>$ \hypertarget{classClinicalFrame_a36849a62e3bc8414ec7c161007c38493}{\index{Clinical\-Frame@{Clinical\-Frame}!from\-Center\-To\-Ref\-\_\-@{from\-Center\-To\-Ref\-\_\-}}
+\index{from\-Center\-To\-Ref\-\_\-@{from\-Center\-To\-Ref\-\_\-}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{from\-Center\-To\-Ref\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}void Clinical\-Frame\-::from\-Center\-To\-Ref\-\_\- (
+\begin{DoxyParamCaption}
+\item[{{\bf Physical\-Point\-Type} $\ast$}]{physical\-Point}
+\end{DoxyParamCaption}
+)}}\label{classClinicalFrame_a36849a62e3bc8414ec7c161007c38493}
+this function transform a physical\-Point from Centered to Reference space \hypertarget{classClinicalFrame_a80a3f86750d4818d5d4c2d7a50b4f529}{\index{Clinical\-Frame@{Clinical\-Frame}!from\-R\-A\-S2\-L\-P\-S\-\_\-@{from\-R\-A\-S2\-L\-P\-S\-\_\-}}
+\index{from\-R\-A\-S2\-L\-P\-S\-\_\-@{from\-R\-A\-S2\-L\-P\-S\-\_\-}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{from\-R\-A\-S2\-L\-P\-S\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}void Clinical\-Frame\-::from\-R\-A\-S2\-L\-P\-S\-\_\- (
+\begin{DoxyParamCaption}
+\item[{{\bf Physical\-Point\-Type} $\ast$}]{physical\-Point}
+\end{DoxyParamCaption}
+)}}\label{classClinicalFrame_a80a3f86750d4818d5d4c2d7a50b4f529}
+this function transform a physical\-Point from L\-P\-S to R\-A\-S space \hypertarget{classClinicalFrame_a68cc0496606299638370b19ee5c44f7b}{\index{Clinical\-Frame@{Clinical\-Frame}!from\-Ref\-To\-Center\-\_\-@{from\-Ref\-To\-Center\-\_\-}}
+\index{from\-Ref\-To\-Center\-\_\-@{from\-Ref\-To\-Center\-\_\-}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{from\-Ref\-To\-Center\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}void Clinical\-Frame\-::from\-Ref\-To\-Center\-\_\- (
+\begin{DoxyParamCaption}
+\item[{{\bf Physical\-Point\-Type} $\ast$}]{physical\-Point}
+\end{DoxyParamCaption}
+)}}\label{classClinicalFrame_a68cc0496606299638370b19ee5c44f7b}
+this function transform a physical\-Point from Ref to Centered space \hypertarget{classClinicalFrame_a9f970d38528bbb65dfac9e6fcae23263}{\index{Clinical\-Frame@{Clinical\-Frame}!get\-Electrodes\-Number@{get\-Electrodes\-Number}}
+\index{get\-Electrodes\-Number@{get\-Electrodes\-Number}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{get\-Electrodes\-Number}]{\setlength{\rightskip}{0pt plus 5cm}int Clinical\-Frame\-::get\-Electrodes\-Number (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a9f970d38528bbb65dfac9e6fcae23263}
+\hypertarget{classClinicalFrame_ac94cf8c7ca13d597bcb961d95f7134cc}{\index{Clinical\-Frame@{Clinical\-Frame}!isempty@{isempty}}
+\index{isempty@{isempty}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{isempty}]{\setlength{\rightskip}{0pt plus 5cm}bool Clinical\-Frame\-::isempty (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_ac94cf8c7ca13d597bcb961d95f7134cc}
+this function returns true or false whether the vector$<$ Electrode$>$ is empty or not \hypertarget{classClinicalFrame_a7feb4447a4bba0aea5c6581eb3b30e82}{\index{Clinical\-Frame@{Clinical\-Frame}!set\-C\-T@{set\-C\-T}}
+\index{set\-C\-T@{set\-C\-T}!ClinicalFrame@{Clinical\-Frame}}
+\subsubsection[{set\-C\-T}]{\setlength{\rightskip}{0pt plus 5cm}void Clinical\-Frame\-::set\-C\-T (
+\begin{DoxyParamCaption}
+\item[{{\bf Image\-Pointer\-Type}}]{ct}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classClinicalFrame_a7feb4447a4bba0aea5c6581eb3b30e82}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{ClinicalFrame_8h}{Clinical\-Frame.\-h}\end{DoxyCompactItemize}

@@ -1,0 +1,159 @@
+\hypertarget{classAbstractWriter}{\section{Abstract\-Writer Class Reference}
+\label{classAbstractWriter}\index{Abstract\-Writer@{Abstract\-Writer}}
+}
+
+
+{\ttfamily \#include $<$Abstract\-Writer.\-h$>$}
+
+
+
+Inheritance diagram for Abstract\-Writer\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=271pt]{classAbstractWriter__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Abstract\-Writer\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classAbstractWriter__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const string \hyperlink{classAbstractWriter_ae2cdd50fc9b39e6ded80bb7d9cea55b0}{get\-Filename} () const 
+\item 
+void \hyperlink{classAbstractWriter_ab743677bd3db72113a57188093425306}{get\-Filename} (string filename) const 
+\item 
+void \hyperlink{classAbstractWriter_ac13745f7801378b8231bb54c45490dbe}{set\-Filename} (string filename)
+\item 
+void \hyperlink{classAbstractWriter_ab1bb7069f6b7886cb46718fb4c9eff5c}{set\-Extension} (string ext)
+\item 
+const \hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$ \hyperlink{classAbstractWriter_ae43ecbb0fbb883629ea44a7a7c906e1a}{get\-Clinical\-Frame} (void) const 
+\item 
+void \hyperlink{classAbstractWriter_a64827ba205471ae1d9fa9e5d890f3335}{set\-Clinical\-Frame} (\hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$cf)
+\item 
+\hyperlink{classClinicalFrame_ab741d0da22f344965de240de63c8a381}{Clinical\-Frame\-::\-Const\-Electrode\-Iterator} \hyperlink{classAbstractWriter_a02d123991818324034406e38c30bce1d}{begin} (void) const 
+\item 
+\hyperlink{classClinicalFrame_ab741d0da22f344965de240de63c8a381}{Clinical\-Frame\-::\-Const\-Electrode\-Iterator} \hyperlink{classAbstractWriter_a21776d6dc864b6cdadd49791ccfc6677}{end} (void) const 
+\item 
+virtual int \hyperlink{classAbstractWriter_ae3d1e946840352b28b092902664a1115}{update} ()=0
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classAbstractWriter_a75c621b83faaa753dddcb24d45f96d44}{check\-Filename\-\_\-} (void)
+\item 
+\hyperlink{classAbstractWriter_a56e1e861dc5b9ec7d6de79e6701fd06d}{Abstract\-Writer} ()
+\item 
+virtual \hyperlink{classAbstractWriter_a8d2dcb8b137bc04f8c22ec57ac59ed4e}{$\sim$\-Abstract\-Writer} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classAbstractWriter}{Abstract\-Writer} class This class is the base class for each writer. It takes care of filename consistency and it holds the \hyperlink{classClinicalFrame}{Clinical\-Frame} pointer. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classAbstractWriter_a56e1e861dc5b9ec7d6de79e6701fd06d}{\index{Abstract\-Writer@{Abstract\-Writer}!Abstract\-Writer@{Abstract\-Writer}}
+\index{Abstract\-Writer@{Abstract\-Writer}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{Abstract\-Writer}]{\setlength{\rightskip}{0pt plus 5cm}Abstract\-Writer\-::\-Abstract\-Writer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}}\label{classAbstractWriter_a56e1e861dc5b9ec7d6de79e6701fd06d}
+Purposely proteced since it is supposed to be istantiated only by its child \hypertarget{classAbstractWriter_a8d2dcb8b137bc04f8c22ec57ac59ed4e}{\index{Abstract\-Writer@{Abstract\-Writer}!$\sim$\-Abstract\-Writer@{$\sim$\-Abstract\-Writer}}
+\index{$\sim$\-Abstract\-Writer@{$\sim$\-Abstract\-Writer}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{$\sim$\-Abstract\-Writer}]{\setlength{\rightskip}{0pt plus 5cm}virtual Abstract\-Writer\-::$\sim$\-Abstract\-Writer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}}\label{classAbstractWriter_a8d2dcb8b137bc04f8c22ec57ac59ed4e}
+It sets the Clinical\-Frame$\ast$ to N\-U\-L\-L upon call 
+
+\subsection{Member Function Documentation}
+\hypertarget{classAbstractWriter_a02d123991818324034406e38c30bce1d}{\index{Abstract\-Writer@{Abstract\-Writer}!begin@{begin}}
+\index{begin@{begin}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Clinical\-Frame\-::\-Const\-Electrode\-Iterator} Abstract\-Writer\-::begin (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_a02d123991818324034406e38c30bce1d}
+returns the head of Const\-Electrode\-Iterator to navigate the \hyperlink{classClinicalFrame}{Clinical\-Frame} implant details \hypertarget{classAbstractWriter_a75c621b83faaa753dddcb24d45f96d44}{\index{Abstract\-Writer@{Abstract\-Writer}!check\-Filename\-\_\-@{check\-Filename\-\_\-}}
+\index{check\-Filename\-\_\-@{check\-Filename\-\_\-}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{check\-Filename\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}void Abstract\-Writer\-::check\-Filename\-\_\- (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}}\label{classAbstractWriter_a75c621b83faaa753dddcb24d45f96d44}
+appends correct extension to filename depending on which subclass has been istantiated \hypertarget{classAbstractWriter_a21776d6dc864b6cdadd49791ccfc6677}{\index{Abstract\-Writer@{Abstract\-Writer}!end@{end}}
+\index{end@{end}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Clinical\-Frame\-::\-Const\-Electrode\-Iterator} Abstract\-Writer\-::end (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_a21776d6dc864b6cdadd49791ccfc6677}
+returns the tail fo Const\-Electrode\-Iterator \hypertarget{classAbstractWriter_ae43ecbb0fbb883629ea44a7a7c906e1a}{\index{Abstract\-Writer@{Abstract\-Writer}!get\-Clinical\-Frame@{get\-Clinical\-Frame}}
+\index{get\-Clinical\-Frame@{get\-Clinical\-Frame}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{get\-Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Clinical\-Frame}$\ast$ Abstract\-Writer\-::get\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_ae43ecbb0fbb883629ea44a7a7c906e1a}
+\hypertarget{classAbstractWriter_ae2cdd50fc9b39e6ded80bb7d9cea55b0}{\index{Abstract\-Writer@{Abstract\-Writer}!get\-Filename@{get\-Filename}}
+\index{get\-Filename@{get\-Filename}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{get\-Filename}]{\setlength{\rightskip}{0pt plus 5cm}const string Abstract\-Writer\-::get\-Filename (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_ae2cdd50fc9b39e6ded80bb7d9cea55b0}
+\hypertarget{classAbstractWriter_ab743677bd3db72113a57188093425306}{\index{Abstract\-Writer@{Abstract\-Writer}!get\-Filename@{get\-Filename}}
+\index{get\-Filename@{get\-Filename}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{get\-Filename}]{\setlength{\rightskip}{0pt plus 5cm}void Abstract\-Writer\-::get\-Filename (
+\begin{DoxyParamCaption}
+\item[{string}]{filename}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_ab743677bd3db72113a57188093425306}
+\hypertarget{classAbstractWriter_a64827ba205471ae1d9fa9e5d890f3335}{\index{Abstract\-Writer@{Abstract\-Writer}!set\-Clinical\-Frame@{set\-Clinical\-Frame}}
+\index{set\-Clinical\-Frame@{set\-Clinical\-Frame}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{set\-Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}void Abstract\-Writer\-::set\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{{\bf Clinical\-Frame} $\ast$}]{cf}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_a64827ba205471ae1d9fa9e5d890f3335}
+\hypertarget{classAbstractWriter_ab1bb7069f6b7886cb46718fb4c9eff5c}{\index{Abstract\-Writer@{Abstract\-Writer}!set\-Extension@{set\-Extension}}
+\index{set\-Extension@{set\-Extension}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{set\-Extension}]{\setlength{\rightskip}{0pt plus 5cm}void Abstract\-Writer\-::set\-Extension (
+\begin{DoxyParamCaption}
+\item[{string}]{ext}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_ab1bb7069f6b7886cb46718fb4c9eff5c}
+\hypertarget{classAbstractWriter_ac13745f7801378b8231bb54c45490dbe}{\index{Abstract\-Writer@{Abstract\-Writer}!set\-Filename@{set\-Filename}}
+\index{set\-Filename@{set\-Filename}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{set\-Filename}]{\setlength{\rightskip}{0pt plus 5cm}void Abstract\-Writer\-::set\-Filename (
+\begin{DoxyParamCaption}
+\item[{string}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classAbstractWriter_ac13745f7801378b8231bb54c45490dbe}
+\hypertarget{classAbstractWriter_ae3d1e946840352b28b092902664a1115}{\index{Abstract\-Writer@{Abstract\-Writer}!update@{update}}
+\index{update@{update}!AbstractWriter@{Abstract\-Writer}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}virtual int Abstract\-Writer\-::update (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classAbstractWriter_ae3d1e946840352b28b092902664a1115}
+pure virtual method that each child should implement depending on file formats 
+
+Implemented in \hyperlink{classFCSVWriter_a23b5071a6eda497f4ce7872c6af6ae5c}{F\-C\-S\-V\-Writer}, and \hyperlink{classVTKWriter_abb335d732c6dceac1a389e118e7afb6c}{V\-T\-K\-Writer}.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{AbstractWriter_8h}{Abstract\-Writer.\-h}\end{DoxyCompactItemize}

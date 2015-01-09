@@ -1,0 +1,102 @@
+\hypertarget{Definitions_8h}{\section{Definitions.\-h File Reference}
+\label{Definitions_8h}\index{Definitions.\-h@{Definitions.\-h}}
+}
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include $<$itk\-Image.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Nifti\-Image\-I\-O.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Smart\-Pointer.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Image\-File\-Reader.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Poly\-Line\-Parametric\-Path.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Neighborhood\-Iterator.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Image\-To\-Image\-Filter.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Path\-Iterator.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Image\-Region\-Iterator.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Image\-Moments\-Calculator.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Region\-Of\-Interest\-Image\-Filter.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Point.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Translation\-Transform.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Orient\-Image\-Filter.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Neighborhood\-Inner\-Product.\-h$>$}\\*
+{\ttfamily \#include $<$itk\-Derivative\-Operator.\-h$>$}\\*
+{\ttfamily \#include $<$tclap/\-Cmd\-Line.\-h$>$}\\*
+Include dependency graph for Definitions.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Definitions_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Definitions_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef itk\-::\-Image$<$ short, 3 $>$ \hyperlink{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}{Image\-Type}
+\item 
+typedef Image\-Type\-::\-Pointer \hyperlink{Definitions_8h_a6952b2a622249cc460a5875f2a793e61}{Image\-Pointer\-Type}
+\item 
+typedef itk\-::\-Point$<$ double, 3 $>$ \hyperlink{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{Physical\-Point\-Type}
+\item 
+typedef Image\-Type\-::\-Index\-Type \hyperlink{Definitions_8h_ae685a5b33fd611f035ca2e96f295ff01}{Voxel\-Point\-Type}
+\item 
+typedef itk\-::\-Image\-File\-Reader\\*
+$<$ \hyperlink{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}{Image\-Type} $>$ \hyperlink{Definitions_8h_a9e26f526b940bed527c826dc95a3bb50}{Image\-Reader\-Type}
+\item 
+typedef \\*
+itk\-::\-Image\-Moments\-Calculator\\*
+$<$ \hyperlink{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}{Image\-Type} $>$ \hyperlink{Definitions_8h_ac94116121a5106707a88c6e919d080f8}{Calculator\-Type}
+\item 
+typedef Image\-Type\-::\-Size\-Type \hyperlink{Definitions_8h_a54604dadf3bd1e5feb73fc752d64a349}{Size\-Type}
+\item 
+typedef Image\-Type\-::\-Region\-Type \hyperlink{Definitions_8h_aa43cbdad7eb11c22fc56724b2662ff77}{Region\-Type}
+\item 
+typedef Image\-Type\-::\-Spacing\-Type \hyperlink{Definitions_8h_acdd20dc566401809116845da40ffdc4e}{Spacing\-Type}
+\item 
+typedef \\*
+itk\-::\-Region\-Of\-Interest\-Image\-Filter\\*
+$<$ \hyperlink{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}{Image\-Type}, \hyperlink{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}{Image\-Type} $>$ \hyperlink{Definitions_8h_a678719635ee6db0a8cd68bd56bcdec02}{Filter\-Type}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{Definitions_8h_ac94116121a5106707a88c6e919d080f8}{\index{Definitions.\-h@{Definitions.\-h}!Calculator\-Type@{Calculator\-Type}}
+\index{Calculator\-Type@{Calculator\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Calculator\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef itk\-::\-Image\-Moments\-Calculator$<${\bf Image\-Type}$>$ {\bf Calculator\-Type}}}\label{Definitions_8h_ac94116121a5106707a88c6e919d080f8}
+\hypertarget{Definitions_8h_a678719635ee6db0a8cd68bd56bcdec02}{\index{Definitions.\-h@{Definitions.\-h}!Filter\-Type@{Filter\-Type}}
+\index{Filter\-Type@{Filter\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Filter\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef itk\-::\-Region\-Of\-Interest\-Image\-Filter$<${\bf Image\-Type},{\bf Image\-Type}$>$ {\bf Filter\-Type}}}\label{Definitions_8h_a678719635ee6db0a8cd68bd56bcdec02}
+\hypertarget{Definitions_8h_a6952b2a622249cc460a5875f2a793e61}{\index{Definitions.\-h@{Definitions.\-h}!Image\-Pointer\-Type@{Image\-Pointer\-Type}}
+\index{Image\-Pointer\-Type@{Image\-Pointer\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Image\-Pointer\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef Image\-Type\-::\-Pointer {\bf Image\-Pointer\-Type}}}\label{Definitions_8h_a6952b2a622249cc460a5875f2a793e61}
+\hypertarget{Definitions_8h_a9e26f526b940bed527c826dc95a3bb50}{\index{Definitions.\-h@{Definitions.\-h}!Image\-Reader\-Type@{Image\-Reader\-Type}}
+\index{Image\-Reader\-Type@{Image\-Reader\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Image\-Reader\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef itk\-::\-Image\-File\-Reader$<$ {\bf Image\-Type} $>$ {\bf Image\-Reader\-Type}}}\label{Definitions_8h_a9e26f526b940bed527c826dc95a3bb50}
+\hypertarget{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}{\index{Definitions.\-h@{Definitions.\-h}!Image\-Type@{Image\-Type}}
+\index{Image\-Type@{Image\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Image\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef itk\-::\-Image$<$short, 3$>$ {\bf Image\-Type}}}\label{Definitions_8h_a802532dc139f219ffb61a72f80eb304a}
+\hypertarget{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{\index{Definitions.\-h@{Definitions.\-h}!Physical\-Point\-Type@{Physical\-Point\-Type}}
+\index{Physical\-Point\-Type@{Physical\-Point\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Physical\-Point\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef itk\-::\-Point$<$double,3$>$ {\bf Physical\-Point\-Type}}}\label{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}
+\hypertarget{Definitions_8h_aa43cbdad7eb11c22fc56724b2662ff77}{\index{Definitions.\-h@{Definitions.\-h}!Region\-Type@{Region\-Type}}
+\index{Region\-Type@{Region\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Region\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef Image\-Type\-::\-Region\-Type {\bf Region\-Type}}}\label{Definitions_8h_aa43cbdad7eb11c22fc56724b2662ff77}
+\hypertarget{Definitions_8h_a54604dadf3bd1e5feb73fc752d64a349}{\index{Definitions.\-h@{Definitions.\-h}!Size\-Type@{Size\-Type}}
+\index{Size\-Type@{Size\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Size\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef Image\-Type\-::\-Size\-Type {\bf Size\-Type}}}\label{Definitions_8h_a54604dadf3bd1e5feb73fc752d64a349}
+\hypertarget{Definitions_8h_acdd20dc566401809116845da40ffdc4e}{\index{Definitions.\-h@{Definitions.\-h}!Spacing\-Type@{Spacing\-Type}}
+\index{Spacing\-Type@{Spacing\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Spacing\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef Image\-Type\-::\-Spacing\-Type {\bf Spacing\-Type}}}\label{Definitions_8h_acdd20dc566401809116845da40ffdc4e}
+\hypertarget{Definitions_8h_ae685a5b33fd611f035ca2e96f295ff01}{\index{Definitions.\-h@{Definitions.\-h}!Voxel\-Point\-Type@{Voxel\-Point\-Type}}
+\index{Voxel\-Point\-Type@{Voxel\-Point\-Type}!Definitions.h@{Definitions.\-h}}
+\subsubsection[{Voxel\-Point\-Type}]{\setlength{\rightskip}{0pt plus 5cm}typedef Image\-Type\-::\-Index\-Type {\bf Voxel\-Point\-Type}}}\label{Definitions_8h_ae685a5b33fd611f035ca2e96f295ff01}

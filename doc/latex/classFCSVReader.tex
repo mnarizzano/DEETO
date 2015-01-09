@@ -1,0 +1,111 @@
+\hypertarget{classFCSVReader}{\section{F\-C\-S\-V\-Reader Class Reference}
+\label{classFCSVReader}\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}}
+}
+
+
+{\ttfamily \#include $<$F\-C\-S\-V\-Reader.\-h$>$}
+
+
+
+Collaboration diagram for F\-C\-S\-V\-Reader\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classFCSVReader__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFCSVReader_a1b2b7d8b966678d8f808bb3cbce0915b}{F\-C\-S\-V\-Reader} (T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$c)
+\item 
+\hyperlink{classFCSVReader_a708da1f7923ad87643797f11d15c2703}{F\-C\-S\-V\-Reader} (string $\ast$filein, T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$c)
+\item 
+\hyperlink{classFCSVReader_aafeed39a9516b04df7364564593c948a}{$\sim$\-F\-C\-S\-V\-Reader} ()
+\item 
+void \hyperlink{classFCSVReader_a47d8fde50cb1506f681fa7bbf464b816}{set\-File\-Input} (string $\ast$filein)
+\item 
+void \hyperlink{classFCSVReader_a1b056959e112ca1a028ce9ef880ff071}{set\-Clinical\-Frame} (\hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$cf)
+\item 
+void \hyperlink{classFCSVReader_ad78a979d3c97883741ad81306540ea69}{set\-C\-T} (Image\-Type\-::\-Pointer ct\-Image)
+\item 
+int \hyperlink{classFCSVReader_ac5654025633d18b402f0349b33765254}{update} (void)
+\item 
+\hyperlink{classClinicalFrame}{Clinical\-Frame} $\ast$ \hyperlink{classFCSVReader_a3cee91a10c90ce2310c241ae4fd4d85a}{get\-Output} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A\-S\-S\-U\-M\-E\-: C\-T is nifti, so must be R\-A\-S and Ref. for this reason we assume that the fiducial list {\itshape have} to be in R\-A\-S and Ref format.
+
+N\-O\-T\-I\-C\-E\-: I\-T\-K\-Reader transform automatically the C\-T into L\-P\-S, so we need to do the same for the fiducial lit.
+
+T\-O\-D\-O\-: \hyperlink{classFCSVReader}{F\-C\-S\-V\-Reader} legge il file direttamente dalla command line, per cui l'opzione di file reader e' lui che deve aggiungerla. This class reads entry and target points from fiducial file and outputs the clinical frame. this assumes that fiducial data are represented in L\-P\-S -\/ Centered space. Usually file constructed with 3\-D\-Slicer are defined in this space. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classFCSVReader_a1b2b7d8b966678d8f808bb3cbce0915b}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}}
+\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{F\-C\-S\-V\-Reader}]{\setlength{\rightskip}{0pt plus 5cm}F\-C\-S\-V\-Reader\-::\-F\-C\-S\-V\-Reader (
+\begin{DoxyParamCaption}
+\item[{T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCSVReader_a1b2b7d8b966678d8f808bb3cbce0915b}
+\hypertarget{classFCSVReader_a708da1f7923ad87643797f11d15c2703}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}}
+\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{F\-C\-S\-V\-Reader}]{\setlength{\rightskip}{0pt plus 5cm}F\-C\-S\-V\-Reader\-::\-F\-C\-S\-V\-Reader (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{filein, }
+\item[{T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCSVReader_a708da1f7923ad87643797f11d15c2703}
+\hypertarget{classFCSVReader_aafeed39a9516b04df7364564593c948a}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!$\sim$\-F\-C\-S\-V\-Reader@{$\sim$\-F\-C\-S\-V\-Reader}}
+\index{$\sim$\-F\-C\-S\-V\-Reader@{$\sim$\-F\-C\-S\-V\-Reader}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{$\sim$\-F\-C\-S\-V\-Reader}]{\setlength{\rightskip}{0pt plus 5cm}F\-C\-S\-V\-Reader\-::$\sim$\-F\-C\-S\-V\-Reader (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCSVReader_aafeed39a9516b04df7364564593c948a}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classFCSVReader_a3cee91a10c90ce2310c241ae4fd4d85a}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!get\-Output@{get\-Output}}
+\index{get\-Output@{get\-Output}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{get\-Output}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Clinical\-Frame}$\ast$ F\-C\-S\-V\-Reader\-::get\-Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCSVReader_a3cee91a10c90ce2310c241ae4fd4d85a}
+returns a pointer to the constructed \hyperlink{classClinicalFrame}{Clinical\-Frame} \hypertarget{classFCSVReader_a1b056959e112ca1a028ce9ef880ff071}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!set\-Clinical\-Frame@{set\-Clinical\-Frame}}
+\index{set\-Clinical\-Frame@{set\-Clinical\-Frame}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{set\-Clinical\-Frame}]{\setlength{\rightskip}{0pt plus 5cm}void F\-C\-S\-V\-Reader\-::set\-Clinical\-Frame (
+\begin{DoxyParamCaption}
+\item[{{\bf Clinical\-Frame} $\ast$}]{cf}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCSVReader_a1b056959e112ca1a028ce9ef880ff071}
+\hypertarget{classFCSVReader_ad78a979d3c97883741ad81306540ea69}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!set\-C\-T@{set\-C\-T}}
+\index{set\-C\-T@{set\-C\-T}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{set\-C\-T}]{\setlength{\rightskip}{0pt plus 5cm}void F\-C\-S\-V\-Reader\-::set\-C\-T (
+\begin{DoxyParamCaption}
+\item[{Image\-Type\-::\-Pointer}]{ct\-Image}
+\end{DoxyParamCaption}
+)}}\label{classFCSVReader_ad78a979d3c97883741ad81306540ea69}
+\hypertarget{classFCSVReader_a47d8fde50cb1506f681fa7bbf464b816}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!set\-File\-Input@{set\-File\-Input}}
+\index{set\-File\-Input@{set\-File\-Input}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{set\-File\-Input}]{\setlength{\rightskip}{0pt plus 5cm}void F\-C\-S\-V\-Reader\-::set\-File\-Input (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{filein}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classFCSVReader_a47d8fde50cb1506f681fa7bbf464b816}
+\hypertarget{classFCSVReader_ac5654025633d18b402f0349b33765254}{\index{F\-C\-S\-V\-Reader@{F\-C\-S\-V\-Reader}!update@{update}}
+\index{update@{update}!FCSVReader@{F\-C\-S\-V\-Reader}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}int F\-C\-S\-V\-Reader\-::update (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classFCSVReader_ac5654025633d18b402f0349b33765254}
+This function actually reads the fiducial file and populate the \hyperlink{classClinicalFrame}{Clinical\-Frame} information it's not important the order of entry/target points till they are represented in L\-P\-S-\/\-Centered space. This function computes the distance from the center (0,0,0) to understand whether a coordiante triplet is a target or entry point. Comments at the beginning of file are ignored. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{FCSVReader_8h}{F\-C\-S\-V\-Reader.\-h}\end{DoxyCompactItemize}

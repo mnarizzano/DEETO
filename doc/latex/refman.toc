@@ -1,0 +1,160 @@
+\contentsline {chapter}{\numberline {1}Hierarchical Index}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Class Hierarchy}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}Class Index}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Class List}{3}{section.2.1}
+\contentsline {chapter}{\numberline {3}File Index}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}File List}{5}{section.3.1}
+\contentsline {chapter}{\numberline {4}Class Documentation}{7}{chapter.4}
+\contentsline {section}{\numberline {4.1}Abstract\discretionary {-}{}{}Writer Class Reference}{7}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Detailed Description}{8}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Constructor \& Destructor Documentation}{8}{subsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.2.1}Abstract\discretionary {-}{}{}Writer}{8}{subsubsection.4.1.2.1}
+\contentsline {subsubsection}{\numberline {4.1.2.2}$\sim $\discretionary {-}{}{}Abstract\discretionary {-}{}{}Writer}{9}{subsubsection.4.1.2.2}
+\contentsline {subsection}{\numberline {4.1.3}Member Function Documentation}{9}{subsection.4.1.3}
+\contentsline {subsubsection}{\numberline {4.1.3.1}begin}{9}{subsubsection.4.1.3.1}
+\contentsline {subsubsection}{\numberline {4.1.3.2}check\discretionary {-}{}{}Filename\discretionary {-}{}{}\_\discretionary {-}{}{}}{9}{subsubsection.4.1.3.2}
+\contentsline {subsubsection}{\numberline {4.1.3.3}end}{9}{subsubsection.4.1.3.3}
+\contentsline {subsubsection}{\numberline {4.1.3.4}get\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}{9}{subsubsection.4.1.3.4}
+\contentsline {subsubsection}{\numberline {4.1.3.5}get\discretionary {-}{}{}Filename}{9}{subsubsection.4.1.3.5}
+\contentsline {subsubsection}{\numberline {4.1.3.6}get\discretionary {-}{}{}Filename}{9}{subsubsection.4.1.3.6}
+\contentsline {subsubsection}{\numberline {4.1.3.7}set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}{9}{subsubsection.4.1.3.7}
+\contentsline {subsubsection}{\numberline {4.1.3.8}set\discretionary {-}{}{}Extension}{9}{subsubsection.4.1.3.8}
+\contentsline {subsubsection}{\numberline {4.1.3.9}set\discretionary {-}{}{}Filename}{9}{subsubsection.4.1.3.9}
+\contentsline {subsubsection}{\numberline {4.1.3.10}update}{9}{subsubsection.4.1.3.10}
+\contentsline {section}{\numberline {4.2}Anatomical\discretionary {-}{}{}Patch\discretionary {-}{}{}Builder$<$ class T $>$ Class Reference}{9}{section.4.2}
+\contentsline {section}{\numberline {4.3}Clinical\discretionary {-}{}{}Frame Class Reference}{10}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Detailed Description}{11}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Member Typedef Documentation}{11}{subsection.4.3.2}
+\contentsline {subsubsection}{\numberline {4.3.2.1}Const\discretionary {-}{}{}Electrode\discretionary {-}{}{}Iterator}{11}{subsubsection.4.3.2.1}
+\contentsline {subsubsection}{\numberline {4.3.2.2}Electrode\discretionary {-}{}{}Iterator}{11}{subsubsection.4.3.2.2}
+\contentsline {subsection}{\numberline {4.3.3}Constructor \& Destructor Documentation}{11}{subsection.4.3.3}
+\contentsline {subsubsection}{\numberline {4.3.3.1}Clinical\discretionary {-}{}{}Frame}{11}{subsubsection.4.3.3.1}
+\contentsline {subsubsection}{\numberline {4.3.3.2}Clinical\discretionary {-}{}{}Frame}{11}{subsubsection.4.3.3.2}
+\contentsline {subsubsection}{\numberline {4.3.3.3}$\sim $\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}{11}{subsubsection.4.3.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Member Function Documentation}{11}{subsection.4.3.4}
+\contentsline {subsubsection}{\numberline {4.3.4.1}add\discretionary {-}{}{}Electrode}{11}{subsubsection.4.3.4.1}
+\contentsline {subsubsection}{\numberline {4.3.4.2}begin}{11}{subsubsection.4.3.4.2}
+\contentsline {subsubsection}{\numberline {4.3.4.3}begin}{11}{subsubsection.4.3.4.3}
+\contentsline {subsubsection}{\numberline {4.3.4.4}end}{12}{subsubsection.4.3.4.4}
+\contentsline {subsubsection}{\numberline {4.3.4.5}end}{12}{subsubsection.4.3.4.5}
+\contentsline {subsubsection}{\numberline {4.3.4.6}from\discretionary {-}{}{}Center\discretionary {-}{}{}To\discretionary {-}{}{}Ref\discretionary {-}{}{}\_\discretionary {-}{}{}}{12}{subsubsection.4.3.4.6}
+\contentsline {subsubsection}{\numberline {4.3.4.7}from\discretionary {-}{}{}R\discretionary {-}{}{}A\discretionary {-}{}{}S2\discretionary {-}{}{}L\discretionary {-}{}{}P\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}}{12}{subsubsection.4.3.4.7}
+\contentsline {subsubsection}{\numberline {4.3.4.8}from\discretionary {-}{}{}Ref\discretionary {-}{}{}To\discretionary {-}{}{}Center\discretionary {-}{}{}\_\discretionary {-}{}{}}{12}{subsubsection.4.3.4.8}
+\contentsline {subsubsection}{\numberline {4.3.4.9}get\discretionary {-}{}{}Electrodes\discretionary {-}{}{}Number}{12}{subsubsection.4.3.4.9}
+\contentsline {subsubsection}{\numberline {4.3.4.10}isempty}{12}{subsubsection.4.3.4.10}
+\contentsline {subsubsection}{\numberline {4.3.4.11}set\discretionary {-}{}{}C\discretionary {-}{}{}T}{12}{subsubsection.4.3.4.11}
+\contentsline {section}{\numberline {4.4}Contact\discretionary {-}{}{}Constructor Class Reference}{12}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Constructor \& Destructor Documentation}{13}{subsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.1.1}Contact\discretionary {-}{}{}Constructor}{13}{subsubsection.4.4.1.1}
+\contentsline {subsubsection}{\numberline {4.4.1.2}Contact\discretionary {-}{}{}Constructor}{13}{subsubsection.4.4.1.2}
+\contentsline {subsubsection}{\numberline {4.4.1.3}$\sim $\discretionary {-}{}{}Contact\discretionary {-}{}{}Constructor}{13}{subsubsection.4.4.1.3}
+\contentsline {subsection}{\numberline {4.4.2}Member Function Documentation}{13}{subsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.2.1}update}{13}{subsubsection.4.4.2.1}
+\contentsline {subsection}{\numberline {4.4.3}Member Data Documentation}{13}{subsection.4.4.3}
+\contentsline {subsubsection}{\numberline {4.4.3.1}M\discretionary {-}{}{}A\discretionary {-}{}{}X\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}A\discretionary {-}{}{}N\discretionary {-}{}{}G\discretionary {-}{}{}L\discretionary {-}{}{}E}{13}{subsubsection.4.4.3.1}
+\contentsline {section}{\numberline {4.5}Electrode Class Reference}{13}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Detailed Description}{15}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Member Typedef Documentation}{15}{subsection.4.5.2}
+\contentsline {subsubsection}{\numberline {4.5.2.1}Const\discretionary {-}{}{}Contact}{15}{subsubsection.4.5.2.1}
+\contentsline {subsubsection}{\numberline {4.5.2.2}Const\discretionary {-}{}{}Contact\discretionary {-}{}{}Iterator}{15}{subsubsection.4.5.2.2}
+\contentsline {subsubsection}{\numberline {4.5.2.3}Contact}{15}{subsubsection.4.5.2.3}
+\contentsline {subsubsection}{\numberline {4.5.2.4}Contact\discretionary {-}{}{}Iterator}{15}{subsubsection.4.5.2.4}
+\contentsline {subsection}{\numberline {4.5.3}Constructor \& Destructor Documentation}{15}{subsection.4.5.3}
+\contentsline {subsubsection}{\numberline {4.5.3.1}Electrode}{15}{subsubsection.4.5.3.1}
+\contentsline {subsubsection}{\numberline {4.5.3.2}Electrode}{15}{subsubsection.4.5.3.2}
+\contentsline {subsubsection}{\numberline {4.5.3.3}Electrode}{15}{subsubsection.4.5.3.3}
+\contentsline {subsubsection}{\numberline {4.5.3.4}$\sim $\discretionary {-}{}{}Electrode}{15}{subsubsection.4.5.3.4}
+\contentsline {subsection}{\numberline {4.5.4}Member Function Documentation}{15}{subsection.4.5.4}
+\contentsline {subsubsection}{\numberline {4.5.4.1}add\discretionary {-}{}{}Contact}{15}{subsubsection.4.5.4.1}
+\contentsline {subsubsection}{\numberline {4.5.4.2}begin}{15}{subsubsection.4.5.4.2}
+\contentsline {subsubsection}{\numberline {4.5.4.3}begin}{15}{subsubsection.4.5.4.3}
+\contentsline {subsubsection}{\numberline {4.5.4.4}end}{15}{subsubsection.4.5.4.4}
+\contentsline {subsubsection}{\numberline {4.5.4.5}end}{15}{subsubsection.4.5.4.5}
+\contentsline {subsubsection}{\numberline {4.5.4.6}get\discretionary {-}{}{}Contact}{15}{subsubsection.4.5.4.6}
+\contentsline {subsubsection}{\numberline {4.5.4.7}get\discretionary {-}{}{}Contact}{16}{subsubsection.4.5.4.7}
+\contentsline {subsubsection}{\numberline {4.5.4.8}get\discretionary {-}{}{}Contact\discretionary {-}{}{}Number}{16}{subsubsection.4.5.4.8}
+\contentsline {subsubsection}{\numberline {4.5.4.9}get\discretionary {-}{}{}Entry}{16}{subsubsection.4.5.4.9}
+\contentsline {subsubsection}{\numberline {4.5.4.10}get\discretionary {-}{}{}Entry\discretionary {-}{}{}As\discretionary {-}{}{}Double}{16}{subsubsection.4.5.4.10}
+\contentsline {subsubsection}{\numberline {4.5.4.11}get\discretionary {-}{}{}Model}{16}{subsubsection.4.5.4.11}
+\contentsline {subsubsection}{\numberline {4.5.4.12}get\discretionary {-}{}{}Name}{16}{subsubsection.4.5.4.12}
+\contentsline {subsubsection}{\numberline {4.5.4.13}get\discretionary {-}{}{}Target}{16}{subsubsection.4.5.4.13}
+\contentsline {subsubsection}{\numberline {4.5.4.14}get\discretionary {-}{}{}Target\discretionary {-}{}{}As\discretionary {-}{}{}Double}{16}{subsubsection.4.5.4.14}
+\contentsline {subsubsection}{\numberline {4.5.4.15}set\discretionary {-}{}{}Entry}{16}{subsubsection.4.5.4.15}
+\contentsline {subsubsection}{\numberline {4.5.4.16}set\discretionary {-}{}{}Model}{16}{subsubsection.4.5.4.16}
+\contentsline {subsubsection}{\numberline {4.5.4.17}set\discretionary {-}{}{}Name}{16}{subsubsection.4.5.4.17}
+\contentsline {subsubsection}{\numberline {4.5.4.18}set\discretionary {-}{}{}Target}{16}{subsubsection.4.5.4.18}
+\contentsline {subsection}{\numberline {4.5.5}Friends And Related Function Documentation}{17}{subsection.4.5.5}
+\contentsline {subsubsection}{\numberline {4.5.5.1}operator$<$$<$}{17}{subsubsection.4.5.5.1}
+\contentsline {section}{\numberline {4.6}Electrode\discretionary {-}{}{}Model Class Reference}{17}{section.4.6}
+\contentsline {section}{\numberline {4.7}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader Class Reference}{17}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Detailed Description}{18}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}Constructor \& Destructor Documentation}{18}{subsection.4.7.2}
+\contentsline {subsubsection}{\numberline {4.7.2.1}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}{18}{subsubsection.4.7.2.1}
+\contentsline {subsubsection}{\numberline {4.7.2.2}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}{18}{subsubsection.4.7.2.2}
+\contentsline {subsubsection}{\numberline {4.7.2.3}$\sim $\discretionary {-}{}{}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader}{18}{subsubsection.4.7.2.3}
+\contentsline {subsection}{\numberline {4.7.3}Member Function Documentation}{18}{subsection.4.7.3}
+\contentsline {subsubsection}{\numberline {4.7.3.1}get\discretionary {-}{}{}Output}{18}{subsubsection.4.7.3.1}
+\contentsline {subsubsection}{\numberline {4.7.3.2}set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}{18}{subsubsection.4.7.3.2}
+\contentsline {subsubsection}{\numberline {4.7.3.3}set\discretionary {-}{}{}C\discretionary {-}{}{}T}{18}{subsubsection.4.7.3.3}
+\contentsline {subsubsection}{\numberline {4.7.3.4}set\discretionary {-}{}{}File\discretionary {-}{}{}Input}{18}{subsubsection.4.7.3.4}
+\contentsline {subsubsection}{\numberline {4.7.3.5}update}{18}{subsubsection.4.7.3.5}
+\contentsline {section}{\numberline {4.8}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer Class Reference}{19}{section.4.8}
+\contentsline {subsection}{\numberline {4.8.1}Detailed Description}{20}{subsection.4.8.1}
+\contentsline {subsection}{\numberline {4.8.2}Constructor \& Destructor Documentation}{20}{subsection.4.8.2}
+\contentsline {subsubsection}{\numberline {4.8.2.1}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}{20}{subsubsection.4.8.2.1}
+\contentsline {subsubsection}{\numberline {4.8.2.2}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}{21}{subsubsection.4.8.2.2}
+\contentsline {subsubsection}{\numberline {4.8.2.3}$\sim $\discretionary {-}{}{}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer}{21}{subsubsection.4.8.2.3}
+\contentsline {subsection}{\numberline {4.8.3}Member Function Documentation}{21}{subsection.4.8.3}
+\contentsline {subsubsection}{\numberline {4.8.3.1}update}{21}{subsubsection.4.8.3.1}
+\contentsline {section}{\numberline {4.9}G\discretionary {-}{}{}M\discretionary {-}{}{}P\discretionary {-}{}{}I\discretionary {-}{}{}Estimator Class Reference}{21}{section.4.9}
+\contentsline {section}{\numberline {4.10}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor Class Reference}{21}{section.4.10}
+\contentsline {subsection}{\numberline {4.10.1}Detailed Description}{23}{subsection.4.10.1}
+\contentsline {subsection}{\numberline {4.10.2}Member Typedef Documentation}{23}{subsection.4.10.2}
+\contentsline {subsubsection}{\numberline {4.10.2.1}Const\discretionary {-}{}{}Model\discretionary {-}{}{}Iterator}{23}{subsubsection.4.10.2.1}
+\contentsline {subsubsection}{\numberline {4.10.2.2}Model\discretionary {-}{}{}Iterator}{23}{subsubsection.4.10.2.2}
+\contentsline {subsection}{\numberline {4.10.3}Constructor \& Destructor Documentation}{23}{subsection.4.10.3}
+\contentsline {subsubsection}{\numberline {4.10.3.1}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}{23}{subsubsection.4.10.3.1}
+\contentsline {subsubsection}{\numberline {4.10.3.2}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}{23}{subsubsection.4.10.3.2}
+\contentsline {subsubsection}{\numberline {4.10.3.3}$\sim $\discretionary {-}{}{}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor}{23}{subsubsection.4.10.3.3}
+\contentsline {subsection}{\numberline {4.10.4}Member Function Documentation}{23}{subsection.4.10.4}
+\contentsline {subsubsection}{\numberline {4.10.4.1}begin}{23}{subsubsection.4.10.4.1}
+\contentsline {subsubsection}{\numberline {4.10.4.2}distance\discretionary {-}{}{}\_\discretionary {-}{}{}}{23}{subsubsection.4.10.4.2}
+\contentsline {subsubsection}{\numberline {4.10.4.3}empty}{23}{subsubsection.4.10.4.3}
+\contentsline {subsubsection}{\numberline {4.10.4.4}end}{23}{subsubsection.4.10.4.4}
+\contentsline {subsubsection}{\numberline {4.10.4.5}estimate\discretionary {-}{}{}Contact\discretionary {-}{}{}Extent\discretionary {-}{}{}\_\discretionary {-}{}{}}{23}{subsubsection.4.10.4.5}
+\contentsline {subsubsection}{\numberline {4.10.4.6}get\discretionary {-}{}{}Output\discretionary {-}{}{}Mode}{24}{subsubsection.4.10.4.6}
+\contentsline {subsubsection}{\numberline {4.10.4.7}set\discretionary {-}{}{}Clinical\discretionary {-}{}{}Frame}{24}{subsubsection.4.10.4.7}
+\contentsline {subsubsection}{\numberline {4.10.4.8}size}{24}{subsubsection.4.10.4.8}
+\contentsline {subsubsection}{\numberline {4.10.4.9}update}{24}{subsubsection.4.10.4.9}
+\contentsline {section}{\numberline {4.11}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer Class Reference}{24}{section.4.11}
+\contentsline {subsection}{\numberline {4.11.1}Detailed Description}{26}{subsection.4.11.1}
+\contentsline {subsection}{\numberline {4.11.2}Constructor \& Destructor Documentation}{26}{subsection.4.11.2}
+\contentsline {subsubsection}{\numberline {4.11.2.1}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}{26}{subsubsection.4.11.2.1}
+\contentsline {subsubsection}{\numberline {4.11.2.2}$\sim $\discretionary {-}{}{}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer}{26}{subsubsection.4.11.2.2}
+\contentsline {subsection}{\numberline {4.11.3}Member Function Documentation}{26}{subsection.4.11.3}
+\contentsline {subsubsection}{\numberline {4.11.3.1}update}{27}{subsubsection.4.11.3.1}
+\contentsline {chapter}{\numberline {5}File Documentation}{29}{chapter.5}
+\contentsline {section}{\numberline {5.1}Abstract\discretionary {-}{}{}Writer.\discretionary {-}{}{}h File Reference}{29}{section.5.1}
+\contentsline {section}{\numberline {5.2}Anatomical\discretionary {-}{}{}Patch\discretionary {-}{}{}Builder.\discretionary {-}{}{}h File Reference}{29}{section.5.2}
+\contentsline {section}{\numberline {5.3}Clinical\discretionary {-}{}{}Frame.\discretionary {-}{}{}h File Reference}{30}{section.5.3}
+\contentsline {section}{\numberline {5.4}Contact\discretionary {-}{}{}Constructor.\discretionary {-}{}{}h File Reference}{30}{section.5.4}
+\contentsline {section}{\numberline {5.5}Definitions.\discretionary {-}{}{}h File Reference}{31}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Typedef Documentation}{32}{subsection.5.5.1}
+\contentsline {subsubsection}{\numberline {5.5.1.1}Calculator\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.1}
+\contentsline {subsubsection}{\numberline {5.5.1.2}Filter\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.2}
+\contentsline {subsubsection}{\numberline {5.5.1.3}Image\discretionary {-}{}{}Pointer\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.3}
+\contentsline {subsubsection}{\numberline {5.5.1.4}Image\discretionary {-}{}{}Reader\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.4}
+\contentsline {subsubsection}{\numberline {5.5.1.5}Image\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.5}
+\contentsline {subsubsection}{\numberline {5.5.1.6}Physical\discretionary {-}{}{}Point\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.6}
+\contentsline {subsubsection}{\numberline {5.5.1.7}Region\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.7}
+\contentsline {subsubsection}{\numberline {5.5.1.8}Size\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.8}
+\contentsline {subsubsection}{\numberline {5.5.1.9}Spacing\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.9}
+\contentsline {subsubsection}{\numberline {5.5.1.10}Voxel\discretionary {-}{}{}Point\discretionary {-}{}{}Type}{32}{subsubsection.5.5.1.10}
+\contentsline {section}{\numberline {5.6}Electrode.\discretionary {-}{}{}h File Reference}{32}{section.5.6}
+\contentsline {section}{\numberline {5.7}Electrode\discretionary {-}{}{}Model.\discretionary {-}{}{}h File Reference}{33}{section.5.7}
+\contentsline {section}{\numberline {5.8}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Reader.\discretionary {-}{}{}h File Reference}{34}{section.5.8}
+\contentsline {section}{\numberline {5.9}F\discretionary {-}{}{}C\discretionary {-}{}{}S\discretionary {-}{}{}V\discretionary {-}{}{}Writer.\discretionary {-}{}{}h File Reference}{35}{section.5.9}
+\contentsline {section}{\numberline {5.10}G\discretionary {-}{}{}M\discretionary {-}{}{}P\discretionary {-}{}{}I\discretionary {-}{}{}Estimator.\discretionary {-}{}{}h File Reference}{35}{section.5.10}
+\contentsline {section}{\numberline {5.11}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Model\discretionary {-}{}{}Constructor.\discretionary {-}{}{}h File Reference}{35}{section.5.11}
+\contentsline {section}{\numberline {5.12}V\discretionary {-}{}{}T\discretionary {-}{}{}K\discretionary {-}{}{}Writer.\discretionary {-}{}{}h File Reference}{36}{section.5.12}
+\contentsline {chapter}{Index}{37}{section*.31}

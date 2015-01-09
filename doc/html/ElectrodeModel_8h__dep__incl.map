@@ -1,0 +1,8 @@
+<map id="ElectrodeModel.h" name="ElectrodeModel.h">
+<area shape="rect" id="node2" href="$Electrode_8h.html" title="Electrode.h" alt="" coords="183,80,271,107"/>
+<area shape="rect" id="node3" href="$ClinicalFrame_8h.html" title="ClinicalFrame.h" alt="" coords="123,155,236,181"/>
+<area shape="rect" id="node7" href="$ContactConstructor_8h.html" title="ContactConstructor.h" alt="" coords="201,229,348,256"/>
+<area shape="rect" id="node4" href="$AbstractWriter_8h.html" title="AbstractWriter.h" alt="" coords="60,229,176,256"/>
+<area shape="rect" id="node5" href="$FCSVWriter_8h.html" title="FCSVWriter.h" alt="" coords="5,304,109,331"/>
+<area shape="rect" id="node6" href="$VTKWriter_8h.html" title="VTKWriter.h" alt="" coords="134,304,228,331"/>
+</map>

@@ -1,0 +1,299 @@
+\hypertarget{classElectrode}{\section{Electrode Class Reference}
+\label{classElectrode}\index{Electrode@{Electrode}}
+}
+
+
+{\ttfamily \#include $<$Electrode.\-h$>$}
+
+
+
+Collaboration diagram for Electrode\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=162pt]{classElectrode__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{Physical\-Point\-Type} \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact}
+\item 
+typedef const \hyperlink{Definitions_8h_ab9d62e9721984f22424e47212a5ce25d}{Physical\-Point\-Type} \hyperlink{classElectrode_a6dc621793b4ffa70e6bc3f2627ec8bf6}{Const\-Contact}
+\item 
+typedef vector$<$ \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} $>$\-::iterator \hyperlink{classElectrode_a682d94c6e93fc27e2135d3a894fe9722}{Contact\-Iterator}
+\item 
+typedef vector$<$ \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} $>$\\*
+\-::const\-\_\-iterator \hyperlink{classElectrode_a8c56b50a83beed1bf104d079083386b5}{Const\-Contact\-Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classElectrode_a771e572c858046f109f73ee04d78e509}{Electrode} (string name, \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \&target, \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \&entry, T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$c)
+\item 
+\hyperlink{classElectrode_a3914606286820a309e87b47a79792fc8}{Electrode} (string name, \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \&target, \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \&entry)
+\item 
+\hyperlink{classElectrode_ad16409e5fbe3dbdc0d4bcfd6a148ad40}{Electrode} (string id, \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \&target, \hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \&entry, \hyperlink{classElectrodeModel}{Electrode\-Model} m)
+\item 
+\hyperlink{classElectrode_aaea00b81726c5cad6a390659870ead58}{$\sim$\-Electrode} ()
+\item 
+\hyperlink{classElectrode_a682d94c6e93fc27e2135d3a894fe9722}{Contact\-Iterator} \hyperlink{classElectrode_a105771c0b9c630f3da68c9f220d62470}{begin} ()
+\item 
+\hyperlink{classElectrode_a682d94c6e93fc27e2135d3a894fe9722}{Contact\-Iterator} \hyperlink{classElectrode_ae02470004771e62d2cb9227ad2ebb6b7}{end} ()
+\item 
+\hyperlink{classElectrode_a8c56b50a83beed1bf104d079083386b5}{Const\-Contact\-Iterator} \hyperlink{classElectrode_af424b68151e09051b9e50cb1e087ad1d}{begin} () const 
+\item 
+\hyperlink{classElectrode_a8c56b50a83beed1bf104d079083386b5}{Const\-Contact\-Iterator} \hyperlink{classElectrode_a9fa4b4f90a58bc2ef4ef00bc2e8a7cbe}{end} () const 
+\item 
+void \hyperlink{classElectrode_a0422c73e1a10045d2efb36a96f8b48f3}{add\-Contact} (\hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} c)
+\item 
+\hyperlink{classElectrode_a6dc621793b4ffa70e6bc3f2627ec8bf6}{Const\-Contact} $\ast$ \hyperlink{classElectrode_a3bb7efc38bbb2322722320fa5dfb14b7}{get\-Contact} (ulong id) const 
+\item 
+\hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} $\ast$ \hyperlink{classElectrode_a16095d3177a018d40cca9e13064c69ee}{get\-Contact} (ulong id)
+\item 
+ulong \hyperlink{classElectrode_af9d256a3bca0873bf10177ed7acc8158}{get\-Contact\-Number} () const 
+\item 
+\hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \hyperlink{classElectrode_ae00ce79f47c986adedfdc34de26a4956}{get\-Target} () const 
+\item 
+\hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} \hyperlink{classElectrode_a63534a9fcf275e30a3897bc6d5c6daec}{get\-Entry} () const 
+\item 
+void \hyperlink{classElectrode_a7d1686e3aaf200d8eeacd5ba5ca9b8f6}{get\-Target\-As\-Double} (double $\ast$t) const 
+\item 
+void \hyperlink{classElectrode_a63b949ff99a7c5a25ee2a1615231d2da}{get\-Entry\-As\-Double} (double $\ast$e) const 
+\item 
+void \hyperlink{classElectrode_ae1db2afe30ebad7c71a04a0c4f39b326}{set\-Target} (\hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} c)
+\item 
+void \hyperlink{classElectrode_a2092b73cb83d1d54ff3a55a0095ffdac}{set\-Entry} (\hyperlink{classElectrode_ac64c4a90469345a5d3e260da59765a76}{Contact} c)
+\item 
+string \hyperlink{classElectrode_a19fa13d91444e67dbdc17891829633a2}{get\-Name} () const 
+\item 
+void \hyperlink{classElectrode_aac0591afceba95e538b134daad423db4}{set\-Name} (string name)
+\item 
+void \hyperlink{classElectrode_afe109f0f82873f28d93fc5b6f485de45}{set\-Model} (\hyperlink{classElectrodeModel}{Electrode\-Model} model)
+\item 
+\hyperlink{classElectrodeModel}{Electrode\-Model} \hyperlink{classElectrode_aa7d23c92c952ec3c4565be8924a8be00}{get\-Model} ()
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{classElectrode_a7ffb9f309faaf4072bda7912a86b31f4}{operator$<$$<$} (ostream \&os, const \hyperlink{classElectrode}{Electrode} \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class represents the electrode structure 
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classElectrode_a6dc621793b4ffa70e6bc3f2627ec8bf6}{\index{Electrode@{Electrode}!Const\-Contact@{Const\-Contact}}
+\index{Const\-Contact@{Const\-Contact}!Electrode@{Electrode}}
+\subsubsection[{Const\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}typedef const {\bf Physical\-Point\-Type} {\bf Electrode\-::\-Const\-Contact}}}\label{classElectrode_a6dc621793b4ffa70e6bc3f2627ec8bf6}
+\hypertarget{classElectrode_a8c56b50a83beed1bf104d079083386b5}{\index{Electrode@{Electrode}!Const\-Contact\-Iterator@{Const\-Contact\-Iterator}}
+\index{Const\-Contact\-Iterator@{Const\-Contact\-Iterator}!Electrode@{Electrode}}
+\subsubsection[{Const\-Contact\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$ {\bf Contact} $>$\-::const\-\_\-iterator {\bf Electrode\-::\-Const\-Contact\-Iterator}}}\label{classElectrode_a8c56b50a83beed1bf104d079083386b5}
+\hypertarget{classElectrode_ac64c4a90469345a5d3e260da59765a76}{\index{Electrode@{Electrode}!Contact@{Contact}}
+\index{Contact@{Contact}!Electrode@{Electrode}}
+\subsubsection[{Contact}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf Physical\-Point\-Type} {\bf Electrode\-::\-Contact}}}\label{classElectrode_ac64c4a90469345a5d3e260da59765a76}
+\hypertarget{classElectrode_a682d94c6e93fc27e2135d3a894fe9722}{\index{Electrode@{Electrode}!Contact\-Iterator@{Contact\-Iterator}}
+\index{Contact\-Iterator@{Contact\-Iterator}!Electrode@{Electrode}}
+\subsubsection[{Contact\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$ {\bf Contact} $>$\-::iterator {\bf Electrode\-::\-Contact\-Iterator}}}\label{classElectrode_a682d94c6e93fc27e2135d3a894fe9722}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classElectrode_a771e572c858046f109f73ee04d78e509}{\index{Electrode@{Electrode}!Electrode@{Electrode}}
+\index{Electrode@{Electrode}!Electrode@{Electrode}}
+\subsubsection[{Electrode}]{\setlength{\rightskip}{0pt plus 5cm}Electrode\-::\-Electrode (
+\begin{DoxyParamCaption}
+\item[{string}]{name, }
+\item[{{\bf Contact} \&}]{target, }
+\item[{{\bf Contact} \&}]{entry, }
+\item[{T\-C\-L\-A\-P\-::\-Cmd\-Line $\ast$}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a771e572c858046f109f73ee04d78e509}
+\hypertarget{classElectrode_a3914606286820a309e87b47a79792fc8}{\index{Electrode@{Electrode}!Electrode@{Electrode}}
+\index{Electrode@{Electrode}!Electrode@{Electrode}}
+\subsubsection[{Electrode}]{\setlength{\rightskip}{0pt plus 5cm}Electrode\-::\-Electrode (
+\begin{DoxyParamCaption}
+\item[{string}]{name, }
+\item[{{\bf Contact} \&}]{target, }
+\item[{{\bf Contact} \&}]{entry}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a3914606286820a309e87b47a79792fc8}
+\hypertarget{classElectrode_ad16409e5fbe3dbdc0d4bcfd6a148ad40}{\index{Electrode@{Electrode}!Electrode@{Electrode}}
+\index{Electrode@{Electrode}!Electrode@{Electrode}}
+\subsubsection[{Electrode}]{\setlength{\rightskip}{0pt plus 5cm}Electrode\-::\-Electrode (
+\begin{DoxyParamCaption}
+\item[{string}]{id, }
+\item[{{\bf Contact} \&}]{target, }
+\item[{{\bf Contact} \&}]{entry, }
+\item[{{\bf Electrode\-Model}}]{m}
+\end{DoxyParamCaption}
+)}}\label{classElectrode_ad16409e5fbe3dbdc0d4bcfd6a148ad40}
+\hypertarget{classElectrode_aaea00b81726c5cad6a390659870ead58}{\index{Electrode@{Electrode}!$\sim$\-Electrode@{$\sim$\-Electrode}}
+\index{$\sim$\-Electrode@{$\sim$\-Electrode}!Electrode@{Electrode}}
+\subsubsection[{$\sim$\-Electrode}]{\setlength{\rightskip}{0pt plus 5cm}Electrode\-::$\sim$\-Electrode (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_aaea00b81726c5cad6a390659870ead58}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classElectrode_a0422c73e1a10045d2efb36a96f8b48f3}{\index{Electrode@{Electrode}!add\-Contact@{add\-Contact}}
+\index{add\-Contact@{add\-Contact}!Electrode@{Electrode}}
+\subsubsection[{add\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::add\-Contact (
+\begin{DoxyParamCaption}
+\item[{{\bf Contact}}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a0422c73e1a10045d2efb36a96f8b48f3}
+\hypertarget{classElectrode_a105771c0b9c630f3da68c9f220d62470}{\index{Electrode@{Electrode}!begin@{begin}}
+\index{begin@{begin}!Electrode@{Electrode}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Contact\-Iterator} Electrode\-::begin (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a105771c0b9c630f3da68c9f220d62470}
+this method returns a pointer to H\-E\-A\-D of vector$<$ Contact $>$ \hypertarget{classElectrode_af424b68151e09051b9e50cb1e087ad1d}{\index{Electrode@{Electrode}!begin@{begin}}
+\index{begin@{begin}!Electrode@{Electrode}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Const\-Contact\-Iterator} Electrode\-::begin (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_af424b68151e09051b9e50cb1e087ad1d}
+this method returns a const pointer to H\-E\-A\-D of vector$<$ Contact $>$ \hypertarget{classElectrode_ae02470004771e62d2cb9227ad2ebb6b7}{\index{Electrode@{Electrode}!end@{end}}
+\index{end@{end}!Electrode@{Electrode}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Contact\-Iterator} Electrode\-::end (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_ae02470004771e62d2cb9227ad2ebb6b7}
+this method returns a pointer to T\-A\-I\-L of vector$<$ Contact $>$ \hypertarget{classElectrode_a9fa4b4f90a58bc2ef4ef00bc2e8a7cbe}{\index{Electrode@{Electrode}!end@{end}}
+\index{end@{end}!Electrode@{Electrode}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Const\-Contact\-Iterator} Electrode\-::end (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a9fa4b4f90a58bc2ef4ef00bc2e8a7cbe}
+this method returns a const pointer to T\-A\-I\-L of vector$<$ Contact $>$ \hypertarget{classElectrode_a3bb7efc38bbb2322722320fa5dfb14b7}{\index{Electrode@{Electrode}!get\-Contact@{get\-Contact}}
+\index{get\-Contact@{get\-Contact}!Electrode@{Electrode}}
+\subsubsection[{get\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Const\-Contact}$\ast$ Electrode\-::get\-Contact (
+\begin{DoxyParamCaption}
+\item[{ulong}]{id}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a3bb7efc38bbb2322722320fa5dfb14b7}
+get const pointer to contact given contact position along vector $<$ Contact $>$ 
+\begin{DoxyParams}{Parameters}
+{\em id} & the contact index in vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\-U\-L\-L pointer in case of overflow (id $>$ vector.\-size) 
+\end{DoxyReturn}
+\hypertarget{classElectrode_a16095d3177a018d40cca9e13064c69ee}{\index{Electrode@{Electrode}!get\-Contact@{get\-Contact}}
+\index{get\-Contact@{get\-Contact}!Electrode@{Electrode}}
+\subsubsection[{get\-Contact}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Contact}$\ast$ Electrode\-::get\-Contact (
+\begin{DoxyParamCaption}
+\item[{ulong}]{id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a16095d3177a018d40cca9e13064c69ee}
+get pointer to contact given contact position along vector $<$ Contact $>$ 
+\begin{DoxyParams}{Parameters}
+{\em id} & the contact index in vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+N\-U\-L\-L pointer in case of overflow (id $>$ vector.\-size) 
+\end{DoxyReturn}
+\hypertarget{classElectrode_af9d256a3bca0873bf10177ed7acc8158}{\index{Electrode@{Electrode}!get\-Contact\-Number@{get\-Contact\-Number}}
+\index{get\-Contact\-Number@{get\-Contact\-Number}!Electrode@{Electrode}}
+\subsubsection[{get\-Contact\-Number}]{\setlength{\rightskip}{0pt plus 5cm}ulong Electrode\-::get\-Contact\-Number (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_af9d256a3bca0873bf10177ed7acc8158}
+get number of contacts present in vector$<$ Contact $>$ \hypertarget{classElectrode_a63534a9fcf275e30a3897bc6d5c6daec}{\index{Electrode@{Electrode}!get\-Entry@{get\-Entry}}
+\index{get\-Entry@{get\-Entry}!Electrode@{Electrode}}
+\subsubsection[{get\-Entry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Contact} Electrode\-::get\-Entry (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a63534a9fcf275e30a3897bc6d5c6daec}
+this function returns the entry point in mm as read from fiducial list \hypertarget{classElectrode_a63b949ff99a7c5a25ee2a1615231d2da}{\index{Electrode@{Electrode}!get\-Entry\-As\-Double@{get\-Entry\-As\-Double}}
+\index{get\-Entry\-As\-Double@{get\-Entry\-As\-Double}!Electrode@{Electrode}}
+\subsubsection[{get\-Entry\-As\-Double}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::get\-Entry\-As\-Double (
+\begin{DoxyParamCaption}
+\item[{double $\ast$}]{e}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a63b949ff99a7c5a25ee2a1615231d2da}
+this function converts Contact entry to double\mbox{[}3\mbox{]} entry \hypertarget{classElectrode_aa7d23c92c952ec3c4565be8924a8be00}{\index{Electrode@{Electrode}!get\-Model@{get\-Model}}
+\index{get\-Model@{get\-Model}!Electrode@{Electrode}}
+\subsubsection[{get\-Model}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Electrode\-Model} Electrode\-::get\-Model (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_aa7d23c92c952ec3c4565be8924a8be00}
+\hypertarget{classElectrode_a19fa13d91444e67dbdc17891829633a2}{\index{Electrode@{Electrode}!get\-Name@{get\-Name}}
+\index{get\-Name@{get\-Name}!Electrode@{Electrode}}
+\subsubsection[{get\-Name}]{\setlength{\rightskip}{0pt plus 5cm}string Electrode\-::get\-Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a19fa13d91444e67dbdc17891829633a2}
+\hypertarget{classElectrode_ae00ce79f47c986adedfdc34de26a4956}{\index{Electrode@{Electrode}!get\-Target@{get\-Target}}
+\index{get\-Target@{get\-Target}!Electrode@{Electrode}}
+\subsubsection[{get\-Target}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Contact} Electrode\-::get\-Target (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_ae00ce79f47c986adedfdc34de26a4956}
+this function returns the target point in mm as read from fiducial list \hypertarget{classElectrode_a7d1686e3aaf200d8eeacd5ba5ca9b8f6}{\index{Electrode@{Electrode}!get\-Target\-As\-Double@{get\-Target\-As\-Double}}
+\index{get\-Target\-As\-Double@{get\-Target\-As\-Double}!Electrode@{Electrode}}
+\subsubsection[{get\-Target\-As\-Double}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::get\-Target\-As\-Double (
+\begin{DoxyParamCaption}
+\item[{double $\ast$}]{t}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a7d1686e3aaf200d8eeacd5ba5ca9b8f6}
+this function converts Contact target to double\mbox{[}3\mbox{]} target \hypertarget{classElectrode_a2092b73cb83d1d54ff3a55a0095ffdac}{\index{Electrode@{Electrode}!set\-Entry@{set\-Entry}}
+\index{set\-Entry@{set\-Entry}!Electrode@{Electrode}}
+\subsubsection[{set\-Entry}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::set\-Entry (
+\begin{DoxyParamCaption}
+\item[{{\bf Contact}}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_a2092b73cb83d1d54ff3a55a0095ffdac}
+\hypertarget{classElectrode_afe109f0f82873f28d93fc5b6f485de45}{\index{Electrode@{Electrode}!set\-Model@{set\-Model}}
+\index{set\-Model@{set\-Model}!Electrode@{Electrode}}
+\subsubsection[{set\-Model}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::set\-Model (
+\begin{DoxyParamCaption}
+\item[{{\bf Electrode\-Model}}]{model}
+\end{DoxyParamCaption}
+)}}\label{classElectrode_afe109f0f82873f28d93fc5b6f485de45}
+\hypertarget{classElectrode_aac0591afceba95e538b134daad423db4}{\index{Electrode@{Electrode}!set\-Name@{set\-Name}}
+\index{set\-Name@{set\-Name}!Electrode@{Electrode}}
+\subsubsection[{set\-Name}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::set\-Name (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_aac0591afceba95e538b134daad423db4}
+\hypertarget{classElectrode_ae1db2afe30ebad7c71a04a0c4f39b326}{\index{Electrode@{Electrode}!set\-Target@{set\-Target}}
+\index{set\-Target@{set\-Target}!Electrode@{Electrode}}
+\subsubsection[{set\-Target}]{\setlength{\rightskip}{0pt plus 5cm}void Electrode\-::set\-Target (
+\begin{DoxyParamCaption}
+\item[{{\bf Contact}}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classElectrode_ae1db2afe30ebad7c71a04a0c4f39b326}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classElectrode_a7ffb9f309faaf4072bda7912a86b31f4}{\index{Electrode@{Electrode}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Electrode@{Electrode}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{os, }
+\item[{const {\bf Electrode} \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{classElectrode_a7ffb9f309faaf4072bda7912a86b31f4}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Electrode_8h}{Electrode.\-h}\end{DoxyCompactItemize}
