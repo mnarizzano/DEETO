@@ -1,5 +1,6 @@
 #DEETO
-This is a simpler version of DDETO, made to be fully compliant with Slicer 3D
+This is a simplified version of DEETO.
+It should be fully compliant with Slicer 3D, via command line execution.
 
 seeg electroDE  rEconstruction TOol:
 
@@ -30,8 +31,8 @@ This tool reconstructs the position of SEEG electrode contacts from a post-impla
      (*)  one between -t and -l is mandatory
      (*)  -ct is mandatory
 
-##Software requirments
-For builiding the tool you have to install some dependecies.
+##Software Requirements
+Strong dependecies:
 
 
 | Library       | Version      | URL |
