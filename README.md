@@ -1,5 +1,5 @@
 #DEETO
-This is a simplified version of DEETO.
+This is a simplified version of [DEETO](https://github.com/mnarizzano/DEETO).
 It should be fully compliant with Slicer 3D, via command line execution.
 
 seeg electroDE  rEconstruction TOol:
