@@ -7,8 +7,8 @@ This tool reconstructs the position of SEEG electrode contacts from a post-impla
 
 	USAGE: 
 	
-	   deeto  [-1] [-t <string>] [-o <string>] [-f <string>] [-c <string>] [--]
-	          [--version] [-h]
+	   deeto  [-ct <string>] [-t/-e/-l/-h x y z] [-m -m n l r x1..xm]
+	          [-h]
 	
 	Where 
 	   -h       : shows the menu 
@@ -23,6 +23,8 @@ This tool reconstructs the position of SEEG electrode contacts from a post-impla
                 x1..xm = contact distances, x1 is the distance between c1 and c2  
    	   -ct file :
               computer tomography file name 
+	   -h        : This menu
+  
       Notice that : 
      (*)  one between -e and -h is mandatory
      (*)  one between -t and -l is mandatory
