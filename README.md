@@ -1,5 +1,5 @@
 #DEETO
-
+This is a simpler version of DDETO, made to be fully compliant with Slicer 3D
 
 seeg electroDE  rEconstruction TOol:
 
