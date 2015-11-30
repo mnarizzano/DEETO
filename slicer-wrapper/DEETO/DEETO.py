@@ -59,8 +59,9 @@ class DEETOWidget(ScriptedLoadableModuleWidget):
     self.setupSegmentation()
     ### Step 5 : Zone Detection 
     self.setupZoneDetection()
-    ### Step 6 : Xtens 
+    ### Step 6 : Split files
 #    self.setupXtensIntegration()
+    self.setupFileExporter()
     ####[TODO] bisogna farlo leggere da file di configurazione 
     self.models = {'default' : [18,2.0,0.8,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5],\
                    'cinque' :[15,2.0,0.8,1.5,1.5,1.5,1.5,10.5,1.5,1.5,1.5,1.5,10.5,1.5,1.5,1.5,1.5],\
@@ -380,104 +381,46 @@ class DEETOWidget(ScriptedLoadableModuleWidget):
 
 
 ###################################################
-#### 6. Xtens integration step: provides 
-####  1 - connection to xtens-app 
-###   2 - population of json-based metadata 
-###   3 - sends data to xtens-app via REST
-###   4 - check saved data
+#### 6. setup File Export section 
 ###################################################
-#  def setupXtensIntegration(self):
-#    self.xtensCB = ctk.ctkCollapsibleButton()
-#    self.xtensCB.text = "Step 6 : XTENS"
-#    self.layout.addWidget(self.xtensCB)
-#    xtensLayout= qt.QFormLayout(self.xtensCB)
-#    self.subjectList = ctk.ctkComboBox()
-#    self.implantList = ctk.ctkComboBox()
-#
-#
-#    self.identifier = qt.QLineEdit('admin')
-#    self.password = qt.QLineEdit('admin1982')
-#    self.password.setEchoMode(qt.QLineEdit.Password)
-#    xtensConnect = qt.QPushButton('Connect')
-#    
-#    connectionLayout = qt.QHBoxLayout()
-#    connectionLayout.addWidget(self.identifier)
-#    connectionLayout.addWidget(self.password)
-#    connectionLayout.addWidget(xtensConnect)
-#
-#    addSubjectButton = qt.QPushButton("+")
-#    addSubjectButton.setFixedWidth(20)
-#    addSubjectButton.toolTip = " Add new subject "
-#    addSubjectButton.enabled = True 
-#
-#    loadSubjectButton = qt.QPushButton("Load")
-#    loadSubjectButton.setFixedWidth(40)
-#    loadSubjectButton.toolTip = "Load Subjects"
-#    loadSubjectButton.enabled = True 
-#    
-#    subjectLayout = qt.QHBoxLayout()
-#    subjectLayout.addWidget(self.subjectList)
-#    subjectLayout.addWidget(self.implantList)
-#    subjectLayout.addWidget(loadSubjectButton)
-#    subjectLayout.addWidget(addSubjectButton)
-#
-#    fidSelectorLayout = qt.QHBoxLayout()
-#
-#    self.fidsSelectorXtens = slicer.qMRMLNodeComboBox()
-#    self.fidsSelectorXtens.nodeTypes = ( ("vtkMRMLMarkupsFiducialNode"), "" )
-#    self.fidsSelectorXtens.selectNodeUponCreation = False
-#    self.fidsSelectorXtens.addEnabled = False
-#    self.fidsSelectorXtens.removeEnabled = False
-#    self.fidsSelectorXtens.noneEnabled = True
-#    self.fidsSelectorXtens.showHidden = False
-#    self.fidsSelectorXtens.showChildNodeTypes = False
-#    self.fidsSelectorXtens.setMRMLScene( slicer.mrmlScene )
-#    self.fidsSelectorXtens.setToolTip("Select a fiducial list")
-#    
-#    saveButton = qt.QPushButton("Save")
-#    saveButton.setFixedWidth(40)
-#    
-#    fidSelectorLayout.addWidget(self.fidsSelectorXtens)
-#    fidSelectorLayout.addWidget(saveButton)
-#
-#    xtensLayout.addRow(" DB Connection ",connectionLayout)
-#    xtensLayout.addRow(" Subjects ",subjectLayout)
-#    xtensLayout.addRow(" Fiducials ",fidSelectorLayout)
-#
-#    # connections
-#    addSubjectButton.connect('clicked(bool)',self.onAddSubjectButtonClick)
-#    xtensConnect.connect('clicked(bool)',self.onXtensConnectButtonClick)
-#    saveButton.connect('clicked(bool)',self.onSaveButtonClick)
-#    loadSubjectButton.connect('clicked(bool)',self.onLoadButtonClick)
-#    self.subjectList.connect('activated(QString)',self.onSubjectSelected)
-#
-#
-#    # Add vertical spacer
-#    self.layout.addStretch(1)
-#
-#  def onSubjectSelected(self,string):
-#    if string:
-#        [familyName,givenName,bDay,id] = string.split(' ')
-#        baseUrl = '10.186.10.57:1337'
-#
-#        # 3 is the datatype index for xtens-app installed in DIBRIS
-#        # TODO: find a smarter, less-context dependent way to get the datatype index
-#        url = '/data?type=%d&parentSubject=%d' %(3, int(id) )
-#        conn = httplib.HTTPConnection(baseUrl)
-#        header = {"Authorization":"Bearer "+self.token}
-#        conn.request("GET",url,headers=header)
-#
-#        response = conn.getresponse()
-#        if response.status != 200:
-#            print response.content
-#        
-#        implants = json.loads(response.read())
-#        print implants
-#        for implant in implants:
-#            implantInfo = implant['id']
-#            self.implantList.addItem(str(implantInfo))
-#
-#    return True
+  def setupFileExporter(self):
+    self.fileExporterCB = ctk.ctkCollapsibleButton()
+    self.fileExporterCB.text = "Step 6 : Export Fiducials"
+    self.layout.addWidget(self.fileExporterCB)
+    fileExporterLayout= qt.QFormLayout(self.fileExporterCB)
+
+    self.fidsSelectorSplit = slicer.qMRMLNodeComboBox()
+    self.fidsSelectorSplit.nodeTypes = ( ("vtkMRMLMarkupsFiducialNode"), "" )
+    self.fidsSelectorSplit.selectNodeUponCreation = False
+    self.fidsSelectorSplit.addEnabled = False
+    self.fidsSelectorSplit.removeEnabled = False
+    self.fidsSelectorSplit.noneEnabled = True
+    self.fidsSelectorSplit.setMRMLScene( slicer.mrmlScene )
+    self.fidsSelectorSplit.setToolTip("Select a fiducial list")
+    fileExporterLayout.addRow("Fiducial : ", self.fidsSelectorSplit)
+    
+    splitButton = qt.QPushButton("Split")
+    splitButton.setFixedWidth(60)
+    splitButton.toolTip = " Separate fiducials in different files "
+    splitButton.enabled = True 
+
+
+    fileExporterLayout.addRow(" Split? ",splitButton)
+
+    # connections
+    splitButton.connect('clicked(bool)',self.onSplitButtonClick)
+
+    # Add vertical spacer
+    self.layout.addStretch(1)
+
+
+###########################################################################
+#### on DEETO BUTTON
+###########################################################################
+  def onDeetoButton(self):
+    """ on DEETO Button Logic """
+    fileName = qt.QFileDialog.getOpenFileName(self.dialog, "Choose surf directory", "~", "")
+    self.deetoE.setText(fileName)
 
   def clearElectrodeList(self):
       last = len(self.ECRows) - 1
@@ -492,142 +435,31 @@ class DEETOWidget(ScriptedLoadableModuleWidget):
   def cleanup(self):
     pass
 
-#  def onXtensConnectButtonClick(self):
-#    """ on Add Button Logic """
-#    baseUrl = '10.186.10.57:1337'
-#
-#    dataBlock = dict(identifier=self.identifier.text,password=self.password.text)
-#    data = json.dumps(dataBlock,separators=(',',':'))
-#    conn = httplib.HTTPConnection(baseUrl)
-#    conn.request("POST","/login",data)
-#    response = conn.getresponse()
-#    print response.status
-#
-#    if response.status != 200:
-#        print response.content
-#
-#    dataOut = json.loads(response.read())
-#    self.token = dataOut['token']
-#    conn.close()
-#
-#    return True
-#
-#  def onSaveButtonClick(self):
-#    """ on Add Button Logic """
-#    baseUrl = '10.186.10.57:1337'
-#
-#    conn = httplib.HTTPConnection(baseUrl)
-#    header = {"Authorization":"Bearer "+self.token}
-#
-#    fids = self.fidsSelectorXtens.currentNode()
-#    nFids = fids.GetNumberOfFiducials()
-#
-#    print self.implantList.currentText
-#
-##    for i in xrange(nFids):
-##        # update progress bar
-##        self.progBar.setValue( (float(i)/nFids)*100 )
-##        chLabel = fids.GetNthFiducialLabel(i)
-##
-##        # istantiate the variable which holds the point
-##        currContactCentroid = [0,0,0]
-##
-##        # copy current position from FiducialList
-##        fids.GetNthFiducialPosition(i,currContactCentroid)
-##
-##        # extract patch name and gmpi
-##        [anatPatch, gmpi] = fids.GetNthMarkupDescription(i).split(',')
-##
-##        # create dictionary with channel information
-##        channelInfo = dict(Label=chLabel,\
-##                PosX=currContactCentroid[0],PosY=currContactCentroid[1],PosZ=currContactCentroid[2],\
-##                patchName=anatPatch,gmpi=float(gmpi))
-##        channelStruct = dict(parentData=self.implantList.currentIndex,metadata=channelInfo)
-##        
-##	data = json.dumps(channelInfo,separators=(',',':'))
-##
-##        conn.request("POST","/data",data,headers=header)
-##
-##        response = conn.getresponse()
-##        if response.status != 200:
-##            print response.content
-#        
-#    return True
-#
-#  def onAddSubjectButtonClick(self):
-#
-#    # for this function we need a pop-up window
-##    formDialog = 
-#    # we create the subject form
-#    formLayout = qt.QFormLayout()
-#    firstLevelInfoLayout = qt.QHBoxLayout()
-#    secondLevelInfoLayout = qt.QHBoxLayout()
-#
-#    familyName = qt.QLineEdit()
-#    firstName = qt.QLineEdit()
-#
-#    firstLevelInfoLayout.addWidget(familyName)
-#    firstLevelInfoLayout.addWidget(firstName)
-#    birthDate = qt.QLineEdit()
-#    sex = qt.QComboBox()
-#    saveButton = qt.QPushButton()
-#
-#    secondLevelInfoLayout.addWidget(birthDate)
-#    secondLevelInfoLayout.addWidget(sex)
-#    secondLevelInfoLayout.addWidget(saveButton)
-#
-#    formLayout.addRow(firstLevelInfoLayout)
-#    formLayout.addRow(secondLevelInfoLayout)
-#
-#    # connection
-#    saveButton.connect('clicked(bool)',self.onAddSubjectSaveButtonClick)
-#
-#    return True
-#
-#  def onAddSubjectSaveButtonClick(self):
-#      return True
-#
-#
-#  def onLoadButtonClick(self):
-#    """ on Add Button Logic """
-#    baseUrl = '10.186.10.57:1337'
-#
-#    conn = httplib.HTTPConnection(baseUrl)
-#    header = {"Authorization":"Bearer "+self.token}
-#    conn.request("GET","/subject",headers=header)
-#    response = conn.getresponse()
-#    print response.status
-#
-#    if response.status != 200:
-#         print response.content
-#
-#    dataOut = json.loads(response.read())
-#
-#    for subject in dataOut:
-#		familyName = subject['personalInfo']['surname']
-#		firstName = subject['personalInfo']['givenName']
-#                birthDate = subject['personalInfo']['birthDate']
-#                subjectId = str(subject['personalInfo']['id'])
-#		self.subjectList.addItem(string.join((familyName,firstName,birthDate,subjectId),' '))
-#
-#    conn.close()
-#    return True
-
-
-
-
-
-###########################################################################
-#### on DEETO BUTTON
-###########################################################################
-  def onDeetoButton(self):
-    """ on DEETO Button Logic """
-    fileName = qt.QFileDialog.getOpenFileName(self.dialog, "Choose surf directory", "~", "")
-    self.deetoE.setText(fileName)
-
     
 
 ###########################################################################  
+  def onSplitButtonClick(self):
+
+    fidsList = self.fidsSelectorSplit.currentNode()
+    names = [ fidsList.GetNthFiducialLabel(x) for x in xrange(fidsList.GetNumberOfFiducials())]
+    letters = [ re.search('[A-Z]\'?',chName).group(0) for chName in names]
+    chNumbers = [letters.count(el) for el in set(letters)]
+    electrodeNames = list(set(letters))
+
+    for electrode in xrange(len(electrodeNames)):
+        # create a new markup entry in the scene
+        mlogic = slicer.modules.markups.logic()
+        fidNode = slicer.util.getNode(mlogic.AddNewFiducialNode(electrodeNames[electrode]))
+
+        for contact in xrange(chNumbers[electrode]):
+            currPosition = [0,0,0]
+            fidsList.GetNthFiducialPosition(contact + electrode*contact,currPosition) 
+            currName = fidsList.GetNthFiducialLabel(contact + electrode*contact) 
+            fidNode.AddFiducial(currPosition[0],currPosition[1],currPosition[2],currName)
+
+
+    return True
+
   def onLoadButton(self):
     print("Run the algorithm")
     if self.fidsSelector.currentNode() == None :
