@@ -6,8 +6,7 @@ from __main__ import vtk, qt, ctk, slicer
 from slicer.ScriptedLoadableModule import *
 import numpy
 import re
-import json	
-import httplib
+import collections
 
 #
 # DEETO
@@ -443,19 +442,28 @@ class DEETOWidget(ScriptedLoadableModuleWidget):
     fidsList = self.fidsSelectorSplit.currentNode()
     names = [ fidsList.GetNthFiducialLabel(x) for x in xrange(fidsList.GetNumberOfFiducials())]
     letters = [ re.search('[A-Z]\'?',chName).group(0) for chName in names]
-    chNumbers = [letters.count(el) for el in set(letters)]
-    electrodeNames = list(set(letters))
+    nChannelsInElectrodes = collections.Counter(letters)
 
-    for electrode in xrange(len(electrodeNames)):
+    offset = 0
+
+    for electrode in xrange(len(nChannelsInElectrodes)):
+        # pick the first valid contact
+        electrodeLabel = re.search('[A-Z]\'?',fidsList.GetNthFiducialLabel(0 + offset)).group(0)
+
         # create a new markup entry in the scene
         mlogic = slicer.modules.markups.logic()
-        fidNode = slicer.util.getNode(mlogic.AddNewFiducialNode(electrodeNames[electrode]))
+        fidNode = slicer.util.getNode(mlogic.AddNewFiducialNode(electrodeLabel))
 
-        for contact in xrange(chNumbers[electrode]):
+        for contact in xrange(nChannelsInElectrodes[electrodeLabel]):
+            self.progBar.setValue( float(contact+offset)/ fidsList.GetNumberOfFiducials()*100 )
+
             currPosition = [0,0,0]
-            fidsList.GetNthFiducialPosition(contact + electrode*contact,currPosition) 
-            currName = fidsList.GetNthFiducialLabel(contact + electrode*contact) 
+            fidsList.GetNthFiducialPosition(contact + offset,currPosition) 
+            currName = fidsList.GetNthFiducialLabel(contact + offset) 
             fidNode.AddFiducial(currPosition[0],currPosition[1],currPosition[2],currName)
+            fidNode.SetNthMarkupDescription(contact,fidsList.GetNthMarkupDescription(contact + offset))
+
+        offset = offset + nChannelsInElectrodes[electrodeLabel] 
 
 
     return True
