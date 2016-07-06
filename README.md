@@ -12,7 +12,8 @@ This tool reconstructs the position of SEEG electrode contacts from a post-impla
 	          [-h]
 	
 	Where 
-	   -h       : shows the menu 
+	   -h       : shows the menu
+           -s t     : set the threshold. 0.0 default
 	   -t x y z : target point (x,y,z) are the coordinates 
    	   -e x y z : entry point (x,y,z) are the coordinates 
 	   -l x y z : tail point (x,y,z) are the coordinates 

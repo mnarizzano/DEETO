@@ -26,6 +26,18 @@
 #include <itkDerivativeOperator.h>
 #include <itkNiftiImageIO.h>
 
+#include <itkMinimumMaximumImageCalculator.h>
+#include "itkSampleToHistogramFilter.h"
+#include "itkListSample.h"
+#include "itkHistogram.h"
+#include <itkImageToListSampleAdaptor.h>
+
+
+typedef itk::Vector<unsigned char, 1> MeasurementVectorType;
+typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType ;
+typedef itk::Statistics::Histogram< short, itk::Statistics::DenseFrequencyContainer2 > HistogramType;
+
+
 using namespace std;
 
 typedef itk::Image<short, 3>                                  ImageType;

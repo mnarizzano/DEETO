@@ -13,6 +13,7 @@ class CmdParser {
     _fileCT = NULL;
     _contactDiameter = 0.8; // mm da cambiare?
     _contactLenght = 2.5;   // mm da cambiare? 
+    _threshold = 0.0;
   }
   
   ~CmdParser( ){}
@@ -23,6 +24,7 @@ class CmdParser {
   void setTarget(PhysicalPointType t) {_target = t;}
   void setContactDiameter(float cd) { _contactDiameter = cd;}
   void setContactLenght(float cl) { _contactLenght = cl;}  
+  float setThreshold(float t) { return _threshold = t;}
   void setModel(vector< float > m) { 
     for (unsigned int i = 0; i < m.size(); i++){
       _model[i] = m[i];
@@ -36,8 +38,9 @@ class CmdParser {
   char* getFileCT( ) {return _fileCT;}
   float getContactDiameter( ) { return _contactDiameter;}
   float getContactLenght( ) { return _contactLenght;}
+  float getThreshold( ) { return _threshold;}
   vector< float > getModel() { return _model;} 
-  
+
 
   int parse(int argc, char **argv) { 
     char *p; // as check for reading the number
@@ -51,6 +54,12 @@ class CmdParser {
       /* } else  */
       if (strcmp(argv[i],"-ct") == 0) {
 	_fileCT = argv[i+1];
+	i = i + 1;
+      }else if (strcmp(argv[i],"-s") == 0) {
+	if(i+1 >= argc) { return -1; } // GESTIRE ERRORE
+	number = strtod(argv[i+1],&p);
+	if (*p) return -1;
+	_threshold = number;
 	i = i + 1;
       } else if (strcmp(argv[i],"-h") == 0) {
 	if(i+3 >= argc) { return -1; } // GESTIRE ERRORE
@@ -143,6 +152,8 @@ class CmdParser {
     cout << "options:" << endl;
     cout << "   -h " << endl;
     cout << "            : shows the menu " << endl;
+    cout << "   -s t " << endl;
+    cout << "            : set the threshold. 0.0 default" << endl;
     cout << "   -t x y z " << endl;
     cout << "            : target point (x,y,z) are the coordinates " << endl;
     cout << "   -e x y z " << endl;
@@ -174,6 +185,7 @@ class CmdParser {
   PhysicalPointType  _entry;
   float _contactDiameter;
   float _contactLenght;
+  float _threshold;
   vector< float > _model;
   
   int _result;

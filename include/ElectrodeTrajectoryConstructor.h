@@ -80,6 +80,8 @@ class ElectrodeTrajectoryConstructor {
   //! return the point in the cubic region r with the higher CT value
   PhysicalPointType _getHigherValuePoint(RegionType r);
 
+  //! return the cosin between two lines
+  double _computeCosine(PhysicalPointType a1,PhysicalPointType a2,PhysicalPointType b1,PhysicalPointType b2);
 
   void _printPoint(char* t, PhysicalPointType p);
   void _printPointReversed(char* t, PhysicalPointType p);
@@ -290,7 +292,10 @@ ElectrodeTrajectoryConstructor::ElectrodeTrajectoryConstructor(ImageType::Pointe
   //[TODO] : A way to calculate this number based on experiences?
   _minRegionSize = 3.0;  //! [TODO] Magic Number
   _maxRegionSize = 10.0; //! [TODO] Magic Number
-  _threshold     =  _computeThreshold();
+  _threshold = cmd.getThreshold();
+  if (_threshold == 0.0) _threshold = _computeThreshold();
+  //cout << "threshold " << _threshold << endl;
+  //_threshold = 656.0;
 }
 
 //! \fn _checkPoint
@@ -402,8 +407,6 @@ void ElectrodeTrajectoryConstructor::_printPointReversed(PhysicalPointType p) {
 }
 
 
-
-
 //! Compute the electrode trajectory by using head and tail
 // [TODO] il modello è embeddato dentro un array da rivedere.
 vector< PhysicalPointType> ElectrodeTrajectoryConstructor::_computeTrajectory(PhysicalPointType h, PhysicalPointType t) {
@@ -420,24 +423,51 @@ vector< PhysicalPointType> ElectrodeTrajectoryConstructor::_computeTrajectory(Ph
   vector< PhysicalPointType> electrode;
   electrode.push_back((_checkPoint(c1) ? c1 : c));
   float distance;
+  //_printPointReversed(c);
+  c = electrode[electrode.size() -1];
   for(unsigned i = 3; i < model.size(); i++){
+    PhysicalPointType last = electrode[electrode.size() -1];
     distance = L + model[i];
     c = _getNextContact(c,t,h,distance);
     c1 = _getPointWithHigherMoment(c,_minRegionSize,_minRegionSize);
     // [NB] c1 should be checked for NaN, but since NaN distance is is
     // more than 4.0 it is not necessary
-    float d = c.EuclideanDistanceTo(c1);
+    float d = last.EuclideanDistanceTo(c1);
     // [TODO] MAGIC NUMBERS distance beetween 2 contact +-0.5
-    electrode.push_back(((d > 3.0) && (d < 4.0)) ? c1 : c);
+    // [TODO] MAGIC NUMBERS angle beetween 2 contact less than 10 degree
+    double angle = _computeCosine(last,c,last,c1);
+    if ((angle < MAX_ANGLE) || ((d < 3.0) || (d > 4.0))){
+      //cout << "Ho pushato il vincolato " << endl;
+      electrode.push_back(c);
+      //_printPointReversed("H",c);
+    }else {
+      electrode.push_back(c1);
+      //_printPointReversed("H",c1);
+    }
+   
+    // cout << i - 2 << ": <d,angle,MAX> : " << d << " , " <<  angle << " , " <<  MAX_ANGLE << endl; 
   }
   return electrode;
 }
 
 
+/*cos rs = l1*l2+m1*m2+n1*n2/modulo v1 * modulo v2*/
+double ElectrodeTrajectoryConstructor::_computeCosine(PhysicalPointType a1,PhysicalPointType a2,PhysicalPointType b1,PhysicalPointType b2){
+  double l1 = a1[0] - a2[0];
+  double m1 = a1[1] - a2[1];
+  double n1 = a1[2] - a2[2];
+  double l2 = b1[0] - b2[0];
+  double m2 = b1[1] - b2[1];
+  double n2 = b1[2] - b2[2];
+  double arcos = (l1*l2 + m1*m2+n1*n2)/(sqrt(l1*l1+m1*m1+n1*n1)*sqrt(l2*l2+m2*m2+n2*n2));
+  if (arcos > 0) return arcos;
+  else return -1*arcos;
+}
+
 
 
 unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
-  // Non va bene, bisognerebbe considerare solo i valori > di una soglia minima 
+  // Non va bene, bisognerebbe considerare solo i valori > di una soglia minima
   // visto che ci sono troppi punti = a 0;
   // Idea : fare una regione grande quanto un immagine (size = 255/255/255?)
   // Fare un filtro e iterare sulla regione e calcolare Mean/std/Min/Max a mano)
@@ -449,7 +479,7 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   unsigned long min  = (unsigned long) MAX_VALUE;
   unsigned long max  = 0.0;
   int voxelTot = 0;
-  int voxelNonZero = 0;  
+  int voxelNonZero = 0;
   vector< unsigned long > valuesVector;
   valuesVector.reserve(1); // [TODO] Magic Number
 
@@ -460,14 +490,12 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
       //  sum += value;
       voxelNonZero++;
       if (value < min) {min = value;}
-      if (value > max) {max = value;} 
+      if (value > max) {max = value;}
       valuesVector.push_back(value);
     }
     ++imageIterator;
   }
   
-  //double average = (double) sum / (double) voxelNonZero;
-
   sum = 0.0;
 
   vector< int > statistics;
@@ -475,12 +503,7 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   for (unsigned int i = 1; i < valuesVector.size(); i++) {
     unsigned long v = valuesVector[i];
     statistics[v]++;
-    // sum += pow((v - average),2);
-    //cout << i << " ; " << v << " ; " << statistics[v] << endl;
   }
-  
-  //  double sqm = (double) sum / ((double) voxelNonZero);
-  //sqm = sqrt(sqm);
   
   vector< unsigned long > tmp;
   tmp.resize(20,0.0);
@@ -490,24 +513,12 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   for (unsigned int i = 1; i < statistics.size(); i++) {
     sum += statistics[i];
     double c = ((double)sum) / ((double) voxelNonZero);
-    double p = 1.0; 
-    //cout << i <<  " ; " << statistics[i] << " ; "<< sum << " ; " << c <<endl;
+    double p = 1.0;
     if (c > basicProb * index) {
       tmp[index] = i;
       index++;
     }
   }
-    
-  /* for(unsigned int j = 1; j < 20; j++) { */
-  /*   cout << j*basicProb << "; " << tmp[j] << endl; */
-  /* } */
-  
-  /* cout << "AVE            : " << average << endl; */
-  /* cout << "S. Deviation   : " << sqm << endl; */
-  /* cout << "min            : " << min << endl;  */
-  /* cout << "max            : " << max << endl;  */
-  /* cout << "voxel totali   : " << voxelTot << endl; */
-  /* cout << "vocel non zero : " << voxelNonZero << endl; */
   return tmp[9];
 
 }
