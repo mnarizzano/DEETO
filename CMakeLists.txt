@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(DEETO)
 
 # search for ITK
-set(ITK_DIR /home/massimo/Local/ITK-4.8.1/build/)
+# set(ITK_DIR /home/massimo/Local/ITK-4.8.1/build/)
 MESSAGE(STATUS ${ITK_DIR})
 find_package(ITK REQUIRED)
 if(ITK_FOUND)
