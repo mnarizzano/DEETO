@@ -274,7 +274,8 @@ int ElectrodeTrajectoryConstructor::update( ) {
   if(!(_checkPoint(tail))) return -1;
   //! Step 2: Compute the trajectory
   vector < PhysicalPointType >  trajectory = _computeTrajectory(head,tail);
-  
+  //cout << trajectory.data() << endl;
+  //exit(0);
   for(unsigned i = 0; i < trajectory.size(); i++){
     _printPointReversed(trajectory[i]);
   }
@@ -291,6 +292,7 @@ ElectrodeTrajectoryConstructor::ElectrodeTrajectoryConstructor(ImageType::Pointe
   _minRegionSize = 3.0;  //! [TODO] Magic Number
   _maxRegionSize = 10.0; //! [TODO] Magic Number
   _threshold     =  _computeThreshold();
+
 }
 
 //! \fn _checkPoint
@@ -443,6 +445,8 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   // Fare un filtro e iterare sulla regione e calcolare Mean/std/Min/Max a mano)
 
   ImageType::RegionType region = _ctImage->GetLargestPossibleRegion();
+  //cout << "region " << region << endl;
+  //exit(0);
   itk::ImageRegionIterator<ImageType> imageIterator(_ctImage,region);
   double sum = 0.0;
   unsigned long value = 0.0;
@@ -452,9 +456,14 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   int voxelNonZero = 0;  
   vector< unsigned long > valuesVector;
   valuesVector.reserve(1); // [TODO] Magic Number
+  auto i = 0;
 
   while(!imageIterator.IsAtEnd()){
-    value = _ctImage->GetPixel(imageIterator.GetIndex());
+    auto index = imageIterator.GetIndex();
+    value = _ctImage->GetPixel(index);
+    cout << value << endl;
+    exit(0);
+    
     voxelTot++;
     if (value > 0) {
       //  sum += value;
@@ -463,9 +472,17 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
       if (value > max) {max = value;} 
       valuesVector.push_back(value);
     }
+    if (value==0) {i++;}
     ++imageIterator;
   }
-  
+  cout << valuesVector.size() << endl;
+  cout << i << endl;
+  exit(0);
+  //for (i=0+359*541;i<20+359*541;i++){
+  //cout << valuesVector[i] << " ";
+  //}
+  //cout << endl;
+  //exit(0);
   //double average = (double) sum / (double) voxelNonZero;
 
   sum = 0.0;
@@ -508,6 +525,8 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   /* cout << "max            : " << max << endl;  */
   /* cout << "voxel totali   : " << voxelTot << endl; */
   /* cout << "vocel non zero : " << voxelNonZero << endl; */
+  //cout << "this is tmp[9] -> " << tmp[9] << endl;
+  //exit(0);
   return tmp[9];
 
 }

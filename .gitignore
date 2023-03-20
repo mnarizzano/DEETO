@@ -2,3 +2,13 @@ build*
 *vim
 tags
 *swp
+.vscode*
+Makefile
+CMakeFiles*
+ITKFactoryRegistration*
+res*
+cmake_install.cmake
+CMakeCache.txt
+deeto
+documentation*
+src/__pycache__*
