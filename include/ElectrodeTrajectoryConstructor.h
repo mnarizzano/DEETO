@@ -3,6 +3,7 @@
 
 #include <CmdParser.h>
 #include <Definitions.h>
+#include <tester.h>
 
 
 /*!
@@ -219,9 +220,10 @@ PhysicalPointType ElectrodeTrajectoryConstructor::_getPointWithHigherMoment(Phys
       try {
 	filter->Update();
 	calculator->Compute();
+  exit(0);
 	center[0] = calculator->GetCenterOfGravity()[0]; 
 	center[1] = calculator->GetCenterOfGravity()[1]; 
-	center[2] = calculator->GetCenterOfGravity()[2]; 
+	center[2] = calculator->GetCenterOfGravity()[2]; meas(regionSize);meas_oc(center);
 	//cout << "M " << calculator->GetTotalMass() << endl;
 	return center; 
       } catch (itk::ExceptionObject &ex) {
@@ -456,14 +458,10 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
   int voxelNonZero = 0;  
   vector< unsigned long > valuesVector;
   valuesVector.reserve(1); // [TODO] Magic Number
-  auto i = 0;
 
   while(!imageIterator.IsAtEnd()){
     auto index = imageIterator.GetIndex();
     value = _ctImage->GetPixel(index);
-    cout << value << endl;
-    exit(0);
-    
     voxelTot++;
     if (value > 0) {
       //  sum += value;
@@ -472,12 +470,11 @@ unsigned long ElectrodeTrajectoryConstructor::_computeThreshold( void ) {
       if (value > max) {max = value;} 
       valuesVector.push_back(value);
     }
-    if (value==0) {i++;}
     ++imageIterator;
   }
-  cout << valuesVector.size() << endl;
-  cout << i << endl;
-  exit(0);
+  //cout << valuesVector.size() << endl;
+  //cout << i << endl;
+  //exit(0);
   //for (i=0+359*541;i<20+359*541;i++){
   //cout << valuesVector[i] << " ";
   //}
