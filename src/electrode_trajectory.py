@@ -1,6 +1,7 @@
 from typing import Tuple,List
 from numpy.typing import NDArray
 import SimpleITK as sitk
+import itk
 from itk import array_from_image,imread,US, itkImageMomentsCalculatorPython
 from numpy import subtract, array,zeros,ones,empty,uint32,float64,subtract,clip,unique,cumsum,searchsorted
 #from numpy import clip, min
@@ -18,25 +19,18 @@ class ElectrodeTrajectoryConstructor():
     #CONTACT_LEN = 2.5
 
     def _compute_threshold(self):
-        image = sitk.GetArrayFromImage(self._image)
+        image = self._image_array #sitk.GetArrayFromImage(self._image)
         self._image_array = image
-        # [NOTE] in original code valuesVector iteration that creates statistics vector
-        # starts from 1 instead of from 0 but i think it's a bug
-        # because it cuts a legitimate value since it's never pushed a 0 value in valuesVector
-        #_,counts = unique(image[image != 0][1:], return_counts=True)
-        _,counts = unique(image[image != 0], return_counts=True)
-        cdf = cumsum(counts,dtype=float)
-        return searchsorted(cdf, 0.45*cdf[-1],side='right') # + 1  
-        # [NOTE] in original code when computing cumulative sums
-        # index of statistics starts from 1 because statistics[0] is always 0 
-        # due to the fact that pixel/voxel values = 0 are filtered by the if condition
-        # so the indices are shifted by one and returned incorrectly
-        # checked with debug enabled and inspection of cdf 
+        image = image[image!=0].ravel()
+        p = sorted(image)
+        indice = int(len(p)*9/20)
+        return p[indice]
 
     def __init__(self, nii_gz_path:str) -> None:
         try:
-            self._image = sitk.ReadImage(nii_gz_path)
-            #self._image2 = array_from_image(imread(nii_gz_path))
+            #self._image = sitk.ReadImage(nii_gz_path)
+            self._image = imread(nii_gz_path)
+            self._image_array = array_from_image(self._image)
             # [NOTE] chiedere come mai sono unsigned short
         except:
             raise RuntimeError("File nii_gz error")
@@ -51,6 +45,7 @@ class ElectrodeTrajectoryConstructor():
         while curr_region_size < max_region_size:
             region = get_squared_region(center_index,curr_region_size)
             if is_valid_region(region,borders):
+                itk.ImageMomentsCalculator.New(img[region])
                 zero_mass_flag, center_of_gravity = compute_center_of_gravity(img[region],self._image.GetSpacing())
                 if not zero_mass_flag:
                     return center_of_gravity
@@ -62,6 +57,7 @@ class ElectrodeTrajectoryConstructor():
 
     def _find_head(self,entry_point:tuple):
         img = self._image
+        img_array = self._image_array
         pixel_intensity_threshold = self._threshold+1
         min_region_size = self._min_region_size
         max_region_size = self._max_region_size
