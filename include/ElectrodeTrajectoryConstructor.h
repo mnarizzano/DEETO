@@ -120,7 +120,6 @@ PhysicalPointType ElectrodeTrajectoryConstructor::_lookForHeadPoint(PhysicalPoin
 
   RegionType region = _retrieveRegion(vcenter,_maxRegionSize);
   itk::ImageRegionIterator<ImageType> imageIterator(_ctImage,region);
-  
   VoxelPointType p;
   PhysicalPointType tmp;  
   while(!imageIterator.IsAtEnd()){
@@ -220,10 +219,9 @@ PhysicalPointType ElectrodeTrajectoryConstructor::_getPointWithHigherMoment(Phys
       try {
 	filter->Update();
 	calculator->Compute();
-  exit(0);
 	center[0] = calculator->GetCenterOfGravity()[0]; 
 	center[1] = calculator->GetCenterOfGravity()[1]; 
-	center[2] = calculator->GetCenterOfGravity()[2]; meas(regionSize);meas_oc(center);
+	center[2] = calculator->GetCenterOfGravity()[2];
 	//cout << "M " << calculator->GetTotalMass() << endl;
 	return center; 
       } catch (itk::ExceptionObject &ex) {
@@ -267,7 +265,7 @@ int ElectrodeTrajectoryConstructor::update( ) {
     return -1;
   //! Step 1.1: Calculate the head point in a region around the entry
   //! point. @see _lookForHeadPoint
-  if(!(_checkPoint(head))) head = _lookForHeadPoint(entry);
+  if(!(_checkPoint(head))) head = _lookForHeadPoint(entry); 
   //_printPointReversed("H",head);
   if(!(_checkPoint(head))) return -1;
   //! Step 1.2: Calculate the tail point computing the best trajectory
@@ -277,7 +275,7 @@ int ElectrodeTrajectoryConstructor::update( ) {
   //! Step 2: Compute the trajectory
   vector < PhysicalPointType >  trajectory = _computeTrajectory(head,tail);
   //cout << trajectory.data() << endl;
-  //exit(0);
+  //exit(0);  
   for(unsigned i = 0; i < trajectory.size(); i++){
     _printPointReversed(trajectory[i]);
   }
