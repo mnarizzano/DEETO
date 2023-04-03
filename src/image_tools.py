@@ -4,8 +4,8 @@ from itertools import product
 def is_valid_region(region:tuple[slice],borders:tuple[tuple]):
     '''
     gets a region as tuple of slices of N dimension and a tuple of start border and end border (both inclusive) of N dimension\n
-    returns True if region is within borders
-    soft checks on input
+    returns True if region is within borders\n
+    soft checks on input are performed
     '''
     return borders is not None and region is not None and all(reg_slice.start >= min_val and reg_slice.stop <= max_val for reg_slice,(min_val,max_val) in zip(region,zip(borders[0],borders[1])))
 
@@ -27,6 +27,9 @@ def get_squared_region(center_point:tuple,region_size:int,clipping_min_max: tupl
     return tuple(slice(*start_end) for start_end in zip(start_point,end_point))    # returns slices
 
 def get_region_size(region:tuple[slice]):
+    '''
+    returns a tuple of size for every dimension of the region given
+    '''
     return tuple(reg_slice.stop-reg_slice.start for reg_slice in region)
 
 def region_generator(center_point:tuple,region_size:int,clipping_min_max: tuple[tuple] or None=None,C_style_iterator=False,as_np_array=False):
@@ -36,9 +39,9 @@ def region_generator(center_point:tuple,region_size:int,clipping_min_max: tuple[
 
     Params
     -------
-        center_point : the center as a tuple of points in whatever dimension (1D,2D,3D,4D,for more, a Sycamore chip is required)\n
-        region_size : size of the region (the square will be center - region to center + region with endpoint included)\n
-        C_style_iterator : if False loops from left to right, else from right to left
+        - center_point : the center as a tuple of points in whatever dimension (1D,2D,3D,4D,for more, a Sycamore chip is required)\n
+        - region_size : size of the region (the square will be center - region to center + region with endpoint included)\n
+        - C_style_iterator : if False loops from left to right, else from right to left
             example: in 2D and C_style_iterator False is for COLS { for ROWS { arr[ ROW , COL ] } }
     '''
     region = get_squared_region(center_point,region_size,clipping_min_max)
@@ -54,6 +57,3 @@ def region_generator(center_point:tuple,region_size:int,clipping_min_max: tuple[
                 yield point
             else:
                 yield array(point,dtype=int)
-
-def region_to_xyz_sxsysz(region:list[slice]):
-    return [*[s.start for s in region],*[s.stop-s.start for s in region]]

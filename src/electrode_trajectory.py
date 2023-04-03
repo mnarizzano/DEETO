@@ -1,19 +1,16 @@
 from typing import List
 from numpy.typing import NDArray
 import SimpleITK as sitk
-#import itk
-#from itk import array_from_image,imread,US, itkImageMomentsCalculatorPython
-from numpy import array,zeros,uint32,int32,float64,sum
+from numpy import array,zeros,float64,sum,empty,mean
 from numpy.linalg import norm
 
 from image_tools import *
 
 class ElectrodeTrajectoryConstructor():
     
-    MAX_VALUE = 3.402823466e+38
-    MAX_ANGLE = 0.978147601         # 12 degrees
-    #CONTACT_DIAMETER = 0.8
-    #CONTACT_LEN = 2.5
+    CONTACTS_DIST = 3.5
+    MIN_REGION_SIZE = 3
+    MAX_REGION_SIZE = 10
 
     def _compute_threshold(self,itk_image):
         image = sitk.GetArrayFromImage(itk_image)
@@ -28,12 +25,14 @@ class ElectrodeTrajectoryConstructor():
             #self._image_array = array_from_image(self._image)
         except:
             raise RuntimeError("File nii_gz error")
-        self._min_region_size = 3
-        self._max_region_size = 10
+        self._threshold = self._compute_threshold(image)
         self._zero_vect = zeros(len(image.GetSize()),dtype=int)
         self._size_vect = array(image.GetSize(),dtype=int)
-        self._threshold = self._compute_threshold(image)
+        self._clipping_borders = (self._zero_vect,self._size_vect)
         self._image = image
+        self._electrode = None
+        self._PhysToIndx = image.TransformPhysicalPointToIndex
+        self._IndxToPhys = image.TransformIndexToPhysicalPoint 
 
     def _compute_center_of_gravity(self,image_cropped:sitk.Image,cohords_offsets: tuple[int]):
         '''
@@ -47,7 +46,7 @@ class ElectrodeTrajectoryConstructor():
         for pixel_index_array in region_generator(tuple(self._zero_vect),max(size_vect),(self._zero_vect,size_vect),as_np_array=True):
             pixel_index_tuple = tuple(map(int,pixel_index_array))
             pixel_value = image_cropped[pixel_index_tuple]
-            # double conversion of types is due to incompatibility between simple itk and numpy 
+            # double conversion of types is due to incompatibility between itk's and numpy's data types 
             m_Cg += array(orig_image.TransformIndexToPhysicalPoint(tuple(map(int,pixel_index_array+cohords_offsets)))) * pixel_value
             total_mass += pixel_value
         if total_mass == 0:
@@ -57,10 +56,13 @@ class ElectrodeTrajectoryConstructor():
     def _get_point_with_highest_momentum(self,center_index:tuple[int],min_region_size:int,max_region_size:int):
         img = self._image
         curr_region_size = min_region_size
-        borders = (zeros(len(center_index),dtype=uint32),img.GetSize())
-        while curr_region_size < max_region_size:
+        clipping_borders = self._clipping_borders
+        first_iter = True
+        # in original code this is a do while
+        while curr_region_size < max_region_size or first_iter:
+            first_iter = False
             region = get_squared_region(center_index,curr_region_size)
-            if is_valid_region(region,borders):
+            if is_valid_region(region,clipping_borders):
                 center_of_gravity = self._compute_center_of_gravity(img[region],tuple([slce.start for slce in region]))
                 if center_of_gravity is None:
                     curr_region_size += 1
@@ -68,8 +70,15 @@ class ElectrodeTrajectoryConstructor():
                     return center_of_gravity
             else:
                 max_region_size -= 1
-
         return None
+
+    def _get_region_value(self,pixel_index:tuple[int],region_size:int):
+        '''
+        returns the sum of every pixel value in this cubic region
+        '''
+        image = self._image
+        clipping_borders = self._clipping_borders
+        return sum([image[pixel_index_inner] for pixel_index_inner in region_generator(pixel_index,region_size,clipping_borders)])
 
     def _find_head(self,entry_point:NDArray[float64]):
         '''
@@ -82,38 +91,77 @@ class ElectrodeTrajectoryConstructor():
         '''
         img = self._image
         pixel_intensity_threshold = self._threshold
-        min_region_size = self._min_region_size
-        max_region_size = self._max_region_size
-        center_index = img.TransformPhysicalPointToIndex(entry_point)
-        clipping_borders = (zeros(len(center_index),dtype=uint32),img.GetSize())
+        min_region_size = self.MIN_REGION_SIZE
+        max_region_size = self.MAX_REGION_SIZE
+        center_index = self._PhysToIndx(entry_point)
+        clipping_borders = self._clipping_borders
         for pixel_index in region_generator(center_index,max_region_size,clipping_borders):
-            if img[pixel_index] > pixel_intensity_threshold and \
-               sum([img[pixel_index_inner] for pixel_index_inner in region_generator(pixel_index,min_region_size,clipping_borders)]) > min_region_size * pixel_intensity_threshold :
+            if img[pixel_index] > pixel_intensity_threshold and self._get_region_value(pixel_index,min_region_size) > min_region_size * pixel_intensity_threshold:
                 return self._get_point_with_highest_momentum(pixel_index,min_region_size,max_region_size)
-        # should never be reached
         return None
 
-
-    def _get_next_contact(self,p1:NDArray[float64],p2:NDArray[float64],p3:NDArray[float64],dist=float):
+    def _get_next_point(self,p1:NDArray[float64],p2:NDArray[float64],p3:NDArray[float64],dist=float):
+        '''
+        returns the next point of the line represented by these 3 points that's also dist far from p3
+        '''
         return p2 + (p3 - p2) * (norm(p1-p2)+dist) / norm(p2-p3)
 
     def _find_tail(self,head_point:NDArray[float64],target_point:NDArray[float64]):
-        #TODO perform intermediate checks
-        dist = 3.5
-        min_region_size = self._min_region_size; max_region_size = self._max_region_size
-        p2 = self._get_next_contact(head_point,head_point,target_point,dist*2)
-        p2 = self._get_point_with_highest_momentum(p2,min_region_size,max_region_size)
+        img = self._image
+        pixel_value_threshold = self._threshold
+        dist = self.CONTACTS_DIST
+        min_region_size = self.MIN_REGION_SIZE; max_region_size = self.MAX_REGION_SIZE
+
+        p2 = self._get_next_point(head_point,head_point,target_point,dist*2)
+        p2 = self._get_point_with_highest_momentum(self._PhysToIndx(p2),min_region_size,max_region_size)
         if p2 is None:
             return None
-        p3 = self._get_next_contact(p2,head_point,p2,dist)
-        p3 = self._get_point_with_highest_momentum(p3,min_region_size,max_region_size)
+        p3 = self._get_next_point(p2,head_point,p2,dist)
+        p3 = self._get_point_with_highest_momentum(self._PhysToIndx(p3),min_region_size,min_region_size)
+        for i in range(20):
+            p1 = p2; p2 = p3
+            p3 = self._get_next_point(p2,p1,p2,dist)
+            p3 = self._get_point_with_highest_momentum(self._PhysToIndx(p3),min_region_size,min_region_size)
+            if p3 is None:
+                p3 = self._get_next_point(p2,p1,p2,dist)
+                break
+            if norm(p3-p2) < 2.5: #TODO ask for magic numbers
+                break
+            elif self._get_region_value(self._PhysToIndx(p3),1) < pixel_value_threshold:
+                break
+        if img[self._PhysToIndx(p3)] < pixel_value_threshold:
+            p3 = p2
+        dist = norm(p3-p2) + 0.5
+        p4 = p3
+        while img[self._PhysToIndx(p4)] > pixel_value_threshold:
+            p3 = p4
+            p4 = self._get_next_point(p2,p1,p2,dist)
+            dist += 0.25
+        return p3
 
-    def _compute_trajectory(self,head_point,target_point):
-        assert False, "not implemented"
+    def _compute_trajectory(self,contact_len:float64,contact_radius:float64,distances:NDArray[float64],head_point:NDArray[float64],tail_point:NDArray[float64]):
+        '''
+        Computes the trajectory from tail_point to head_point
+        Contact radius is unused
+        '''
+        # first contact is the center of the cylinder with distance L/2 from the tip (tail)
+        min_region_size = self.MIN_REGION_SIZE
+        num_contacts = len(distances)
+        min_cont_dist = self.CONTACTS_DIST-0.5; max_cont_dist = self.CONTACTS_DIST-0.5
+        electrode = empty((num_contacts+1,len(tail_point)),dtype=float64)
+        cylinder_center = tail_point
+        distances = [-contact_len/2] + distances
+        inverse_vect = array([ -1, -1, 1],dtype=float)
+
+        for i in range(num_contacts+1):
+            cylinder_center = self._get_next_point(cylinder_center,tail_point,head_point,contact_len + distances[i])
+            cylinder_center_hm = self._get_point_with_highest_momentum(self._PhysToIndx(cylinder_center),min_region_size,min_region_size)
+            electrode[i,:] = (cylinder_center_hm if cylinder_center_hm is not None and (i==0 or (min_cont_dist < norm(cylinder_center - cylinder_center_hm) < max_cont_dist)) else cylinder_center)*inverse_vect
+        return electrode
 
     def _check_point(self,point):
         #TODO better checks
-        return point.shape[0] == 3 and (point != self.MAX_VALUE).all()
+        return point is not None and point.shape[0] == 3
 
     def process_electrode(  self,
                             entry_point:NDArray or None=None,
@@ -131,21 +179,17 @@ class ElectrodeTrajectoryConstructor():
         head_point = self._find_head(entry_point)
         if head_point is None:
             raise Exception('Cannot find head point')
+        
         tail_point = self._find_tail(head_point,target_point)
         if tail_point is None:
-            raise Exception('Cannot find tail')
-        self._compute_trajectory(head_point,tail_point)
+            raise Exception('Cannot find tail point')
+        
+        self._electrode =  self._compute_trajectory(contact_len,contact_radius,distances,head_point,tail_point)
 
-
-
-        trajectory_points = zeros((len(distances),len(entry_point)))
-
-        ##################
-        # TODO implement #
-        ##################
-
-        return trajectory_points
-
+    def get_trajectory_points(self):
+        if self._electrode is None:
+            raise Exception('Must firstly call process_electrode()')
+        return self._electrode
     
 
 if __name__ == '__main__':
@@ -159,7 +203,7 @@ if __name__ == '__main__':
                     
     deeto_obj = ElectrodeTrajectoryConstructor('res/ct.nii.gz')
    
-    true_values = [(-7.69635,16.6547,8.58488),
+    out_values = array([(-7.69635,16.6547,8.58488),
                    (-11.1888,16.8029,8.7768),
                    (-14.6808,16.9743,8.9406),
                    (-18.1727,17.1457,9.1044),
@@ -176,11 +220,12 @@ if __name__ == '__main__':
                    (-56.5843,19.0309,10.9062),
                    (-60.0763,19.2023,11.07),
                    (-63.5682,19.3737,11.2337),
-                   (-67.0602,19.5451,11.3975)]
-    trajectory_points = deeto_obj.process_electrode(*sample_input)
-    #for i,elem in enumerate(trajectory_points):
-    #    if elem != true_values[i]:
-    #        raise Exception(f"index: {i}, elem: {elem} != {true_values[i]}")
-
-    # image is [359,541,178]
-    # iterators go from left to right
+                   (-67.0602,19.5451,11.3975)])
+    deeto_obj.process_electrode(*sample_input)
+    trajectory_points = deeto_obj.get_trajectory_points()
+    norms = []
+    for py_point_found,cpp_point_found in zip(trajectory_points,out_values):
+        this_points_distance = norm(py_point_found-cpp_point_found)
+        print(f"norm of cpp point and python point: {this_points_distance}")
+        norms.append(this_points_distance)
+    print(f"avg error: {mean(norms)}")
