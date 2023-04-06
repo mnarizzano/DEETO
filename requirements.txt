@@ -1,0 +1,4 @@
+#itk==5.3.0 #   not used because lacks in many facilities that must be implemented by hand or either called via external precompiled executables
+numba==0.56.4
+numpy==1.23.5
+SimpleITK==2.2.1
