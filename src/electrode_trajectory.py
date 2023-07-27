@@ -182,7 +182,7 @@ class ElectrodeTrajectoryConstructor():
         # first contact is the center of the cylinder with distance L/2 from the tip (tail)
         min_region_size = self.MIN_REGION_SIZE
         num_contacts = len(distances)
-        min_cont_dist = self.CONTACTS_DIST-0.5; max_cont_dist = self.CONTACTS_DIST-0.5
+        min_cont_dist = self.CONTACTS_DIST-0.5; max_cont_dist = self.CONTACTS_DIST+0.5
         electrode = empty((num_contacts+1,len(tail_point)),dtype=float64)
         cylinder_center = tail_point
         distances = [-contact_len/2] + distances
