@@ -12,3 +12,4 @@ CMakeCache.txt
 deeto
 documentation*
 src/__pycache__*
+test/*/
