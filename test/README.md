@@ -21,18 +21,22 @@ or MATLAB online
 
 Folders must be structured: 
 - root
-    - dataset
-    - priv
-    - CreateCTs.mlx
-    - (other scripts)
+    - dataset (NOT already provided)
+    - scripts (already provided)
+    - priv (already provided)
+    - CreateCTs.mlx 
+    - ct.nii.gz (already provided)
 
 Where 
-- root is the home of the project in Matlab with inside the [Scripts](https://osf.io/p3dx9/) from the paper [Blenkmann et al., 2022]
-- dataset folder is the content of [ImplantationPoints_Depth.7z](https://osf.io/kdnzq) as the unpacked list of .png and .mat
-- priv is the copy of the priv folder of [iElectrodes](https://sourceforge.net/projects/ielectrodes/) latest version (tested with v1.020)
+- root is the home of the project in Matlab 
+- scripts contain a modified version of the [Scripts](https://osf.io/p3dx9/) from the paper [Blenkmann et al., 2022]
+- dataset folder is the content of [ImplantationPoints_Depth.7z](https://osf.io/kdnzq) as the unpacked list of .png and .mat (only mat files are used) which still comes from the previously cited paper. Note: the folder has not been provided due to it's big size.
+- priv is the copy of the priv folder of [iElectrodes](https://sourceforge.net/projects/ielectrodes/) latest version (the provided priv folder is from the one used for testing which is the version v1.020)
+- CreateCTs.mlx is the main script used to generate artificial CTs 
+- ct.nii.gz file provided as base ct whose file headers are used to create a modified copy
 
 ## Run 
-Launch CreateCTs.mlx into Matlab to create a zip containing 
+Run CreateCTs.mlx into Matlab to create a zip in a "out" subfolder relative to the root of the project containing 
 - CT .nii.gz (compressed) file which is the simulated 3D scan of the electrodes as a voxelized image (Volume field in 3DSlicer)
 - .json file that contains for each electrode the real position of 
     - seedPoint: position of the electrode's head on the surface of the hull
